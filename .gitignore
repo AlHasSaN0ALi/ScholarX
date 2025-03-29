@@ -1,0 +1,12 @@
+# Dependency directories
+node_modules/
+
+# environment variable
+.env
+.env.*
+
+# Logs
+*.log
+
+# IDE
+.idea
