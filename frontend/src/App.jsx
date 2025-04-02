@@ -1,6 +1,7 @@
 import React from 'react'
 import Home from './pages/Home/Home'
 import './App.css'
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

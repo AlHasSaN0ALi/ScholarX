@@ -1,0 +1,27 @@
+.container{
+    margin: 100px 0;
+}
+
+.form{
+    background-color: #f8f9fb;
+    border-radius: 10px;
+    /* margin: 100px 0; */
+}
+
+.title {
+    font-weight: 700;
+}
+
+.description {
+    font-size: 20px;
+    }
+
+    .btn{
+        font-size: 18px;
+        background:linear-gradient(to left, #97adcc, rgb(181, 209, 255), #97adcc) ;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+    }

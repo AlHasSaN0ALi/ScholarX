@@ -1,0 +1,25 @@
+
+.container {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-align: center; 
+    /* background-color: #007bff; */
+}
+
+.icon {
+    color: rgb(181, 209, 255);
+    margin-bottom: 20px;
+    box-sizing: content-box;
+    padding: 25px;
+    font-size: 50px; 
+    border: 1px solid #007bff; 
+    border-radius: 40%; 
+}
+
+.title {
+    font-weight: 700;
+}
+
+.description {
+font-size: 25px;
+}
