@@ -27,7 +27,7 @@ export default function Contact() {
 
     return (
         <>
-            <div className={` ${styles.container} `}>
+            <div id="contact" className={` ${styles.container} `}>
                 <div>
                     <h1 className={`${styles.title} mb-5`}>Get in Touch
                     </h1>
