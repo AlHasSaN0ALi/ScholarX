@@ -8,14 +8,14 @@ function NavBar() {
   useEffect(() => {
     setCurrentPath(window.location.pathname);
     
-    // Check if there's a hash in URL and scroll to that section when component mounts
+    
     if (window.location.hash === '#contact') {
       setTimeout(() => {
         const contactSection = document.getElementById('contact');
         if (contactSection) {
           contactSection.scrollIntoView({ behavior: 'smooth' });
         }
-      }, 500); // Small delay to ensure DOM is fully loaded
+      }, 500); 
     }
   }, []);
 
@@ -26,18 +26,16 @@ function NavBar() {
   const scrollToContact = (e) => {
     e.preventDefault();
     
-    // Close mobile menu if open
+    
     if (mobileMenuOpen) {
       setMobileMenuOpen(false);
     }
     
-    // If not on homepage, redirect to homepage with contact hash
     if (currentPath !== '/') {
       window.location.href = '/#contact';
-      return; // Stop execution here when redirecting
+      return; 
     }
     
-    // If already on homepage, scroll to contact section
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
