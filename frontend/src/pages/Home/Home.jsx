@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from '../../components/NavBar/NavBar';
-// import Footer from '../../components/Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 import Hero from './components/Hero/Hero';
 import Features from './components/Features/Features';
 import Services from './components/Services/Services';
@@ -19,14 +19,11 @@ function Home() {
         <Features />
         <Services />
         <Services_2 />
-
         <Impact />
-
         <Contact />
       </main>
 
-
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
