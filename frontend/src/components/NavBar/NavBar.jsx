@@ -26,21 +26,20 @@ function NavBar() {
   const scrollToContact = (e) => {
     e.preventDefault();
     
-    
     if (mobileMenuOpen) {
       setMobileMenuOpen(false);
     }
     
     if (currentPath !== '/') {
       window.location.href = '/#contact';
-      return; 
+      return;
     }
     
     const contactSection = document.getElementById('contact');
     if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.error('Contact section not found. Make sure there is an element with id="contact"');
+      contactSection.scrollIntoView({ 
+        behavior: 'smooth'
+      });
     }
   };
 
