@@ -34,9 +34,8 @@ export default function Contact() {
                 </div>
 
                 <div className="row">
-                    <div className="col-md-6 d-flex justify-content-center  ">
-
-                        <div className={`  ${styles.form}  w-75 p-5 text-start `}   >
+                    <div className="col-md-6 d-flex justify-content-center">
+                        <div className={`${styles.form} ${styles['message-form']} w-75 p-5 text-start`}>
                             <h4 className={`${styles.title} `}>Send us a Message
                             </h4>
                             <form>
@@ -61,19 +60,14 @@ export default function Contact() {
                                 <button type="submit" className= {`w-100 ${styles.btn}`} > submit</button>
                             </form>
                         </div>
-
-
                     </div>
 
-
-                    <div className="col-md-6 d-flex justify-content-center ">
-                        <div className={` ${styles.form} w-75 p-4 text-start `}>
+                    <div className="col-md-6 d-flex justify-content-center">
+                        <div className={`${styles.form} ${styles['schedule-form']} w-75 p-4 text-start`}>
                             <h4 className={`${styles.title}`}>Schedule a Call</h4>
                             <p className={`${styles.description} text-muted`}>Book a 30-minute consultation with our team to discuss your needs.</p>
 
-
-                            <div className='p-3 mb-3 border border primary rounded ' onClick={openDatePicker} style={{ cursor: 'pointer' }}>
-
+                            <div className='p-3 mb-3 border border primary rounded' onClick={openDatePicker} style={{ cursor: 'pointer' }}>
                                 <label htmlFor="appointment" className="d-flex align-items-center mb-2">
                                     <FaCalendarAlt className="me-2 fs-3" />
                                     Available Slots
