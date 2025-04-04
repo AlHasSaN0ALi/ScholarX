@@ -1,56 +1,56 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+// import { motion, AnimatePresence } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Login.css";
 
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
-    const [error, setError] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [rememberMe, setRememberMe] = useState(false);
+    // const [error, setError] = useState("");
 
-    const containerVariants = {
-        hidden: { x: "-100%" },
-        visible: { 
-            x: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1],
-                staggerChildren: 0.1
-            }
-        },
-        exit: { 
-            x: "100%",
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1]
-            }
-        }
-    };
+    // const containerVariants = {
+    //     hidden: { x: "-100%" },
+    //     visible: { 
+    //         x: 0,
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1],
+    //             staggerChildren: 0.1
+    //         }
+    //     },
+    //     exit: { 
+    //         x: "100%",
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1]
+    //         }
+    //     }
+    // };
 
-    const formVariants = {
-        hidden: { x: "100%" },
-        visible: { 
-            x: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1]
-            }
-        },
-        exit: { 
-            x: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1]
-            }
-        }
-    };
+    // const formVariants = {
+    //     hidden: { x: "100%" },
+    //     visible: { 
+    //         x: 0,
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1]
+    //         }
+    //     },
+    //     exit: { 
+    //         x: 0,
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1]
+    //         }
+    //     }
+    // };
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
+            <div className="row rounded-5 p-3 shadow box-area loginconatiner" style={{ width: "100%", maxWidth: "1000px", overflow: "hidden" }}>
                 {/* Left Box (Image) */}
                 <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
                     <div className="featured-image">
@@ -73,14 +73,14 @@ const Login = () => {
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="email"
-                                className="form-control form-control-lg bg-light fs-6"
+                                className="form-control form-control-lg fs-6"
                                 placeholder="Email Address"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="password"
-                                className="form-control form-control-lg bg-light fs-6"
+                                className="form-control form-control-lg fs-6"
                                 placeholder="Password"
                             />
                         </div>
@@ -114,7 +114,7 @@ const Login = () => {
                         <div className="row text-center">
                             <small>
                                 Don't have an account?{" "}
-                                <Link to="/signup" className="text-primary">
+                                <Link to="/signup" className="signup-link">
                                     Sign Up
                                 </Link>
                             </small>

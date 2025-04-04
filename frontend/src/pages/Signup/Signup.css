@@ -7,7 +7,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
-    background-color: #1a4c7a;
+    background-color: #1a4c7a !important;
     color: rgba(255, 255, 255, 0.87);
     margin: 0;
     padding: 0;
@@ -25,8 +25,8 @@ body {
     padding: 0 15px;
 }
 
-.loginconatiner {
-    background-color: #1a4c7a;
+.loginconatiner, .login-container {
+    background-color: #1a4c7a !important;
     border: 1px solid #3399cc;
     width: 100%;
     min-height: 500px;
@@ -57,6 +57,10 @@ body {
     flex: 1;
 }
 
+.right-box .header-text {
+    color: white;
+}
+
 .right-box form {
     width: 100%;
     max-width: 400px;
@@ -65,6 +69,8 @@ body {
 .right-box .form-control {
     width: 100%;
     margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
 }
 
 .right-box .form-check {
@@ -77,6 +83,18 @@ body {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
+}
+
+.login-link {
+    color: #79c2ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.login-link:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 .left-box {
@@ -103,7 +121,7 @@ body {
 
 ::placeholder {
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .rounded-4 {
@@ -120,7 +138,7 @@ body {
         width: calc(100% - 20px);
     }
     
-    .loginconatiner {
+    .loginconatiner, .login-container {
         flex-direction: column;
         min-height: auto;
     }
@@ -224,6 +242,8 @@ body {
     }
 }
 
+/* Removing light mode override to ensure dark theme */
+/*
 @media (prefers-color-scheme: light) {
     body {
         color: #213547;
@@ -256,3 +276,4 @@ body {
         color: rgba(0, 0, 0, 0.5);
     }
 }
+*/
