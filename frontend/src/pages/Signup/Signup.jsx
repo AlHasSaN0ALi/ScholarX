@@ -1,49 +1,49 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+// import { motion, AnimatePresence } from "framer-motion";
 import "./Signup.css";
 
 const Signup = () => {
-    const containerVariants = {
-        hidden: { x: "100%" },
-        visible: { 
-            x: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1],
-                staggerChildren: 0.1
-            }
-        },
-        exit: { 
-            x: "-100%",
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1]
-            }
-        }
-    };
+    // const containerVariants = {
+    //     hidden: { x: "100%" },
+    //     visible: { 
+    //         x: 0,
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1],
+    //             staggerChildren: 0.1
+    //         }
+    //     },
+    //     exit: { 
+    //         x: "-100%",
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1]
+    //         }
+    //     }
+    // };
 
-    const formVariants = {
-        hidden: { x: "-100%" },
-        visible: { 
-            x: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1]
-            }
-        },
-        exit: { 
-            x: 0,
-            transition: {
-                duration: 0.7,
-                ease: [0.4, 0, 0.2, 1]
-            }
-        }
-    };
+    // const formVariants = {
+    //     hidden: { x: "-100%" },
+    //     visible: { 
+    //         x: 0,
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1]
+    //         }
+    //     },
+    //     exit: { 
+    //         x: 0,
+    //         transition: {
+    //             duration: 0.7,
+    //             ease: [0.4, 0, 0.2, 1]
+    //         }
+    //     }
+    // };
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
+            <div className="row rounded-5 p-3 shadow box-area loginconatiner" style={{ width: "100%", maxWidth: "1000px", overflow: "hidden" }}>
                 {/* Left Box (Image) */}
                 <div className="col-md-6 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
                     <div className="featured-image">
@@ -66,28 +66,28 @@ const Signup = () => {
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="text"
-                                className="form-control form-control-lg bg-light fs-6"
+                                className="form-control form-control-lg fs-6"
                                 placeholder="Full Name"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="email"
-                                className="form-control form-control-lg bg-light fs-6"
+                                className="form-control form-control-lg fs-6"
                                 placeholder="Email Address"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="password"
-                                className="form-control form-control-lg bg-light fs-6"
+                                className="form-control form-control-lg fs-6"
                                 placeholder="Password"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="password"
-                                className="form-control form-control-lg bg-light fs-6"
+                                className="form-control form-control-lg fs-6"
                                 placeholder="Confirm Password"
                             />
                         </div>
@@ -110,7 +110,7 @@ const Signup = () => {
                         <div className="row text-center">
                             <small>
                                 Already have an account?{" "}
-                                <Link to="/login" className="text-primary">
+                                <Link to="/login" className="login-link">
                                     Login
                                 </Link>
                             </small>
