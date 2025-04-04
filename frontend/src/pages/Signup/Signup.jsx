@@ -43,98 +43,80 @@ const Signup = () => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row rounded-5 p-3 shadow box-area loginconatiner" style={{ display: "flex", flexWrap: "nowrap", width: "1000px", height: "600px", overflow: "hidden" }}>
-                {/* Left Box (Form) */}
-                <motion.div
-                    className="col-md-6 right-box"
-                    layoutId="form-container"
-                    variants={formVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    style={{ position: "relative", zIndex: 1 }}
-                >
-                    <div className="row align-items-center">
-                        <div className="header-text mb-4 text-white">
-                            <h2 className="fw-bold">Join ScholarX</h2>
-                            <p>Start your scholarship journey today.</p>
-                        </div>
-                        <form>
-                            <div className="input-group mb-3">
-                                <input
-                                    type="text"
-                                    className="form-control form-control-lg bg-light fs-6"
-                                    placeholder="Full Name"
-                                />
-                            </div>
-                            <div className="input-group mb-3">
-                                <input
-                                    type="email"
-                                    className="form-control form-control-lg bg-light fs-6"
-                                    placeholder="Email Address"
-                                />
-                            </div>
-                            <div className="input-group mb-3">
-                                <input
-                                    type="password"
-                                    className="form-control form-control-lg bg-light fs-6"
-                                    placeholder="Password"
-                                />
-                            </div>
-                            <div className="input-group mb-3">
-                                <input
-                                    type="password"
-                                    className="form-control form-control-lg bg-light fs-6"
-                                    placeholder="Confirm Password"
-                                />
-                            </div>
-                            <div className="input-group mb-3">
-                                <button type="submit" className="btn btn-lg w-100 fs-6 loginbtn fw-normal">
-                                    Sign Up
-                                </button>
-                            </div>
-                            <div className="input-group mb-3">
-                                <button className="btn btn-lg btn-light w-100 fs-6">
-                                    <img 
-                                        src="/google.png" 
-                                        style={{ width: "20px" }} 
-                                        className="me-2" 
-                                        alt="Google Logo"
-                                    />
-                                    <small>Sign Up with Google</small>
-                                </button>
-                            </div>
-                            <div className="row text-white">
-                                <small>
-                                    Have an account?{" "}
-                                    <Link to="/login" className="text-white">
-                                        Login
-                                    </Link>
-                                </small>
-                            </div>
-                        </form>
-                    </div>
-                </motion.div>
-
-                {/* Right Box (Image) */}
-                <motion.div
-                    className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box"
-                    layoutId="image-container"
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    style={{ position: "relative", zIndex: 2, backgroundColor: "#3399cc" }}
-                >
+            <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
+                {/* Left Box (Image) */}
+                <div className="col-md-6 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
                     <div className="featured-image">
                         <img 
                             src="/ScholarX-Logo-Icon-White-Blue-BG_ScholarX.svg" 
                             className="img-fluid"
-                            style={{ width: "500px" }} 
+                            style={{ width: "80%" }} 
                             alt="Scholar-x Logo" 
                         />
                     </div>
-                </motion.div>
+                </div>
+
+                {/* Right Box (Form) */}
+                <div className="col-md-6 right-box">
+                    <div className="text-center mb-4">
+                        <h2 className="fw-bold">Create an Account</h2>
+                        <p>Join us to access your scholarship portal.</p>
+                    </div>
+                    <form className="d-flex flex-column align-items-center">
+                        <div className="input-group mb-3 w-100">
+                            <input
+                                type="text"
+                                className="form-control form-control-lg bg-light fs-6"
+                                placeholder="Full Name"
+                            />
+                        </div>
+                        <div className="input-group mb-3 w-100">
+                            <input
+                                type="email"
+                                className="form-control form-control-lg bg-light fs-6"
+                                placeholder="Email Address"
+                            />
+                        </div>
+                        <div className="input-group mb-3 w-100">
+                            <input
+                                type="password"
+                                className="form-control form-control-lg bg-light fs-6"
+                                placeholder="Password"
+                            />
+                        </div>
+                        <div className="input-group mb-3 w-100">
+                            <input
+                                type="password"
+                                className="form-control form-control-lg bg-light fs-6"
+                                placeholder="Confirm Password"
+                            />
+                        </div>
+                        <div className="input-group mb-3 w-100">
+                            <button type="submit" className="btn btn-lg w-100 fs-6 loginbtn fw-normal">
+                                Sign Up
+                            </button>
+                        </div>
+                        <div className="input-group mb-3 w-100">
+                            <button className="btn btn-lg btn-light w-100 fs-6">
+                                <img 
+                                    src="/google.png"  
+                                    style={{ width: "20px" }} 
+                                    className="me-2" 
+                                    alt="Google Logo"
+                                />
+                                <small>Sign Up with Google</small>
+                            </button>
+                        </div>
+                        <div className="row text-center">
+                            <small>
+                                Already have an account?{" "}
+                                <Link to="/login" className="text-primary">
+                                    Login
+                                </Link>
+                            </small>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
