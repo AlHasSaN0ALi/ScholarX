@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Login.css";
-import CustomCheckbox from "./CustomCheckbox/CustomCheckbox";
+
 
 const Login = () => {
     const [email, setEmail] = useState("");
