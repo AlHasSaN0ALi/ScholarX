@@ -50,7 +50,7 @@ const Login = () => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row rounded-5 p-3 shadow box-area loginconatiner" style={{ width: "100%", maxWidth: "1000px", overflow: "hidden" }}>
+            <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
                 {/* Left Box (Image) */}
                 <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
                     <div className="featured-image">
@@ -73,27 +73,29 @@ const Login = () => {
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="email"
-                                className="form-control form-control-lg fs-6"
+                                className="form-control form-control-lg bg-light fs-6"
                                 placeholder="Email Address"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="password"
-                                className="form-control form-control-lg fs-6"
+                                className="form-control form-control-lg bg-light fs-6"
                                 placeholder="Password"
                             />
                         </div>
-                        <div className="form-check mb-3" style={{ display: 'flex', alignItems: 'center' }}>
+                        <div className="form-check mb-3 d-flex align-items-center">
                             <input
                                 className="form-check-input"
                                 type="checkbox"
                                 id="rememberMe"
-                                style={{ marginRight: '4px' }}
                             />
-                            <label className="form-check-label" htmlFor="rememberMe" style={{ margin: '0' }}>
+                            <label className="form-check-label" htmlFor="rememberMe">
                                 Remember me
                             </label>
+                            <Link to="/forgot-password" className="text-primary ms-3">
+                                Forgot Password?
+                            </Link>
                         </div>
                         <div className="input-group mb-3 w-100">
                             <button type="submit" className="btn btn-lg w-100 fs-6 loginbtn fw-normal">
@@ -114,15 +116,10 @@ const Login = () => {
                         <div className="row text-center">
                             <small>
                                 Don't have an account?{" "}
-                                <Link to="/signup" className="signup-link">
+                                <Link to="/signup" className="text-primary">
                                     Sign Up
                                 </Link>
                             </small>
-                        </div>
-                        <div className="row text-center mt-3">
-                            <Link to="/forgot-password" className="text-primary">
-                                Forgot Password?
-                            </Link>
                         </div>
                     </form>
                 </div>
