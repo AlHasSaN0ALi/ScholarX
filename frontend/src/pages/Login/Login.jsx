@@ -49,6 +49,7 @@ const Login = () => {
     // };
 
     return (
+        <div className="login-page-container">
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
             <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
                 {/* Left Box (Image) */}
@@ -84,18 +85,16 @@ const Login = () => {
                                 placeholder="Password"
                             />
                         </div>
-                        <div className="form-check mb-3 d-flex align-items-center">
+                        <div className="form-check mb-3" style={{ display: 'flex', alignItems: 'center' }}>
                             <input
                                 className="form-check-input"
                                 type="checkbox"
                                 id="rememberMe"
+                                style={{ marginRight: '4px' }}
                             />
-                            <label className="form-check-label" htmlFor="rememberMe">
+                            <label className="form-check-label" htmlFor="rememberMe" style={{ margin: '0' }}>
                                 Remember me
                             </label>
-                            <Link to="/forgot-password" className="text-primary ms-3">
-                                Forgot Password?
-                            </Link>
                         </div>
                         <div className="input-group mb-3 w-100">
                             <button type="submit" className="btn btn-lg w-100 fs-6 loginbtn fw-normal">
@@ -124,6 +123,7 @@ const Login = () => {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
-body {
+.login-page-container {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.5;
-    background-color: #1a4c7a !important;
+    background-color: #1a4c7a;
     color: rgba(255, 255, 255, 0.87);
     margin: 0;
     padding: 0;
@@ -25,7 +25,7 @@ body {
     padding: 0 15px;
 }
 
-.loginconatiner, .login-container {  
+.login-container {  
     background-color: #1a4c7a !important;
     border: 1px solid #3399cc;
     width: 100%;
@@ -85,10 +85,6 @@ body {
     flex: 1;
 }
 
-.right-box .header-text {
-    color: white;
-}
-
 .right-box form {
     width: 100%;
     max-width: 400px;
@@ -97,8 +93,6 @@ body {
 .right-box .form-control {
     width: 100%;
     margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: #333;
 }
 
 .right-box .form-check {
@@ -113,21 +107,9 @@ body {
     margin: 0 auto;
 }
 
-.signup-link {
-    color: #79c2ff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.signup-link:hover {
-    color: white;
-    text-decoration: underline;
-}
-
 ::placeholder {
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .rounded-4 {
@@ -144,7 +126,7 @@ body {
         width: calc(100% - 20px);
     }
     
-    .login-container, .loginconatiner {
+    .login-container {
         flex-direction: column;
         min-height: auto;
     }
@@ -209,5 +191,38 @@ body {
     
     .btn {
         font-size: 14px;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        color: #213547;
+        background-color: #ffffff;
+    }
+    
+    .login-container {
+        background-color: #f9f9f9;
+        border: 1px solid #3399cc;
+    }
+    
+    .loginbtn {
+        background-color: #3399cc;
+    }
+    
+    .loginbtn:hover {
+        background-color: #4da6d9;
+    }
+    
+    .form-check-input:checked {
+        background-color: #3399cc;
+        border-color: #3399cc;
+    }
+    
+    .left-box {
+        background: #3399cc;
+    }
+    
+    ::placeholder {
+        color: rgba(0, 0, 0, 0.5);
     }
 }

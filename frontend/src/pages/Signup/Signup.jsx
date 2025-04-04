@@ -42,10 +42,11 @@ const Signup = () => {
     // };
 
     return (
+        <div className="signup-page-container">
         <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row rounded-5 p-3 shadow box-area loginconatiner" style={{ width: "100%", maxWidth: "1000px", overflow: "hidden" }}>
+            <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
                 {/* Left Box (Image) */}
-                <div className="col-md-6 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
+                <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
                     <div className="featured-image">
                         <img 
                             src="/ScholarX-Logo-Icon-White-Blue-BG_ScholarX.svg" 
@@ -66,28 +67,28 @@ const Signup = () => {
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="text"
-                                className="form-control form-control-lg fs-6"
+                                className="form-control form-control-lg bg-light fs-6"
                                 placeholder="Full Name"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="email"
-                                className="form-control form-control-lg fs-6"
+                                className="form-control form-control-lg bg-light fs-6"
                                 placeholder="Email Address"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="password"
-                                className="form-control form-control-lg fs-6"
+                                className="form-control form-control-lg bg-light fs-6"
                                 placeholder="Password"
                             />
                         </div>
                         <div className="input-group mb-3 w-100">
                             <input
                                 type="password"
-                                className="form-control form-control-lg fs-6"
+                                className="form-control form-control-lg bg-light fs-6"
                                 placeholder="Confirm Password"
                             />
                         </div>
@@ -110,7 +111,7 @@ const Signup = () => {
                         <div className="row text-center">
                             <small>
                                 Already have an account?{" "}
-                                <Link to="/login" className="login-link">
+                                <Link to="/login" className="text-primary">
                                     Login
                                 </Link>
                             </small>
@@ -118,6 +119,7 @@ const Signup = () => {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     );
 };
