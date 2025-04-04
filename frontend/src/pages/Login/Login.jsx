@@ -119,6 +119,11 @@ const Login = () => {
                                 </Link>
                             </small>
                         </div>
+                        <div className="row text-center mt-3">
+                            <Link to="/forgot-password" className="text-primary">
+                                Forgot Password?
+                            </Link>
+                        </div>
                     </form>
                 </div>
             </div>
