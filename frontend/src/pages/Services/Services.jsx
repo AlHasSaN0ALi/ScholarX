@@ -1,14 +1,14 @@
 import React from 'react';
 import NavBar from '../../components/NavBar/NavBar';
-import './About.css';
+import './Services.css';
 
-function About() {
+function Services() {
   return (
-    <div className="about-page">
+    <div className="services-page">
       <NavBar />
-
+      
     </div>
   );
 }
 
-export default About;
+export default Services; 

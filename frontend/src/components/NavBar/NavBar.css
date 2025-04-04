@@ -1,0 +1,148 @@
+.sx-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(40px); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.sx-navbar-logo a, .sx-navbar-logo a:visited {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+
+.sx-navbar-links {
+  display: flex;
+  gap: 2rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+.sx-navbar-links a, .sx-navbar-links a:visited {
+  color: #333;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.sx-navbar-links a:hover {
+  color: #007bff;
+}
+
+.sx-navbar-links a.sx-active {
+  color: #007bff;
+}
+
+.sx-navbar-links a.sx-active::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #007bff;
+  bottom: 0;
+  left: 0;
+}
+
+.sx-navbar-auth {
+  display: flex;
+  gap: 1rem;
+}
+
+.sx-mobile-auth {
+  display: none;
+}
+
+.sx-login-btn, .sx-signup-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sx-login-btn {
+  background: none;
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+
+.sx-signup-btn {
+  background: #007bff;
+  border: none;
+  color: white;
+}
+
+.sx-login-btn:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.sx-signup-btn:hover {
+  background-color: #0056b3;
+}
+
+.sx-mobile-menu-btn {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .sx-navbar {
+    padding: 1rem;
+  }
+
+  .sx-mobile-menu-btn {
+    display: block;
+  }
+
+  .sx-navbar-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: none;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    padding: 1rem 0;
+    gap: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+
+  .sx-navbar-links.sx-active {
+    display: flex;
+  }
+
+  .sx-navbar-links a {
+    padding: 0.5rem 2rem;
+  }
+
+  .sx-desktop-auth {
+    display: none;
+  }
+
+  .sx-mobile-auth {
+    display: flex;
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+}

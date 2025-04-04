@@ -1,0 +1,15 @@
+.container{
+    margin: 100px 0;
+    color: #ffffff;
+    padding: 100px 0;
+    background: linear-gradient(to left, #97adcc, rgb(181, 209, 255), #97adcc);
+}
+
+.title {
+    font-weight: 700;
+}
+
+.description {
+    font-size: 25px;
+    color: #ffffff;
+    }
