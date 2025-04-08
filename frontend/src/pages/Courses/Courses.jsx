@@ -1,14 +1,14 @@
 import React from 'react';
 import NavBar from '../../components/NavBar/NavBar';
-import './About.css';
+import './Courses.css';
 
-function About() {
+function Courses() {
   return (
-    <div className="about-page">
+    <div className="courses-page">
       <NavBar />
 
     </div>
   );
 }
 
-export default About;
+export default Courses; 
