@@ -10,3 +10,4 @@ router.delete('/:id', courseController.deleteCourse);
 router.get('/:id/users', courseController.getCourseUsers);
 
 module.exports = router;
+  

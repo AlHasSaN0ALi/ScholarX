@@ -1,13 +1,18 @@
 const Course = require('../models/Course');
+const JSendResponse = require('../utils/StandardResponse');
 
 // Create a new course
 exports.createCourse = async (req, res) => {
     try {
         const course = new Course(req.body);
         await course.save();
-        res.status(201).json({ message: 'Course created successfully', course });
+        res.status(201).json(
+            JSendResponse.success({ course })
+        );
     } catch (error) {
-        res.status(400).json({ message: 'Error creating course', error });
+        res.status(500).json(
+            JSendResponse.error( error.message )
+        );
     }
 };
 
@@ -15,35 +20,51 @@ exports.createCourse = async (req, res) => {
 exports.getCourses = async (req, res) => {
     try {
         const courses = await Course.find();
-        res.status(200).json(courses);
+        res.status(200).json(
+            JSendResponse.success({ courses })
+        );
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving courses', error });
+        res.status(500).json(
+            JSendResponse.error(error.message )
+        );
     }
 };
 
 // Get a course by ID
 exports.getCourseById = async (req, res) => {
     try {
-        const course = await Course.findById(req.params.id).populate('subscriptions');
+        const course = await Course.findById(req.params.id);
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.status(404).json(
+                JSendResponse.fail({ message: 'Course not found' })
+            );
         }
-        res.status(200).json(course);
+        res.status(200).json(
+            JSendResponse.success({ course })
+        );
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving course', error });
+        res.status(500).json(
+            JSendResponse.error( error.message )
+        );
     }
 };
 
 // Update a course
-exports.updateCourse = async (req, res) => {
+exports.updateCourse = async (req, res) => { 
     try {
         const course = await Course.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+        if (!course) { 
+            return res.status(404).json(
+                JSendResponse.fail({ message: 'Course not found' })
+            );
         }
-        res.status(200).json({ message: 'Course updated successfully', course });
+        res.status(200).json(
+            JSendResponse.success({ course })
+        );
     } catch (error) {
-        res.status(400).json({ message: 'Error updating course', error });
+        res.status(500).json(
+            JSendResponse.error( error.message )
+        );
     }
 };
 
@@ -52,11 +73,17 @@ exports.deleteCourse = async (req, res) => {
     try {
         const course = await Course.findByIdAndDelete(req.params.id);
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.status(404).json(
+                JSendResponse.fail({ message: 'Course not found' })
+            );
         }
-        res.status(200).json({ message: 'Course deleted successfully' });
+        res.status(200).json(
+            JSendResponse.success({ message: 'Course deleted successfully' })
+        );
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting course', error });
+        res.status(500).json(
+            JSendResponse.error(error.message )
+        );
     }
 };
 
@@ -65,11 +92,17 @@ exports.getCourseUsers = async (req, res) => {
     try {
         const course = await Course.findById(req.params.id).populate('subscriptions');
         if (!course) {
-            return res.status(404).json({ message: 'Course not found' });
+            return res.json(
+                JSendResponse.fail({ message: 'Course not found' })
+            );
         }
-        res.status(200).json(course.subscriptions);
+        res.status(200).json(
+            JSendResponse.success({ subscriptions: course.subscriptions })
+        );
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving users', error });
+        res.status(500).json(
+            JSendResponse.error(error.message )
+        );
     }
 };
 
