@@ -7,7 +7,7 @@ router.get('/', courseController.getCourses);
 router.get('/:id', courseController.getCourseById);
 router.patch('/:id', courseController.updateCourse);
 router.delete('/:id', courseController.deleteCourse);
-router.get('/:id/users', courseController.getCourseUsers);
+router.get('/users/:id', courseController.getCourseUsers);
 
 module.exports = router;
   

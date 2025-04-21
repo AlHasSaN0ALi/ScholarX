@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const courseRoutes = require('./routes/Course');
+const lessonRoutes = require('./routes/Lesson');
+
 
 env.config()
 const app = express();
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
 
 // Use course routes
 app.use('/api/courses', courseRoutes);
+app.use('/api/lessons', lessonRoutes);
 
 // Start the server
 app.listen(PORT, () => {
