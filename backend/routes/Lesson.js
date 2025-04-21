@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const lessonController = require('../controllers/Lesson');
-const {handleVideoUpload} = require('../utils/cloudinaryConfig');
+const {handleVideoUpload} = require('../middleware.js/cloudinaryConfig');
 
 router.post('/:courseId', handleVideoUpload, lessonController.createLesson);
 router.patch('/:id/video', handleVideoUpload, lessonController.updateLessonVideo);
