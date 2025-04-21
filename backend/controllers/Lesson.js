@@ -1,7 +1,7 @@
 const Lesson = require('../models/Lesson');
 const Course = require('../models/Course');
 const JSendResponse = require('../utils/StandardResponse');
-const { cloudinary } = require('../middleware.js/cloudinaryConfig');
+const { cloudinary } = require('../utils/cloudinaryConfig');
 
 exports.createLesson = async (req, res) => {
     try {
