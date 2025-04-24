@@ -507,20 +507,20 @@
   .impact-icon {
     width: 50px;
     height: 50px;
-    margin: 0 auto 30px auto; /* adds space below the icon */
+    margin: 0 auto 30px auto; 
     display: block;
   }
 
   .impact-item h3 {
     font-size: 18px;
-    margin-bottom: 10px; /* spacing between title and paragraph */
+    margin-bottom: 10px; 
   }
 
   .impacttext {
     font-size: 14px;
     line-height: 1.5;
     max-width: 100%;
-    margin-top: 8px; /* extra space above paragraph if needed */
+    margin-top: 8px; 
   }
 
   .vision-section {
@@ -539,14 +539,14 @@
     line-height: 1.6;
     text-align: center;
     margin-left: 10px;
-    margin-top: 10px; /* space above text if there’s an element above */
+    margin-top: 10px; 
   }
   .vision-image img {
     width: 100%;
     max-width: 400px;
     height: auto;
     display: block;
-    margin: 0 auto 20px auto; /* centers image and adds space below */
+    margin: 0 auto 20px auto; 
     margin-left: 49px;
   }
   
