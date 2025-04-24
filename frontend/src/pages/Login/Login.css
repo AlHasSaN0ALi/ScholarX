@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+.login-page-container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+    background-color: #1a4c7a;
+    color: rgba(255, 255, 255, 0.87);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.box-area {
+    width: 100%;
+    max-width: 930px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.login-container {  
+    background-color: #1a4c7a !important;
+    border: 1px solid #3399cc;
+    width: 100%;
+    min-height: 500px;
+    display: flex;
+    flex-direction: row;
+}
+
+.loginbtn {
+    background-color: #3399cc;
+    color: white;
+    transition: background-color 0.25s;
+}
+
+.loginbtn:hover {
+    background-color: #4da6d9;
+}
+
+.form-check-input {
+    background-color: white !important;
+    border-color: #ced4da !important;
+    margin-right: 8px !important;
+}
+
+.form-check-input:checked {
+    background-color: #3399cc !important;
+    border-color: #3399cc !important;
+}
+
+.left-box {
+    background: #3399cc;
+    min-height: 300px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.featured-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.featured-image img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+}
+
+.right-box {
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.right-box form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.right-box .form-control {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.right-box .form-check {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.right-box .loginbtn {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+::placeholder {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+    .box-area {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+    
+    .login-container {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .left-box {
+        height: 150px;
+        width: 100%;
+        min-height: auto;
+        order: -1;
+    }
+    
+    .right-box {
+        padding: 20px;
+        width: 100%;
+        min-height: auto;
+    }
+    
+    .featured-image img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .header-text h2 {
+        font-size: 1.5rem;
+    }
+    
+    .header-text p {
+        font-size: 0.9rem;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .box-area {
+        margin: 5px;
+        width: calc(100% - 10px);
+    }
+    
+    .left-box {
+        height: 120px;
+    }
+    
+    .right-box {
+        padding: 15px;
+    }
+    
+    .featured-image img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .header-text h2 {
+        font-size: 1.25rem;
+    }
+    
+    .header-text p {
+        font-size: 0.8rem;
+    }
+    
+    .form-control {
+        font-size: 14px;
+    }
+    
+    .btn {
+        font-size: 14px;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        color: #213547;
+        background-color: #ffffff;
+    }
+    
+    .login-container {
+        background-color: #f9f9f9;
+        border: 1px solid #3399cc;
+    }
+    
+    .loginbtn {
+        background-color: #3399cc;
+    }
+    
+    .loginbtn:hover {
+        background-color: #4da6d9;
+    }
+    
+    .form-check-input:checked {
+        background-color: #3399cc;
+        border-color: #3399cc;
+    }
+    
+    .left-box {
+        background: #3399cc;
+    }
+    
+    ::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
