@@ -252,237 +252,12 @@
 }
 
 
-  @media (max-width: 768px) {
-    .about-page {
-      padding: 60px 15px 30px;
-      overflow-x: hidden;
-    }
-  
-    .about-white-arc {
-      top: 250px;
-      width: 150%;
-    }
-  
-    .storybehind {
-      font-size: 32px;
-      padding-bottom: 40px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-  
-    .aboutuslabel {
-      font-size: 18px;
-    }
-  
-    .gallery {
-      flex-direction: column;
-      gap: 30px;
-      align-items: center;
-      padding: 0 15px;
-    }
-  
-    .gallery img {
-      width: 100%;
-      max-width: 350px;
-      height: auto;
-    }
-  
-    .gallery img:nth-child(2) {
-      transform: none;
-    }
-  
-    .content-sections {
-      padding: 0 15px;
-    }
-  
-    .content-row {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin: 0;
-      width: 100%;
-    }
-  
-    .content-row.reversed {
-      flex-direction: column-reverse;
-    }
-  
-    .text-block {
-      text-align: center;
-      padding: 0 15px;
-      width: 100%;
-    }
-  
-    .image-block {
-      width: 100%;
-      padding: 0 15px;
-      
-    }
-  
-    .image-block img {
-      width: 100%;
-      max-width: 350px;
-      height: auto;
-      margin: 20px auto;
-      display: block;
-    }
-  
-    .alignimg, .alignimgleft {
-      margin: 0;
-    }
-  
-    .subhead {
-      font-size: 24px;
-      padding: 0 15px;
-      margin-bottom: 15px;
-    }
-  
-    .mission {
-      font-size: 18px;
-      padding: 0 15px;
-    }
-  
-    .impact-section {
-      padding: 40px 15px;
-    }
-  
-    .impact-grid {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-  
-    .iconscenter {
-      grid-column: span 1;
-      flex-wrap: wrap;
-      padding: 0 15px;
-    }
-  
-    .impact-item {
-      padding: 0 15px;
-    }
-  
-    .impacttext {
-      max-width: 300px;
-      margin: 10px auto;
-    }
-  
-    .vision-section {
-      padding: 40px 15px;
-    }
-  
-    .vision-wrapper {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-  
-    .vision-text {
-      margin: 20px auto;
-      padding: 0 15px;
-      text-align: center;
-    }
-  
-    .vision-image {
-      margin: 0;
-      padding: 0 15px;
-      width: 100%;
-    }
-  
-    .vision-image img {
-      max-width: 300px;
-      margin: 0 auto;
-      display: block;
-    }
-  }
-
-
-@media (min-width: 769px) and (max-width: 1201px) {
-  .gallery {
-    gap: 40px;
-  }
-
-  .vision-text {
-    margin-left: 100px;
-  }
-  .centertestimg
-{
-  margin-left: -4px;
-}
-  .impact-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .iconscenter {
-    grid-column: span 2;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-  .impact-section {
-    padding: 40px 15px;
-  }
-
-  .impact-title {
-    font-size: 26px;
-    margin-bottom: 40px;
-    padding: 0 15px;
-  }
-
-  .impact-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    max-width: 400px;
-  }
-
-  .impact-item {
-    padding: 15px;
-  }
-
-  .impacttext {
-    max-width: 300px;
-    font-size: 15px;
-  }
-
-  .impact-icon {
-    width: 55px;
-    height: 55px;
-  }
-
-  .impact-item h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-  }
-
-  .vision-section {
-    padding: 40px 15px;
-  }
-
-  .vision-wrapper {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 20px;
-  }
-
-  .vision-title {
-    font-size: 26px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .vision-text {
-    text-align: center;
-    padding: 0 15px;
-    font-size: 15px;
-    max-width: 400px;
-  }
-}
-
+ /* Small devices: Phones (max 480px) */
 @media (max-width: 480px) {
   .impact-section {
     padding: 30px 15px;
   }
-  
+
   .impact-title {
     font-size: 22px;
     margin-bottom: 20px;
@@ -541,14 +316,360 @@
     margin-left: 10px;
     margin-top: 10px; 
   }
+
   .vision-image img {
     width: 100%;
     max-width: 400px;
     height: auto;
     display: block;
     margin: 0 auto 20px auto; 
-    margin-left: 49px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .about-page {
+    padding: 60px 15px 30px;
+    overflow-x: hidden;
+  }
+
+  .about-white-arc {
+    top: 250px;
+    width: 150%;
+  }
+
+  .storybehind {
+    font-size: 22px;
+    padding-bottom: 40px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .aboutuslabel {
+    font-size: 13px;
+  }
+
+  .gallery {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    padding: 0 15px;
+  }
+
+  .gallery img {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+  }
+
+  .gallery img:nth-child(2) {
+    transform: none;
+  }
+
+  .content-sections,
+  .text-block,
+  .image-block {
+    padding: 0 15px;
+    width: 100%;
+    text-align: center;
+    gap:2px;
+  }
+
+  .content-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+    gap: 2px;
+    
+  }
+
+  .content-row.reversed {
+    flex-direction: column-reverse;
+  }
+
+  .image-block img {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    margin: 20px auto;
+    display: block;
+  }
+
+  .alignimg, .alignimgleft {
+    margin: 0;
+  }
+
+  .subhead {
+    font-size: 11px;
+    padding: 0 15px;
+    margin-bottom: 15px;
+  }
+
+  .info
+  {
+    font-size: 12px;
+  }
+  .mission {
+    font-size: 12px;
+    padding: 0 15px;
+  }
+
+  .impact-section {
+    padding: 40px 15px;
+  }
+
+  .impact-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 400px;
+  }
+
+  .iconscenter {
+    grid-column: span 1;
+    flex-wrap: wrap;
+    padding: 0 15px;
+  }
+
+  .impact-item {
+    padding: 15px;
+  }
+
+  .impacttext {
+    max-width: 300px;
+    font-size: 11px;
+  }
+
+  .impact-icon {
+    width: 55px;
+    height: 55px;
+  }
+
+  .impact-item h3 {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .vision-section {
+    padding: 40px 15px;
+  }
+
+  .vision-wrapper {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .vision-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+
+  .vision-wrapper {
+    display: flex;
+    justify-content: flex-start; /* Align items to the start of the container */
+    align-items: center; /* Vertically center the text and image */
+    gap: 10px; /* Space between text and image */
+    flex-wrap: wrap;
   }
   
+  .vision-text {
+    font-size: 11px;
+    max-width: 160px; /* Limit the width of the text block */
+    flex: 1; /* Allow text to take up remaining space */
+    margin-left: 120px;
+  }
+  
+  .vision-image {
+    flex: 0 1 12px; /* Make sure the image is allowed to take its natural size, but can shrink if necessary */
+    max-width: 50%;
+    margin-right: 120px;
+    height: 12px;
+    
+  
+  }
+  
+  .vision-image img {
+    width: 130px; /* Ensure the image takes full width of its container */
+    height: auto;
+    margin-top: 70px; /* Remove any top margin */
+    align-self: flex-end; 
+  }
+
+  .centertestimg {
+    margin-left: -10px;
+    font-size: 10px;
+    font-weight: 600;
 }
+}
+
+/* Larger tablets and small desktops: 769px to 1201px */
+@media (min-width: 769px) and (max-width: 1201px) {
+  .about-page {
+    padding: 60px 30px 40px;
+  }
+
+  .storybehind {
+    font-size: 38px;
+    padding-bottom: 40px;
+  }
+
+  .aboutuslabel {
+    font-size: 20px;
+  }
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px 20px;
+  }
+
+  .gallery img {
+    width: 32vw; /* each image is about 1/3 of viewport width */
+    max-width: 340px;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .gallery img:nth-child(2) {
+    transform: translateY(-0.5px);
+  }
+
+  .content-sections {
+    gap: 60px;
+  }
+
+  .content-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .text-block,
+  .image-block {
+    flex: 1 1 45%;
+    max-width: 500px;
+    
+  }
+
+  .alignimg,
+  .alignimgleft {
+    margin: 0;
+  }
+
+  .image-block img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .text-block {
+    text-align: left;
+    font-size: 10px;
+    line-height: 1.6;
+    padding: 10px;
+  }
+
+  .subhead {
+    font-size: 21px;
+    margin-bottom: 16px;
+
+  }
+
+  .mission {
+    font-size: 18px;
+  }
+
+  .impact-section {
+    padding: 60px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .impact-title {
+    font-size: 28px;
+    margin-bottom: 40px;
+  }
+
+  .impact-grid {
+    display: grid;
+    gap: 30px;
+    justify-items: center;
+    padding: 0 20px;
+  }
+
+  .impact-item {
+    max-width: 320px;
+    padding: 15px;
+  }
+
+  .impacttext {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .iconscenter {
+    grid-column: span 3;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .impact-item h3 {
+    font-size: 18px;
+  }
+
+  .impacttext {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .vision-section {
+    padding: 60px 20px;
+  }
+
+  .vision-wrapper {
+    display: flex;
+    justify-content: flex-start; /* Align items to the start of the container */
+    align-items: center; /* Vertically center the text and image */
+    gap: 30px; /* Space between text and image */
+    flex-wrap: wrap;
+  }
+  
+  .vision-text {
+    font-size: 15px;
+    max-width: 500px; /* Limit the width of the text block */
+    flex: 1; /* Allow text to take up remaining space */
+  }
+  
+  .vision-image {
+    flex: 0 1 280px; /* Make sure the image is allowed to take its natural size, but can shrink if necessary */
+    max-width: 100%;
+    margin-left: 15px;
+  }
+  
+  .vision-image img {
+    width: 100%; /* Ensure the image takes full width of its container */
+    height: auto;
+    margin-top: 0; /* Remove any top margin */
+  }
+
+  .centertestimg {
+    margin-left: -10px;
+    font-size: 10px;
+    font-weight: 600;
+}
+  
+}
+
+
+
+
+
 
