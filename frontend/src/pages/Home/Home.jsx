@@ -11,20 +11,19 @@ import './Home.css';
 
 function Home() {
   return (
-    <div className="home">
+    <>
       <NavBar />
-
-      <main className="main-content">
+      
         <Hero />
         <Features />
         <Services />
         <Services_2 />
         <Impact />
         <Contact />
-      </main>
+      
 
       <Footer />
-    </div>
+    </>
   );
 }
 

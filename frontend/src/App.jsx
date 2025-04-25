@@ -7,13 +7,15 @@ import Courses from './pages/Courses/Courses'
 import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import './App.css'
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
+    <>
     <Router>
-      <div className="app">
+          <div className=''>
         <Routes>
+
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
@@ -21,8 +23,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
-      </div>
+          </div>
     </Router>
+    </>
   )
 }
 
