@@ -130,7 +130,7 @@
 
 }
 
-/* Impact Section */
+
 .impact-section {
   padding: 80px 20px;
   text-align: center;
@@ -205,7 +205,7 @@
   height: 65px;
 }
 
-/* Vision Section */
+
 .vision-section {
   padding: 80px 20px;
   max-width: 1200px;
@@ -252,7 +252,6 @@
 }
 
 
- /* Small devices: Phones (max 480px) */
 @media (max-width: 480px) {
   .impact-section {
     padding: 30px 15px;
@@ -372,7 +371,6 @@
     padding: 0 15px;
     width: 100%;
     text-align: center;
-    gap:2px;
   }
 
   .content-row {
@@ -381,7 +379,6 @@
     text-align: center;
     margin: 0;
     width: 100%;
-    gap: 2px;
     
   }
 
@@ -469,21 +466,21 @@
 
   .vision-wrapper {
     display: flex;
-    justify-content: flex-start; /* Align items to the start of the container */
-    align-items: center; /* Vertically center the text and image */
-    gap: 10px; /* Space between text and image */
+    justify-content: flex-start; 
+    align-items: center; 
+    gap: 10px; 
     flex-wrap: wrap;
   }
   
   .vision-text {
     font-size: 11px;
-    max-width: 160px; /* Limit the width of the text block */
-    flex: 1; /* Allow text to take up remaining space */
+    max-width: 160px; 
+    flex: 1; 
     margin-left: 120px;
   }
   
   .vision-image {
-    flex: 0 1 12px; /* Make sure the image is allowed to take its natural size, but can shrink if necessary */
+    flex: 0 1 12px; 
     max-width: 50%;
     margin-right: 120px;
     height: 12px;
@@ -492,9 +489,9 @@
   }
   
   .vision-image img {
-    width: 130px; /* Ensure the image takes full width of its container */
+    width: 130px; 
     height: auto;
-    margin-top: 70px; /* Remove any top margin */
+    margin-top: 70px; 
     align-self: flex-end; 
   }
 
@@ -505,7 +502,7 @@
 }
 }
 
-/* Larger tablets and small desktops: 769px to 1201px */
+
 @media (min-width: 769px) and (max-width: 1201px) {
   .about-page {
     padding: 60px 30px 40px;
@@ -528,7 +525,7 @@
   }
 
   .gallery img {
-    width: 32vw; /* each image is about 1/3 of viewport width */
+    width: 32vw; 
     max-width: 340px;
     height: auto;
     border-radius: 8px;
@@ -636,28 +633,28 @@
 
   .vision-wrapper {
     display: flex;
-    justify-content: flex-start; /* Align items to the start of the container */
-    align-items: center; /* Vertically center the text and image */
-    gap: 30px; /* Space between text and image */
+    justify-content: flex-start; 
+    align-items: center; 
+    gap: 30px; 
     flex-wrap: wrap;
   }
   
   .vision-text {
     font-size: 15px;
-    max-width: 500px; /* Limit the width of the text block */
-    flex: 1; /* Allow text to take up remaining space */
+    max-width: 500px; 
+    flex: 1; 
   }
   
   .vision-image {
-    flex: 0 1 280px; /* Make sure the image is allowed to take its natural size, but can shrink if necessary */
+    flex: 0 1 280px; 
     max-width: 100%;
     margin-left: 15px;
   }
   
   .vision-image img {
-    width: 100%; /* Ensure the image takes full width of its container */
+    width: 100%; 
     height: auto;
-    margin-top: 0; /* Remove any top margin */
+    margin-top: 0; 
   }
 
   .centertestimg {
