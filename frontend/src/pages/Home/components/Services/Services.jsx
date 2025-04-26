@@ -1,86 +1,53 @@
-import { IoMdCheckmark } from "react-icons/io";
-import styles from './Services.module.css'
+import "./Services.css"
 
-export default function Service() {
+export default function Service({
+    title,
+     titleBlue,
+      paragraf,
+      head1,
+      head2,
+      head3,
+      text1,
+      text2,
+      txt3,
+      icon1,
+      icon2,
+      icon3,
+      clasOrage,
+      clas,
+      waterMark}) {
     return (
         <>
-            <div className={`${styles.container} py-5 `}>
-                <div className="my-5 ">
-                    <h1 className="text-center">why choose scholarx?</h1>
-                </div>
-
-                <div className="row">
-
-
-                    <div className="col-md-6 ">
-
-
-                        <ul className="list-unstyled ms-5">
-                            <li className="mb-4">
-                                <div className="d-flex" >
-                                    <div className="me-3">
-                                        <IoMdCheckmark className={`${styles.icon}`} />
-                                    </div>
-                                    <div className="text-start" >
-                                        <h5 >Comprehensive Resources</h5>
-                                        <p>Access a wealth of information, including university rankings, program details, campus life insights, and scholarship opportunities, all in one place.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="mb-4">
-                                <div className="d-flex" >
-                                    <div className="me-3">
-                                        <IoMdCheckmark className={`${styles.icon}`} />
-                                    </div>
-                                    <div className="text-start">
-                                        <h5 >Personalized Learning Path
-                                        </h5>
-                                        <p>Tailored academic support based on your unique needs and goals.
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="mb-4">
-                                <div className="d-flex" >
-                                    <div className="me-3">
-                                        <IoMdCheckmark className={`${styles.icon}`} />
-                                    </div>
-                                    <div className="text-start" >
-                                        <h5 >Flexible Schedule</h5>
-                                        <p>iysical system</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li className="mb-4">
-                                <div className="d-flex" >
-                                    <div className="me-3">
-                                        <IoMdCheckmark className={`${styles.icon}`} />
-                                    </div>
-                                    <div className="text-start">
-                                        <h5 >Expert Network</h5>
-                                        <p>Connect with verified professionals from top institutions.
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-
-                        </ul>
-                    </div>
-
-                    <div className="col-md-6">
-                        <div>
-                            <img className={`${styles.imgResponsive} ${styles.imgShadow}`} src="service.png" alt="" />
+        <section className={`${clas} `} >
+            <img src={waterMark} alt="waterMark" className="water-mark"/>  
+            <div className="container">
+                 <h2>{title} <span>{titleBlue}</span></h2>   
+                   <p>{paragraf}</p> 
+                    <div className="boxes">
+                        <div className="single-box">
+                        <div className="icon">{icon1}</div>
+                            <div className="group">
+                            <h3  className={`${clasOrage}`}>{head1}</h3>
+                            <p>{text1}</p>
+                            </div>
                         </div>
-
+                        <div className="single-box">
+                            <div className="icon">{icon2}</div>
+                            <div className="group">
+                            <h3  className={`${clasOrage}`}> {head2}</h3>
+                            <p>{text1}</p>
+                            </div>
+                        </div>
+                        <div className="single-box">
+                        <div className="icon">{icon3}</div>
+                           <div className="group">
+                           <h3 className={`${clasOrage}`}>{head3}</h3>
+                           <p>{text1}</p>
+                           </div>
+                        </div>
                     </div>
-
-
-
                 </div>
-
-
-
-            </div>
+            </section>
         </>
     );
 }
