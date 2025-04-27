@@ -6,6 +6,7 @@
 .content {
   display: flex;
   justify-content: space-around;
+  /* align-items: center; */
 }
 
 .text h1 {
@@ -30,6 +31,7 @@
 .buttons {
   display: flex;
   gap: 16px;
+
 }
 
 .btnPrimary {
@@ -88,7 +90,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-5deg);
-  animation: floatBorder 2s ease-in-out infinite;
+  animation: floatBorder 4s ease-in-out infinite;
+  animation-direction: alternate;
+
 }
 
 .imageContainer::after {
@@ -101,14 +105,20 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(5deg);
-  animation: floatBorder 2s ease-in-out infinite;
+  animation: floatBorder 4s ease-in-out infinite;
+  animation-direction: alternate;
+
 }
 
 @keyframes floatBorder {
-  0%, 100% {
-    transform: translate(-50%, -50%) rotate(5deg);
+  0%{
+    transform: translate(-50%, -50%) rotate(15deg);
   }
-  50% {
+  50%{
+    transform: translate(-50%, -50%) rotate(-15deg);
+
+  }
+  100% {
     transform: translate(-50%, -50%) rotate(-5deg);
   }
 }
@@ -181,7 +191,7 @@
 
   .buttons {
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
   }
 
   .imageContainer {

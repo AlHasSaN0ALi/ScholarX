@@ -1,3 +1,7 @@
+
+
+
+
 .bacground{
     background-image: linear-gradient(#D6EBF5 80%, #FFFFFF00 100%);
     position: relative;
@@ -45,8 +49,8 @@
     height: 100%;
     width: 100%;
 padding-bottom: 96px;
-padding-left: 52px;
-padding-right: 52px;
+/* padding-left: 52px;
+padding-right: 52px; */
 }
 
 .container h2{
@@ -76,6 +80,7 @@ padding-right: 52px;
     flex-wrap: wrap;
     width: 100%;
     z-index: 50;
+    justify-content: space-around;
     gap: 25px;
 }
 .bacground2 .container .boxes .single-box{

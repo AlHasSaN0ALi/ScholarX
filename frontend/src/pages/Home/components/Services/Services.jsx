@@ -19,10 +19,14 @@ export default function Service({
     return (
         <>
         <section className={`${clas} `} >
-            <img src={waterMark} alt="waterMark" className="water-mark"/>  
+            
+            
+        <img src={waterMark} alt="waterMark" className="water-mark"/>  
+            
             <div className="container">
                  <h2>{title} <span>{titleBlue}</span></h2>   
                    <p>{paragraf}</p> 
+                    
                     <div className="boxes">
                         <div className="single-box">
                         <div className="icon">{icon1}</div>

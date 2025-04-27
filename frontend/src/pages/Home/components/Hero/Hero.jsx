@@ -4,7 +4,11 @@ import styles from './Hero.module.css';
 const Hero = () => {
   return (
     <section className={styles.hero}>
+
+
       <div className={styles.content}>
+
+        
         <div className={styles.text}>
           <h1>
             Empowering Youth<br />
