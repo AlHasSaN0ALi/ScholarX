@@ -1,0 +1,73 @@
+/* Courses Page Custom Styles */
+
+
+
+.cart-badge{
+    /* border: solid;
+    border-color: #ABEFC6; */
+    /* border-radius: 1px; */
+    padding: 10px;
+    background-color:#FF6633 ;
+    color: white;
+}
+.time-badge{
+    border: solid;
+    border-color: #ABEFC6;
+    border-radius: 10px;
+    padding: 5px;
+    background-color:#ECFDF3 ;
+    color: #085D3A;
+}
+.B2DDFF{
+    border: solid;
+    border-color: #B2DDFF;
+    border-radius: 10px;
+    padding: 5px;
+    background-color:#EFF8Ff ;
+    color: #3399CC;
+}
+.lecture-badge{
+    border: solid;
+    border-color: #B2DDFF;
+    border-radius: 10px;
+    padding: 5px;
+    background-color:#EFF8FF ;
+    color: #1849A9;
+}
+.card .bi-star,
+.card .bi-star-fill {
+  font-size: 1rem;
+}
+
+.card .badge {
+  font-size: 0.85rem;
+}
+
+.card .btn-light {
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+.card .btn-primary {
+  font-weight: 600;
+}
+
+.card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-footer a {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.card-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  .card-img-top {
+    height: 120px !important;
+  }
+}
