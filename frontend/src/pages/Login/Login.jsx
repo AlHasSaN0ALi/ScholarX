@@ -101,6 +101,13 @@ const Login = () => {
                                 Login
                             </button>
                         </div>
+                        <div className="text-center mb-3 w-100">
+                            <small>
+                                <Link to="/forget-password" className="text-primary">
+                                    Forgot your password?
+                                </Link>
+                            </small>
+                        </div>
                         <div className="input-group mb-3 w-100">
                             <button className="btn btn-lg btn-light w-100 fs-6">
                                 <img 
