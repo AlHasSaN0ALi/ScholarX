@@ -10,8 +10,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Configure Storage
-const storage = new CloudinaryStorage({
+// Configure Storage for Videos
+const videoStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'course_videos',
@@ -21,16 +21,33 @@ const storage = new CloudinaryStorage({
     }
 });
 
+// Configure Storage for Images
+const imageStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'course_images',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [{ width: 800, height: 600, crop: "limit" }]
+    }
+});
+
 // Configure Multer with Cloudinary Storage
 const uploadVideo = multer({ 
-    storage: storage,
+    storage: videoStorage,
     limits: {
         fileSize: 100000000 // 100MB in bytes
     }
 }).single('videoUrl'); 
 
+const uploadImage = multer({ 
+    storage: imageStorage,
+    limits: {
+        fileSize: 5000000 // 5MB in bytes
+    }
+}).single('image'); 
 
 module.exports = {
     cloudinary,
-    handleVideoUpload: uploadVideo
+    handleVideoUpload: uploadVideo,
+    handleImageUpload: uploadImage
 };

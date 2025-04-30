@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const courseRoutes = require('./routes/Course');
 const lessonRoutes = require('./routes/Lesson');
 const emailRoutes = require('./routes/nodemailer');
+const categoryRoutes = require('./routes/Category');
 
 env.config()
 const app = express();
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/email', emailRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // Start the server
 app.listen(PORT, () => {
