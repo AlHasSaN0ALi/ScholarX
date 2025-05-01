@@ -1,127 +1,124 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 
 const Signup = () => {
-    // const containerVariants = {
-    //     hidden: { x: "100%" },
-    //     visible: { 
-    //         x: 0,
-    //         transition: {
-    //             duration: 0.7,
-    //             ease: [0.4, 0, 0.2, 1],
-    //             staggerChildren: 0.1
-    //         }
-    //     },
-    //     exit: { 
-    //         x: "-100%",
-    //         transition: {
-    //             duration: 0.7,
-    //             ease: [0.4, 0, 0.2, 1]
-    //         }
-    //     }
-    // };
+ const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    // const formVariants = {
-    //     hidden: { x: "-100%" },
-    //     visible: { 
-    //         x: 0,
-    //         transition: {
-    //             duration: 0.7,
-    //             ease: [0.4, 0, 0.2, 1]
-    //         }
-    //     },
-    //     exit: { 
-    //         x: 0,
-    //         transition: {
-    //             duration: 0.7,
-    //             ease: [0.4, 0, 0.2, 1]
-    //         }
-    //     }
-    // };
+  const [errors, setErrors] = useState({});
 
-    return (
-        <div className="signup-page-container">
-        <div className="container d-flex justify-content-center align-items-center min-vh-100">
-            <div className="row rounded-5 p-3 shadow box-area login-container" style={{ width: "100%", maxWidth: "1000px" }}>
-                {/* Left Box (Image) */}
-                <div className="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{ backgroundColor: "#3399cc" }}>
-                    <div className="featured-image">
-                        <img 
-                            src="/ScholarX-Logo-Icon-White-Blue-BG_ScholarX.svg" 
-                            className="img-fluid"
-                            style={{ width: "80%" }} 
-                            alt="Scholar-x Logo" 
-                        />
-                    </div>
-                </div>
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
 
-                {/* Right Box (Form) */}
-                <div className="col-md-6 right-box">
-                    <div className="text-center mb-4">
-                        <h2 className="fw-bold">Create an Account</h2>
-                        <p>Join us to access your scholarship portal.</p>
-                    </div>
-                    <form className="d-flex flex-column align-items-center">
-                        <div className="input-group mb-3 w-100">
-                            <input
-                                type="text"
-                                className="form-control form-control-lg bg-light fs-6"
-                                placeholder="Full Name"
-                            />
-                        </div>
-                        <div className="input-group mb-3 w-100">
-                            <input
-                                type="email"
-                                className="form-control form-control-lg bg-light fs-6"
-                                placeholder="Email Address"
-                            />
-                        </div>
-                        <div className="input-group mb-3 w-100">
-                            <input
-                                type="password"
-                                className="form-control form-control-lg bg-light fs-6"
-                                placeholder="Password"
-                            />
-                        </div>
-                        <div className="input-group mb-3 w-100">
-                            <input
-                                type="password"
-                                className="form-control form-control-lg bg-light fs-6"
-                                placeholder="Confirm Password"
-                            />
-                        </div>
-                        <div className="input-group mb-3 w-100">
-                            <button type="submit" className="btn btn-lg w-100 fs-6 loginbtn fw-normal">
-                                Sign Up
-                            </button>
-                        </div>
-                        <div className="input-group mb-3 w-100">
-                            <button className="btn btn-lg btn-light w-100 fs-6">
-                                <img 
-                                    src="/google.png"  
-                                    style={{ width: "20px" }} 
-                                    className="me-2" 
-                                    alt="Google Logo"
-                                />
-                                <small>Sign Up with Google</small>
-                            </button>
-                        </div>
-                        <div className="row text-center">
-                            <small>
-                                Already have an account?{" "}
-                                <Link to="/login" className="text-primary">
-                                    Login
-                                </Link>
-                            </small>
-                        </div>
-                    </form>
-                </div>
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.fullName.trim()) {
+        newErrors.fullName = "Full name is required.";
+      } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)+$/.test(formData.fullName.trim())) {
+        newErrors.fullName = "Enter your full name (first and last).";
+      }
+    if (!formData.email.includes("@")) newErrors.email = "Invalid email address.";
+    if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters.";
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match.";
+    return newErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length === 0) {
+      console.log("Form submitted:", formData);
+      navigate("/");
+    }
+  };
+
+  return (
+    <div className="signup-container">
+    <div className="signup-header">
+      <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
+    </div>
+      <div className="signup-content">
+        <div className="image">
+          <div className="imageContainer">
+            <div className="socialProof"></div>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2 className="form-title">Create Your Account</h2>
+          <form className="signup-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="fullName">Full Name</label>
+              <input 
+                type="text" 
+                id="fullName" 
+                value={formData.fullName}
+                onChange={handleChange}
+              />
+              {errors.fullName && <small className="error">{errors.fullName}</small>}
             </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
+              <input 
+                type="email" 
+                id="email" 
+                value={formData.email}
+                onChange={handleChange}
+              />
+              {errors.email && <small className="error">{errors.email}</small>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input 
+                type="password" 
+                id="password" 
+                value={formData.password}
+                onChange={handleChange}
+              />
+              {errors.password && <small className="error">{errors.password}</small>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input 
+                type="password" 
+                id="confirmPassword" 
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              {errors.confirmPassword && <small className="error">{errors.confirmPassword}</small>}
+            </div>
+
+            <button type="submit" className="signup-button">Sign UP</button>
+
+            <div className="login-link">
+              Have an account? <Link to="/login">Login</Link>
+            </div>
+
+            <div className="divider">
+              <span>Or Sign Up with</span>
+            </div>
+
+            <button type="button" className="google-signup">
+              <img src="/google.png" alt="Google" className="google-icon" />
+              Google
+            </button>
+          </form>
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Signup;
+

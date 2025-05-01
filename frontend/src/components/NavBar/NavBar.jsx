@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './NavBar.css';
 
 function NavBar() {
@@ -70,8 +71,12 @@ function NavBar() {
       </div>
 
       <div className="col-3 sx-navbar-auth sx-desktop-auth">
+      <Link to="/signup">
         <button className="sx-signup-btn">Sign Up</button>
+        </Link>
+        <Link to="/login">
         <button className=" sx-login-btn">LogIn</button>
+        </Link>
       </div>
     </nav>
   );
