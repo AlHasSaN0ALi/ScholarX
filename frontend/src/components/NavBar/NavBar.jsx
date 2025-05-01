@@ -44,22 +44,24 @@ function NavBar() {
   };
 
   return (
-    <nav className="sx-navbar">
+    <nav className="sx-navbar ">
       
-      <div className="sx-navbar-logo">
-        <a href="/">ScholarX</a>
+      <div className="sx-navbar-logo  col-2  ">
+        <div className=' w-75'>
+        <img className=' img-fluid' src="home-page/logo.png" alt="" />
+        </div>
       </div>
 
       <button className="sx-mobile-menu-btn" onClick={toggleMobileMenu}>
         {mobileMenuOpen ? '✕' : '☰'}
       </button>
 
-      <div className={`sx-navbar-links ${mobileMenuOpen ? 'sx-active' : ''}`}>
+      <div className={`sx-navbar-links col-6 ${mobileMenuOpen ? 'sx-active' : ''}`}>
         <a href="/" className={currentPath === '/' ? 'sx-active' : ''}>Home</a>
         <a href="/about" className={currentPath === '/about' ? 'sx-active' : ''}>About Us</a>
         <a href="/services" className={currentPath === '/services' ? 'sx-active' : ''}>Our Services</a>
         <a href="/courses" className={currentPath === '/courses' ? 'sx-active' : ''}>Courses</a>
-        <a href="/#contact" onClick={scrollToContact}>Contact Us</a>
+        <a href="/contact" onClick={scrollToContact}>Contact Us</a>
       
         <div className="sx-navbar-auth sx-mobile-auth">
           <button className="sx-login-btn">Log In</button>
@@ -67,9 +69,9 @@ function NavBar() {
         </div>
       </div>
 
-      <div className="sx-navbar-auth sx-desktop-auth">
-        <button className="sx-login-btn">Log In</button>
-        <button className="sx-signup-btn">Get Started</button>
+      <div className="col-3 sx-navbar-auth sx-desktop-auth">
+        <button className="sx-signup-btn">Sign Up</button>
+        <button className=" sx-login-btn">LogIn</button>
       </div>
     </nav>
   );

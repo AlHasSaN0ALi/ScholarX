@@ -1,39 +1,44 @@
-
-import styles from './Impact.module.css';
-
-
-export default function Impact() {
+import "./Impact.css"
+import { BsCalendar4Event } from "react-icons/bs";
+import { GrGroup } from "react-icons/gr";
+import { LuCircleDashed } from "react-icons/lu";
+export default function Impact({waterMark}) {
     return (
         <>
+        <section className='bacground' >
+            <img src={waterMark} alt="waterMark" className="water-mark"/>  
+            <div className="container">
+                 <h2>Our <span>Impact</span></h2>   
+                   <p>We're dedicated to making education accessible and providing the resources students need to succeed globally.</p> 
+                   <div className="boxes">
+                    
+                    <div className="single-box">
+                            <div className="groups">
+                                <span className="icons"><GrGroup /></span>
+                                <span className="orang">8000</span>
+                            </div>
+                            <h3 className="head">Students attended
+                            our programs</h3>
+                    </div>
 
-            <div className={styles.container}>
+                    <div className="single-box">
+                            <div className="groups">
+                                <span className="icons"><LuCircleDashed /></span>
+                                <span className="orang">96</span>
+                            </div>
+                            <h3 className="head">Partner</h3>
+                    </div>
 
-                <div className="mb-5">
-                    <h1 className={`${styles.title} `}>Our Impact                    </h1>
+                    <div className="single-box">
+                            <div className="groups">
+                                <span className="icons"><BsCalendar4Event /></span>
+                                <span className="orang">38</span>
+                            </div>
+                            <h3 className="head">Events and Programs</h3>
+                    </div>
+                   </div>
                 </div>
-
-                <div className="row">
-                    <div className="col-md-3 col-sm-6">
-                    <h1 className={`${styles.title} `}>50,000+</h1>
-                        <p className={` ${styles.description} `}>Students Supported
-                        </p>
-                    </div>
-                    <div className="col-md-3 col-sm-6">
-                    <h1 className={`${styles.title} `}>1,000+</h1>
-                        <p className={` ${styles.description} `}>Expert Mentors</p>
-                    </div>
-                    <div className="col-md-3 col-sm-6">
-                    <h1 className={`${styles.title} `}>95%</h1>
-                        <p className={` ${styles.description} `}>Success Rate</p>
-                    </div>
-                    <div className="col-md-3 col-sm-6">
-                    <h1 className={`${styles.title} `}>200+</h1>
-                        <p className={` ${styles.description} `}>Partner Institutions</p>
-                    </div>
-                </div>
-            </div>
-
-
+            </section>
         </>
     );
 }
