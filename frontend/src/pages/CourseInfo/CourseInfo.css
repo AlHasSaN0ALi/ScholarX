@@ -182,9 +182,9 @@
 .course-stats {
   display: flex;
   justify-content: center;
-  gap: 150px;
+  gap: 80px;
   margin-top: 230px;
-  padding: 0 100px;
+  padding: 0 80px;
   flex-wrap: wrap;
   width: 100%;
   box-sizing: border-box;
@@ -196,12 +196,12 @@
   align-items: center;
   gap: 10px;
   background-color: white;
-  padding: 23px 40px;
+  padding: 20px 35px;
   border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  min-width: 310px;
-  max-width: 210px;
-  max-height: 150px;
+  min-width: 250px;
+  max-width: 200px;
+  max-height: 140px;
   margin-top: -175px;
   transition: transform 0.3s ease;
 }
@@ -211,18 +211,12 @@
 }
 
 .stat-icon {
-  font-size: 42px;
+  font-size: 36px;
   color: #3498db;
 }
 
-.stat-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .stat-number {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
 }
 
@@ -479,15 +473,15 @@
   }
 
   .course-stats {
-    gap: 100px;
+    gap: 60px;
     margin-top: 200px;
-    padding: 0 80px;
+    padding: 0 60px;
   }
 
   .stat-item {
-    min-width: 280px;
-    max-width: 190px;
-    padding: 35px 35px;
+    min-width: 220px;
+    max-width: 180px;
+    padding: 18px 30px;
   }
 
   .course-title {
@@ -501,11 +495,11 @@
   }
 
   .stat-icon {
-    font-size: 38px;
+    font-size: 32px;
   }
 
   .stat-number {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .stat-label {
@@ -534,24 +528,24 @@
   }
 
   .course-stats {
-    gap: 80px;
+    gap: 40px;
     margin-top: 180px;
-    padding: 0 60px;
+    padding: 0 40px;
   }
 
   .stat-item {
-    min-width: 250px;
-    max-width: 170px;
-    padding: 30px 30px;
+    min-width: 200px;
+    max-width: 160px;
+    padding: 15px 25px;
     margin-top: -150px;
   }
 
   .stat-icon {
-    font-size: 34px;
+    font-size: 28px;
   }
 
   .stat-number {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .stat-label {
