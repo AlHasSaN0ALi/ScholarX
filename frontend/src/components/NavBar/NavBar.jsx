@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './NavBar.css';
 
 function NavBar() {
@@ -44,19 +45,16 @@ function NavBar() {
   };
 
   return (
-    <nav className="sx-navbar ">
-      
-      <div className="sx-navbar-logo  col-2  ">
-        <div className=' w-75'>
-        <img className=' img-fluid' src="home-page/logo.png" alt="" />
-        </div>
+    <nav className="sx-navbar">
+      <div className="sx-navbar-logo">
+        <img src="home-page/logo.png" alt="ScholarX Logo" />
       </div>
 
       <button className="sx-mobile-menu-btn" onClick={toggleMobileMenu}>
         {mobileMenuOpen ? '✕' : '☰'}
       </button>
 
-      <div className={`sx-navbar-links col-6 ${mobileMenuOpen ? 'sx-active' : ''}`}>
+      <div className={`sx-navbar-links ${mobileMenuOpen ? 'sx-active' : ''}`}>
         <a href="/" className={currentPath === '/' ? 'sx-active' : ''}>Home</a>
         <a href="/about" className={currentPath === '/about' ? 'sx-active' : ''}>About Us</a>
         <a href="/services" className={currentPath === '/services' ? 'sx-active' : ''}>Our Services</a>
@@ -69,9 +67,13 @@ function NavBar() {
         </div>
       </div>
 
-      <div className="col-3 sx-navbar-auth sx-desktop-auth">
-        <button className="sx-signup-btn">Sign Up</button>
-        <button className=" sx-login-btn">LogIn</button>
+      <div className="sx-navbar-auth sx-desktop-auth">
+        <Link to="/signup">
+          <button className="sx-signup-btn">Sign Up</button>
+        </Link>
+        <Link to="/login">
+          <button className="sx-login-btn">LogIn</button>
+        </Link>
       </div>
     </nav>
   );
