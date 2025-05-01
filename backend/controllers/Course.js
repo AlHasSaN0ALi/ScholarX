@@ -1,7 +1,7 @@
 const Course = require('../models/Course');
 const JSendResponse = require('../utils/StandardResponse');
 const Category = require('../models/Category');
-const { handleImageUpload } = require('../utils/cloudinaryConfig');
+const { handleImageUpload, cloudinary } = require('../utils/cloudinaryConfig');
 
 // Create a new course with image upload
 exports.createCourse = async (req, res) => {
@@ -37,19 +37,26 @@ console.log(courseData);
     }
 };
 
-// Get all courses with pagination (3 courses per page)
+// Get all courses with pagination and category filtering
 exports.getCourses = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = 3;
         const skip = (page - 1) * limit;
 
-        const courses = await Course.find()
+        // Build query based on category filter
+        const query = {};
+        if (req.query.category) {
+            query.category = req.query.category;
+        }
+
+        
+        const courses = await Course.find(query)
             .skip(skip)
             .limit(limit)
-            .populate('categoryId');
+            // .populate('instructor', 'name email profilePicture');
 
-        const totalCourses = await Course.countDocuments();
+        const totalCourses = await Course.countDocuments(query);
         const totalPages = Math.ceil(totalCourses / limit);
 
         res.status(200).json(
@@ -75,8 +82,8 @@ exports.getCourses = async (req, res) => {
 exports.getCourseById = async (req, res) => {
     try {
         const course = await Course.findById(req.params.id)
-            .populate('instructor', 'name email profilePicture')
-            .populate('categoryId');
+            // .populate('instructor', 'name email profilePicture')
+            // .populate('categoryId');
         if (!course) {
             return res.status(404).json(
                 JSendResponse.fail({ message: 'Course not found' })
@@ -122,8 +129,8 @@ exports.updateCourse = async (req, res) => {
                 req.params.id,
                 updateData,
                 { new: true }
-            ).populate('instructor', 'name email profilePicture')
-             .populate('categoryId');
+            )
+            // .populate('instructor', 'name email profilePicture')
 
             if (!course) {
                 return res.status(404).json(
@@ -232,29 +239,17 @@ exports.getCoursesByCategory = async (req, res) => {
 
 // Get featured courses with pagination
 exports.getFeaturedCourses = async (req, res) => {
-    console.log("jhhhhhhhhh");
     try {
-        
         const page = parseInt(req.query.page) || 1;
         const limit = 3;
         const skip = (page - 1) * limit;
 
-        // Find the Featured category
-        const featuredCategory = await Category.findOne({ name: 'Featured' });
-        
-        if (!featuredCategory) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'Featured category not found' })
-            );
-        }
-
-        // Find featured courses with pagination
-        const courses = await Course.find({ categoryId: featuredCategory._id })
+        const courses = await Course.find({ category: 'Featured' })
             .skip(skip)
             .limit(limit)
-            .populate('categoryId');
+            // .populate('instructor', 'name email profilePicture');
 
-        const totalCourses = await Course.countDocuments({ categoryId: featuredCategory._id });
+        const totalCourses = await Course.countDocuments({ category: 'Featured' });
         const totalPages = Math.ceil(totalCourses / limit);
 
         res.status(200).json(
@@ -283,22 +278,59 @@ exports.getScholarXCourses = async (req, res) => {
         const limit = 3;
         const skip = (page - 1) * limit;
 
-        // Find the ScholarX category
-        const scholarXCategory = await Category.findOne({ name: 'ScholarX' });
-        
-        if (!scholarXCategory) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'ScholarX category not found' })
-            );
-        }
-
-        // Find ScholarX courses with pagination
-        const courses = await Course.find({ categoryId: scholarXCategory._id })
+        const courses = await Course.find({ category: 'ScholarX' })
             .skip(skip)
             .limit(limit)
-            .populate('categoryId');
+            // .populate('instructor', 'name email profilePicture');
 
-        const totalCourses = await Course.countDocuments({ categoryId: scholarXCategory._id });
+        const totalCourses = await Course.countDocuments({ category: 'ScholarX' });
+        const totalPages = Math.ceil(totalCourses / limit);
+
+        res.status(200).json(
+            JSendResponse.success({
+                courses,
+                pagination: {
+                    currentPage: page,
+                    totalPages,
+                    totalCourses,
+                    hasNextPage: page < totalPages,
+                    hasPreviousPage: page > 1
+                }
+            })
+        );
+    } catch (error) {
+        res.status(500).json(
+            JSendResponse.error(error.message)
+        );
+    }
+};
+
+// Search courses by title with pagination
+exports.searchCourses = async (req, res) => {
+    try {
+        const { title } = req.query;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 3;
+        const skip = (page - 1) * limit;
+console.log(title);
+
+        // if (!title) {
+        //     return res.status(400).json(
+        //         JSendResponse.fail({ message: 'Search title is required' })
+        //     );
+        // }
+
+        const query = {
+            title: { $regex: title, $options: 'i' } // Case-insensitive search
+        };
+
+        const courses = await Course.find(query)
+            .skip(skip)
+            .limit(limit)
+            // .populate('instructor', 'name email profilePicture')
+            .lean();
+
+        const totalCourses = await Course.countDocuments(query);
         const totalPages = Math.ceil(totalCourses / limit);
 
         res.status(200).json(
