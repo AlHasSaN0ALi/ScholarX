@@ -54,7 +54,7 @@ function NavBar() {
         {mobileMenuOpen ? '✕' : '☰'}
       </button>
 
-      <div className={`sx-navbar-links ${mobileMenuOpen ? 'sx-active' : ''}`}>
+      <div className={`sx-navbar-links col-6 ${mobileMenuOpen ? 'sx-active' : ''}`}>
         <a href="/" className={currentPath === '/' ? 'sx-active' : ''}>Home</a>
         <a href="/about" className={currentPath === '/about' ? 'sx-active' : ''}>About Us</a>
         <a href="/services" className={currentPath === '/services' ? 'sx-active' : ''}>Our Services</a>

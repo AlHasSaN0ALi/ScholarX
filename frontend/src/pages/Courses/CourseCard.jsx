@@ -6,7 +6,7 @@ import { FaRegHeart, FaStar, FaRegStar, FaChevronRight, FaClock, FaPlayCircle, F
 const CourseCard = ({ course, section = 'latest' }) => {
   // Fallbacks for missing data
   const title = course.title || 'Course Title';
-  const category = course.categoryId?.name || 'Category';
+  const category = course.category || 'Category';
   const hours = course.totalDuration || 30.2;
   const lectures = course.totalLessons || 14;
   const price = course.currentPrice || 0;
@@ -28,7 +28,7 @@ const CourseCard = ({ course, section = 'latest' }) => {
   const showBadge = () => {
     if (section === 'latest' && isNew) {
       return <span className="cart-badge position-absolute top-0 start-0 mt-2">New</span>;
-    } else if (course.categoryId?.name) {
+    } else if (course.category) {
       return <span className="cart-badge position-absolute top-0 start-0 mt-2">{category}</span>;
     }
     return null;
