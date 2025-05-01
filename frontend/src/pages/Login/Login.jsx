@@ -32,12 +32,11 @@ const Login = () => {
   };
 
   return (
-    <div className="signup-container">
-      <div className="signup-header">
+    <div className="login-container">
+      <div className="login-header">
         <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
       </div>
-
-      <div className="signup-content">
+      <div className="login-content">
         <div className="image">
           <div className="imageContainer">
             <div className="socialProof"></div>
@@ -46,7 +45,7 @@ const Login = () => {
 
         <div className="form-section">
           <h2 className="form-title">Login to Your Account</h2>
-          <form className="signup-form" onSubmit={handleSubmit}>
+          <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group1">
               <label htmlFor="email">Email address</label>
               <input 
@@ -79,7 +78,7 @@ const Login = () => {
               </Link>
             </div>
 
-            <button type="submit" className="signup-button">Sign In</button>
+            <button type="submit" className="login-button">Sign In</button>
 
             <div className="divider">
               <span>Or Sign up with</span>

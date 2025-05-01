@@ -144,7 +144,7 @@
 .form-group label {
   display: block;
   font-size: 13px;
-  color: #666;
+  color: #3399CC;
   margin-bottom: 6px;
 }
 
@@ -258,7 +258,7 @@
 .error {
     color: red;
     font-size: 13px;
-    margin-top: 4px;
+    margin-top: 1px;
     display: block;
   }
   
@@ -266,12 +266,13 @@
 @media (max-width: 992px) {
   .signup-content {
     flex-direction: column;
-    margin: 15px auto;
-    max-width: 600px;
+    margin: 20px;
+    max-width: 500px;
   }
 
   .image {
-    padding: 25px;
+    width: 100%;
+    padding: 20px;
   }
 
   .imageContainer {
@@ -286,13 +287,18 @@
   }
 
   .form-section {
-    padding: 25px;
+    width: 100%;
+    padding: 30px;
   }
 }
 
 @media (max-width: 576px) {
-  .signup-container {
-    padding: 10px;
+  .signup-header {
+    left: 20px;
+  }
+
+  .signup-content {
+    margin-top: 60px;
   }
 
   .imageContainer {
@@ -305,13 +311,16 @@
     height: 270px;
   }
 
-  .form-section {
-    padding: 20px;
+  .form-title {
+    font-size: 24px;
   }
 
-  .form-title {
-    font-size: 22px;
-    margin-bottom: 20px;
+  .form-group1 input {
+    padding: 10px;
+  }
+
+  .signup-button {
+    padding: 10px;
   }
 }
   
