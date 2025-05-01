@@ -9,7 +9,6 @@ import Signup from './pages/Signup/Signup'
 import ForgetPassword from './pages/forget-password/forget'
 import './App.css'
 // import "bootstrap/dist/css/bootstrap.min.css";
-import SearchResults from './pages/Search/SearchResults'
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="/search-results" element={<SearchResults />} />
         </Routes>
           </div>
     </Router>
