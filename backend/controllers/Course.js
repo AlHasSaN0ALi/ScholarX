@@ -5,7 +5,7 @@ const { handleImageUpload, cloudinary } = require('../utils/cloudinaryConfig');
 
 // Create a new course with image upload
 exports.createCourse = async (req, res) => {
-    console.log("hiiiiiiii");
+   
     try {
         
         handleImageUpload(req, res, async (err) => {
@@ -14,7 +14,7 @@ exports.createCourse = async (req, res) => {
                     JSendResponse.fail({ message: 'Image upload failed' })
                 );
             }
-
+         
             const courseData = {
                 ...req.body,
                 image: req.file ? {
