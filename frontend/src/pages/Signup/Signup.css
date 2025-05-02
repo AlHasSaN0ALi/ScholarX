@@ -179,7 +179,12 @@
 .signup-button:hover {
   background-color: #2980b9;
 }
-
+.linkk{
+  text-align: center;
+  margin: 16px 0;
+  color: #666;
+  font-size: 14px;
+}
 .login-link {
   text-align: center;
   margin: 16px 0;

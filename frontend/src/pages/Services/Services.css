@@ -110,6 +110,9 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .program-card:hover {
@@ -157,7 +160,6 @@
 }
 
 .program-btn {
-  width: 100%;
   padding: 12px;
   border-radius: 8px;
   border: none;
@@ -166,6 +168,9 @@
   cursor: pointer;
   transition: all 0.3s ease;
   color: white;
+  width: auto;
+  min-width: 150px;
+  margin: 0 5px;
 }
 
 .apply-btn {
@@ -183,6 +188,13 @@
 .program-btn:hover {
   opacity: 0.9;
   transform: translateY(-3px);
+}
+
+.program-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 /* Success Stories Section */
@@ -298,6 +310,16 @@
   .programs-container, .stories-container {
     gap: 15px;
     justify-content: center;
+  }
+
+  .program-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .program-btn {
+    width: 100%;
+    margin: 5px 0;
   }
 }
 

@@ -55,7 +55,9 @@ function Services() {
               </div>
               <h3>Ambassador Program</h3>
               <p>Lead, organize events, and mentor peers at your school/university. Develop leadership skills and make an impact.</p>
-              <button className="program-btn apply-btn" onClick={() => openModal('ambassador')}>Apply Now</button>
+              <div className="program-buttons">
+                <button className="program-btn apply-btn" onClick={() => openModal('ambassador')}>Apply Now</button>
+              </div>
             </div>
 
             <div className="program-card">
@@ -64,7 +66,9 @@ function Services() {
               </div>
               <h3>Mentorship & Career Guidance</h3>
               <p>Get 1-on-1 mentorship for essays, interviews, and career development from experienced professionals.</p>
-              <button className="program-btn request-btn" onClick={() => openModal('mentorship')}>Request Mentor</button>
+              <div className="program-buttons">
+                <button className="program-btn request-btn" onClick={() => openModal('mentorship')}>Request Mentor</button>
+              </div>
             </div>
 
             <div className="program-card">
@@ -73,7 +77,9 @@ function Services() {
               </div>
               <h3>ScholarX Podcast</h3>
               <p>Listen to real stories from scholarship alumni, get practical advice, and join live Q&A sessions.</p>
-              <button className="program-btn podcast-btn" onClick={() => openModal('podcast')}>Listen to Podcast</button>
+              <div className="program-buttons">
+                <button className="program-btn podcast-btn" onClick={() => openModal('podcast')}>Listen to Podcast</button>
+              </div>
             </div>
           </div>
         </div>

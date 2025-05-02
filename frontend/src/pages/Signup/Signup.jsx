@@ -159,8 +159,8 @@ const Signup = () => {
                                     {isSubmitting ? 'Creating Account...' : 'Sign Up'}
                                 </button>
 
-                                <div className="login-link">
-                                    Have an account? <Link to="/login">Login</Link>
+                                <div className="linkk">
+                                    Have an account? <Link className="login-link" to="/login">Login</Link>
                                 </div>
 
                                 <div className="divider">
