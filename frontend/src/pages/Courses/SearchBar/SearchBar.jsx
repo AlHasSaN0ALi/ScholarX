@@ -11,10 +11,10 @@ function SearchBar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/search-results?query=${encodeURIComponent(searchTerm)}`);
+      navigate(`/courses/search?title=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
-
+  
   return (
     <div className="search-container">
       <div className="text-content">
@@ -33,53 +33,57 @@ function SearchBar() {
               id="course-name-1"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search name course"
+              placeholder="Search by course title"
               className="search-input"
             />
           </div>
         </div>
 
         <div className="input-group">
-          <label htmlFor="course-name-2">Course name</label>
+          <label htmlFor="course-name-2">Category</label>
           <div className="input-wrapper">
             <input
               type="text"
               id="course-name-2"
-       
-              placeholder="Search name course"
+              placeholder="Select category"
               className="search-input"
+              disabled
             />
             <CiSquareChevDown className="icon-right" />
           </div>
         </div>
 
         <div className="input-group">
-          <label htmlFor="course-name-3">Course name</label>
+          <label htmlFor="course-name-3">Price Range</label>
           <div className="input-wrapper">
             <input
               type="text"
               id="course-name-3"
-           
-              placeholder="Search name course"
+              placeholder="Select price range"
               className="search-input"
+              disabled
             />
             <CiSquareChevDown className="icon-right" />
           </div>
         </div>
 
         <div className="input-group">
-          <label htmlFor="course-name-4">Course name</label>
+          <label htmlFor="course-name-4">Duration</label>
           <div className="input-wrapper">
             <input
               type="text"
               id="course-name-4"
-            
-              placeholder="Search name course"
+              placeholder="Select duration"
               className="search-input"
+              disabled
             />
             <CiSquareChevDown className="icon-right" />
           </div>
         </div>
+
+        <button type="submit" className="search-button">
+          Search
+        </button>
       </form>
     </div>
   );

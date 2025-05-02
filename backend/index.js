@@ -1,3 +1,4 @@
+// بداية الملف
 let env = require('dotenv');
 const express = require('express');
 const cors = require('cors');
@@ -6,8 +7,11 @@ const courseRoutes = require('./routes/Course');
 const lessonRoutes = require('./routes/Lesson');
 const emailRoutes = require('./routes/nodemailer');
 const categoryRoutes = require('./routes/Category');
-const paymentRoutes = require('./routes/Payment')
-env.config();
+const paymentRoutes = require('./routes/Payment'); // احتفظنا بالمحلي
+const userRoutes = require('./routes/User'); // أضفنا الـ remote
+
+env.config(); // احتفظنا بالـ semicolon لأنها أفضل practice
+
 const app = express();
 const PORT = 3000;
 
@@ -34,7 +38,9 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use('/api/payments', paymentRoutes);
+app.use('/api/payments', paymentRoutes); // احتفظنا بالمحلي
+app.use('/api/users', userRoutes); // أضفنا الـ remote
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

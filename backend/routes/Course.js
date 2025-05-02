@@ -8,6 +8,7 @@ router.post('/', courseController.createCourse);
 router.get('/', courseController.getCourses);
 router.get('/featured', courseController.getFeaturedCourses);
 router.get('/scholarx', courseController.getScholarXCourses);
+router.get('/search', courseController.searchCourses);
 router.get('/:id', courseController.getCourseById);
 router.patch('/:id', courseController.updateCourse);
 router.delete('/:id', courseController.deleteCourse);

@@ -17,7 +17,6 @@ import './Home.css';
 function Home() {
   return (
     <>
-      <NavBar />
       
         <Hero />
         <Features />
