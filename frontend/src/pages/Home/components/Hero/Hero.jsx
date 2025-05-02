@@ -37,6 +37,7 @@ const Hero = () => {
           <div className={styles.imageContainer}>
             <div className={styles.socialProof}>
               <span className={styles.reactions}>Join 10,000 students worldwide</span>
+              
               <div className={styles.avatarGroup}>
                 <div className={`${styles.avatar} ${styles.avatar1}`}></div>
                 <div className={`${styles.avatar} ${styles.avatar2}`}></div>

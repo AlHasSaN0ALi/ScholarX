@@ -14,6 +14,7 @@ import './styles/sweetalert.css';
 import './App.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import SearchResults from './pages/Search/SearchResults'
+import GoogleCallback from './pages/GoogleCallback/GoogleCallback'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/auth/google" element={<GoogleCallback />} />
         </Routes>
           </div>
     </Router>

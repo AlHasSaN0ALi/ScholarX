@@ -83,7 +83,7 @@ exports.login = async (req, res) => {
 // Get user profile
 exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.params.id).select('-password');
         if (!user) {
             return res.status(404).json(
                 JSendResponse.fail({ message: 'User not found' })

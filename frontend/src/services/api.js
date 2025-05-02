@@ -40,6 +40,24 @@ export const authService = {
         return response.data;
     },
 
+    // Google authentication
+    initiateGoogleLogin: () => {
+        window.location.href = `${API_URL}/users/google`;
+    },
+
+    handleGoogleCallback: async (token) => {
+        try {
+            if (token) {
+                Cookies.set('token', token, { expires: 7 });
+                // Fetch user data
+            
+            }
+        } catch (error) {
+            console.error('Error handling Google callback:', error);
+            throw error;
+        }
+    },
+
     logout: () => {
         Cookies.remove('token');
         Cookies.remove('user');

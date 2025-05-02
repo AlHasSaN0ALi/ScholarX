@@ -167,9 +167,13 @@ const Signup = () => {
                                     <span>Or Sign Up with</span>
                                 </div>
 
-                                <button type="button" className="google-signup">
+                                <button 
+                                    type="button" 
+                                    className="google-signup"
+                                    onClick={() => authService.initiateGoogleLogin()}
+                                >
                                     <img src="/google.png" alt="Google" className="google-icon" />
-                                    Google
+                                    Continue with Google
                                 </button>
                             </Form>
                         )}

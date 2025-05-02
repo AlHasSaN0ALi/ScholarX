@@ -167,8 +167,23 @@
 
   .sx-mobile-auth {
     display: flex;
-    margin-top: 1rem;
+    flex-direction: column;
+    /* margin-top: 1rem; */
     width: 100%;
-    justify-content: center;
+    margin: 0;
+    gap: 0;
+    font-size: smaller;
+
+    /* justify-content: center; */
   }
+
+  .sx-login-btn, .sx-signup-btn {
+    padding: 0.3rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
 }

@@ -49,8 +49,11 @@ const Login = () => {
         }
     };
 
-    return (
+    const handleGoogleLogin = () => {
+        authService.initiateGoogleLogin();
+    };
 
+    return (
         <div className="login-container ">
             {/* <div className="login-header">
                 <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
@@ -116,9 +119,13 @@ const Login = () => {
                                     <span>Or Sign up with</span>
                                 </div>
 
-                                <button type="button" className="google-signup">
+                                <button 
+                                    type="button" 
+                                    className="google-signup"
+                                    onClick={handleGoogleLogin}
+                                >
                                     <img src="/google.png" alt="Google" className="google-icon" />
-                                    Google
+                                    Continue with Google
                                 </button>
                             </Form>
                         )}

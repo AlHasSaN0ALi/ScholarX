@@ -40,12 +40,12 @@
 
 .imageContainer {
   position: relative;
-  width: 380px;
-  height: 380px;
-  margin-left: auto;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
   background-color: #3399CC;
   border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
-  background-image: url('home-page/hero1.png');
+  background-image: url('/home-page/hero1.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
