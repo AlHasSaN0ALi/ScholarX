@@ -155,58 +155,6 @@ function CoursePage() {
             ))}
           </ul>
         </div>
-
-        <div className="course-section">
-          <div className="section-header">
-            <img src="/pre.png" alt="Prerequisites Icon" className="section-icon" />
-            <h2 className="section-title">Prerequisites</h2>
-          </div>
-          <ul className="prerequisites-list">
-            {courseData.prerequisites && courseData.prerequisites.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="instructor-section">
-          <div className="instructor-header">
-            <img src={courseData.instructor.image} alt={courseData.instructor.name} className="instructor-image" />
-            <div className="instructor-info">
-              <h3>{courseData.instructor.name}</h3>
-              <p className="instructor-title">Instructor</p>
-            </div>
-          </div>
-          <p className="instructor-bio">{courseData.instructor.bio}</p>
-          <div className="instructor-achievements">
-            <h2 className="instructor-achievements">Instructor Achievements</h2>
-            {courseData.instructor.achievements.map((achievement, index) => (
-              <div key={index} className="achievement-item">
-                <span>{achievement}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="reviews-section">
-          <h2 className="section-title">Reviews</h2>
-          {courseData.reviews.map((review, index) => (
-            <div key={index} className="review-card">
-              <div className="review-header">
-                <img src={review.image} alt={review.name} className="reviewer-image" />
-                <div>
-                  <h4 className="reviewer-name">{review.name}</h4>
-                  <div className="review-rating">
-                    {renderStars(review.rating)}
-                  </div>
-                </div>
-              </div>
-              <p className="review-text">{review.text}</p>
-            </div>
-          ))}
-          <div className="more-reviews">
-            <a href="#more">More</a>
-          </div>
-        </div>
       </div>
     </>
   );
