@@ -1,7 +1,3 @@
-
-
-
-
 .bacground{
     background-image: linear-gradient(#D6EBF5 80%, #FFFFFF00 100%);
     position: relative;
@@ -82,23 +78,34 @@ padding-right: 52px; */
     z-index: 50;
     justify-content: space-around;
     gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 .bacground2 .container .boxes .single-box{
     box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1 );
 }
 .container .boxes .single-box{
-    width: 100%;
+    width: calc(33.33% - 25px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #FFFFFF;
-    max-height: 214px;
+    min-height: 214px;
     max-width: 396px;
     border-radius: 15px;
-    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.1  );
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.1);
     text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
 }
+
+.container .boxes .single-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
 .container .boxes .single-box .icon {
     width: 56px;
     height: 56px;
@@ -113,30 +120,34 @@ padding-right: 52px; */
 }
 .container .boxes .single-box .group{
     margin-top: 5px;
-
+    width: 100%;
 }
 .container .boxes .single-box .orange {
-    width: 364px;
-    height: 30px;
-    font-weight: 400px;
+    width: 100%;
+    font-weight: 400;
     font-size: 25px;
-   color: #FF6633;
-   margin-top: 20px; 
-  
+    color: #FF6633;
+    margin-top: 20px;
 }
 
 .container .boxes .single-box .black{
     color: #0A1F29;
-    font-weight: 400px;
+    font-weight: 400;
     font-size: 25px;
-    width: 364px;
-    height: 30px;
+    width: 100%;
 }
 .container .boxes .single-box p{
-    width: 383px;
-    height: 19px;
-    font-weight: 400px;
+    width: 100%;
+    font-weight: 400;
     font-size: 16px;
-    margin-top: -10px;
+    margin-top: 10px;
     color: #808080;
+    line-height: 1.4;
+}
+
+@media screen and (max-width: 768px) {
+    .container .boxes .single-box {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }
