@@ -48,26 +48,6 @@ function NavBar() {
     navigate('/');
   };
 
-  const scrollToContact = (e) => {
-    e.preventDefault();
-    
-    if (mobileMenuOpen) {
-      setMobileMenuOpen(false);
-    }
-    
-    if (currentPath !== '/') {
-      window.location.href = '/#contact';
-      return;
-    }
-    
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ 
-        behavior: 'smooth'
-      });
-    }
-  };
-
   const renderAuthButtons = () => {
     if (isAuthenticated) {
       return (
@@ -82,7 +62,7 @@ function NavBar() {
           <button className="sx-signup-btn">Sign Up</button>
         </Link>
         <Link to="/login">
-          <button className="sx-login-btn">LogIn</button>
+          <button className="sx-login-btn">Login</button>
         </Link>
       </>
     );
@@ -90,30 +70,31 @@ function NavBar() {
 
   return (
     <nav className="sx-navbar">
-      <div className="sx-navbar-logo col-2">
-        <Link to="/">
-          <img src="/home-page/logo.png" alt="ScholarX Logo" />
-        </Link>
-      </div>
+      <div className="sx-container">
+        <div className="sx-navbar-logo">
+          <Link to="/">
+            <img src="/home-page/logo.png" alt="ScholarX Logo" />
+            <span></span>
+          </Link>
+        </div>
 
-      <button className="sx-mobile-menu-btn" onClick={toggleMobileMenu}>
-        {mobileMenuOpen ? '✕' : '☰'}
-      </button>
+        <button className="sx-mobile-menu-btn" onClick={toggleMobileMenu}>
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
 
-      <div className={`sx-navbar-links col-5 ${mobileMenuOpen ? 'sx-active' : ''}`}>
-        <Link to="/" className={currentPath === '/' ? 'sx-active' : ''}>Home</Link>
-        <Link to="/about" className={currentPath === '/about' ? 'sx-active' : ''}>About Us</Link>
-        {/* <a href="/services" className={currentPath === '/services' ? 'sx-active' : ''}>Our Services</a> */}
-        <Link to="/courses" className={currentPath === '/courses' ? 'sx-active' : ''}>Courses</Link>
-        <Link to="/contact" className={currentPath === '/contact' ? 'sx-active' : ''}>Contact Us</Link>
-      
-        <div className="sx-navbar-auth sx-mobile-auth">
+        <div className={`sx-navbar-links ${mobileMenuOpen ? 'sx-active' : ''}`}>
+          <Link to="/" className={currentPath === '/' ? 'sx-active' : ''}>Home</Link>
+          <Link to="/about" className={currentPath === '/about' ? 'sx-active' : ''}>About Us</Link>
+          <Link to="/services" className={currentPath === '/services' ? 'sx-active' : ''}>Our Services</Link>
+          <div className="sx-dropdown">
+            <Link to="/courses" className={currentPath === '/courses' ? 'sx-active' : ''}>Courses</Link>
+          </div>
+          <Link to="/contact" className={currentPath === '/contact' ? 'sx-active' : ''}>Contact</Link>
+        </div>
+
+        <div className="sx-navbar-auth">
           {renderAuthButtons()}
         </div>
-      </div>
-
-      <div className="sx-navbar-auth sx-desktop-auth col-3">
-        {renderAuthButtons()}
       </div>
     </nav>
   );

@@ -114,6 +114,10 @@ const Login = () => {
                                 >
                                     {isSubmitting ? 'Signing in...' : 'Sign In'}
                                 </button>
+                                
+                                <div className="signup-link">
+                                    Don't have an account? <Link to="/signup">Sign up</Link>
+                                </div>
 
                                 <div className="divider">
                                     <span>Or Sign up with</span>

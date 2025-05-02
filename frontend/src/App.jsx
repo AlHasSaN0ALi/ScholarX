@@ -8,7 +8,6 @@ import Login from './pages/Login/Login'
 import Signup from './pages/Signup/Signup'
 import Contact from './pages/Contact/Contact'
 import CoursePage from './pages/CourseInfo/CourseInfo'
-import NavBar from './components/NavBar/NavBar'
 import ForgetPassword from './pages/forget-password/forget'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './styles/sweetalert.css';
@@ -21,8 +20,7 @@ function App() {
   return (
     <>
     <Router>
-    <NavBar />
-          <div className=''>
+      <div className=''>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -36,7 +34,7 @@ function App() {
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/auth/google" element={<GoogleCallback />} />
         </Routes>
-          </div>
+      </div>
     </Router>
     </>
   )

@@ -116,7 +116,7 @@ function Courses() {
 
   return (
     <>
-      {/* <NavBar /> */}
+      <NavBar />
 
       <div className="search-container">
         <div className="text-content">

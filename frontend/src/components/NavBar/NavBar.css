@@ -1,40 +1,52 @@
 .sx-navbar {
-  display: flex; 
-   justify-content: space-evenly;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  padding: 1rem 0rem;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(40px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
+  height: 70px;
+}
+
+.sx-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .sx-navbar-logo {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+}
+
+.sx-navbar-logo a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .sx-navbar-logo img {
-  height: 40px;
+  height: 32px;
   width: auto;
+  margin-right: 10px;
 }
 
-.sx-navbar-logo a, .sx-navbar-logo a:visited {
-  font-size: 1.5rem;
-  font-weight: bold;
+.sx-navbar-logo span {
+  font-size: 1.2rem;
+  font-weight: 700;
   color: #333;
-  text-decoration: none;
 }
 
 .sx-navbar-links {
   display: flex;
-  /* gap: 2rem; */
+  gap: 2rem;
   align-items: center;
-  justify-content: space-between;
 }
 
 .sx-navbar-links a, .sx-navbar-links a:visited {
@@ -44,52 +56,40 @@
   font-weight: 500;
   transition: color 0.3s;
   position: relative;
-  padding-bottom: 5px;
 }
 
 .sx-navbar-links a:hover {
-  color: #007bff;
+  color: #3399CC;
 }
 
 .sx-navbar-links a.sx-active {
-  color: #007bff;
+  color: #3399CC;
 }
 
-.sx-navbar-links a.sx-active::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background-color: #007bff;
-  bottom: 0;
-  left: 0;
+.sx-dropdown {
+  position: relative;
+  display: inline-block;
 }
 
 .sx-navbar-auth {
-  margin-left: 60px;
   display: flex;
   gap: 1rem;
   align-items: center;
-  justify-content: center;
-}
-
-.sx-mobile-auth {
-  display: none;
 }
 
 .sx-login-btn, .sx-signup-btn {
-  padding: 0.5rem 1.8rem;
+  padding: 0.4rem 1.5rem;
   border-radius: 4px;
-  font-size: 1.2rem;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .sx-login-btn {
-  background: none;
-  border: 1px solid #007bff;
-  color: #007bff;
+  background: transparent;
+  border: 1px solid #3399CC;
+  color: #3399CC;
 }
 
 .sx-signup-btn {
@@ -99,11 +99,11 @@
 }
 
 .sx-login-btn:hover {
-  background-color: rgba(0, 123, 255, 0.1);
+  background-color: rgba(51, 153, 204, 0.1);
 }
 
 .sx-signup-btn:hover {
-  background-color: #0056b3;
+  background-color: #2980b9;
 }
 
 .sx-mobile-menu-btn {
@@ -116,23 +116,34 @@
 }
 
 .sx-logout-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.4rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
 }
 
 .sx-logout-btn:hover {
-    background-color: #c82333;
+  background-color: #c82333;
+}
+
+@media (max-width: 992px) {
+  .sx-navbar {
+    padding: 0.8rem 1.5rem;
+  }
+
+  .sx-navbar-links {
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
   .sx-navbar {
-    padding: 1rem;
+    padding: 0.8rem 1rem;
   }
 
   .sx-mobile-menu-btn {
@@ -141,9 +152,8 @@
 
   .sx-navbar-links {
     position: absolute;
-    top: 100%;
+    top: 70px;
     left: 0;
-    transform: none;
     flex-direction: column;
     background-color: white;
     width: 100%;
@@ -159,31 +169,21 @@
 
   .sx-navbar-links a {
     padding: 0.5rem 2rem;
-  }
-
-  .sx-desktop-auth {
-    display: none;
-  }
-
-  .sx-mobile-auth {
-    display: flex;
-    flex-direction: column;
-    /* margin-top: 1rem; */
     width: 100%;
-    margin: 0;
-    gap: 0;
-    font-size: smaller;
+    text-align: center;
+  }
 
-    /* justify-content: center; */
+  .sx-dropdown {
+    width: 100%;
+    text-align: center;
+  }
+
+  .sx-navbar-auth {
+    margin-left: auto;
   }
 
   .sx-login-btn, .sx-signup-btn {
-    padding: 0.3rem 1.5rem;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 400;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    padding: 0.3rem 1.2rem;
+    font-size: 0.8rem;
   }
-  
 }
