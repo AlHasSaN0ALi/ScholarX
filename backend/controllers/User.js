@@ -43,11 +43,13 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        console.log(req.body);
+        
         // Check if user exists
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json(
-                JSendResponse.fail({ message: 'Invalid credentials' })
+                JSendResponse.fail({ message: 'Invalid email' })
             );
         }
 
@@ -55,7 +57,7 @@ exports.login = async (req, res) => {
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json(
-                JSendResponse.fail({ message: 'Invalid credentials' })
+                JSendResponse.fail({ message: 'Invalid pasword' })
             );
         }
 

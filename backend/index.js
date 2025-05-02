@@ -9,6 +9,7 @@ const emailRoutes = require('./routes/nodemailer');
 const categoryRoutes = require('./routes/Category');
 const userRoutes = require('./routes/User');
 const passport = require('passport');
+const paymentRoutes = require('./routes/Payment');
 require('./config/passport');
 
 env.config()
@@ -51,6 +52,7 @@ app.use('/api/lessons', lessonRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Start the server
 app.listen(PORT, () => {

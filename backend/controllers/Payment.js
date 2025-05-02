@@ -5,12 +5,12 @@ const User = require('../models/User');
 const JSendResponse = require('../utils/StandardResponse');
 
 // Fawaterk API configuration
-const FAWATERK_API_URL = 'https://api.fawaterk.com/v2/invoice';
-const FAWATERK_API_KEY = process.env.FAWATERK_API_KEY; 
+const FAWATERK_API_URL = 'https://staging.fawaterk.com/api/v2/createInvoiceLink';
+const FAWATERK_API_KEY = process.env.FAWATERK_API_KEY;
 const FAWATERK_PROVIDER_KEY = process.env.FAWATERK_PROVIDER_KEY; 
 
 // Create a payment request
-exports.createPayment = async (req, res) => {
+const createPayment = async (req, res) => {
   try {
     const { courseId } = req.params;
     let userId;
@@ -51,36 +51,36 @@ exports.createPayment = async (req, res) => {
       );
     }
 
-    // Prepare payment data for Fawaterk
+    // Prepare payment data for Fawaterk - exactly matching documentation
     const paymentData = {
-      amount: course.currentPrice,
-      currency: 'EGP', // Adjust based on your needs
-      description: `Payment for course: ${course.title}`,
+      cartItems: [
+        {
+          name: course.title,
+          price: course.currentPrice.toString(),
+          quantity: "1"
+        }
+      ],
+      cartTotal: course.currentPrice,
+      shipping: 0,
       customer: {
         first_name: user.firstName,
         last_name: user.lastName,
         email: user.email,
-        phone: user.phoneNumber,
+        phone: user.phoneNumber || "0123456789",
+        address: "Online Course"
       },
-      items: [
-        {
-          name: course.title,
-          price: course.currentPrice,
-          quantity: 1,
-          metadata: { courseId: course._id.toString() }, // Add courseId for webhook
-        },
-      ],
-      success_url:`${process.env.FRONT_END_URL}/success`, // Update with actual URL later
-      fail_url: `${process.env.FRONT_END_URL}/cancel`, // Update with actual URL later
-      notification_url: `${process.env.FRONT_END_URL}/api/payments/webhook`, // Webhook URL
+      currency: "EGP",
+      payLoad: {},
+      sendEmail: true,
+      sendSMS: false
     };
 
     // Send request to Fawaterk API
     const response = await axios.post(FAWATERK_API_URL, paymentData, {
       headers: {
-        Authorization: `Bearer ${FAWATERK_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+        'Authorization': `Bearer ${FAWATERK_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
     });
 
     if (response.data.status !== 'success') {
@@ -92,23 +92,23 @@ exports.createPayment = async (req, res) => {
     // Return the payment URL to redirect the user
     res.status(200).json(
       JSendResponse.success({
-        paymentUrl: response.data.data.payment_url,
+        paymentUrl: response.data.data.url,
       })
     );
   } catch (error) {
-    console.error('Payment creation error:', error.message);
+    console.error('Payment creation error:', error.response?.data || error.message);
     res.status(500).json(
-      JSendResponse.error(error.message)
+      JSendResponse.error(error.response?.data?.message || error.message)
     );
   }
 };
 
 // Handle Fawaterk Webhook
-exports.handleWebhook = async (req, res) => {
+const handleWebhook = async (req, res) => {
   try {
     const { transaction_id, status, invoice } = req.body;
 
-    if (!transactionՀ_id || !status || !invoice) {
+    if (!transaction_id || !status || !invoice) {
       return res.status(400).json(
         JSendResponse.fail({ message: 'Invalid webhook data' })
       );
@@ -166,4 +166,9 @@ exports.handleWebhook = async (req, res) => {
       JSendResponse.error(error.message)
     );
   }
+};
+
+module.exports = {
+  createPayment,
+  handleWebhook
 };

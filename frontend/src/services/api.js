@@ -70,7 +70,24 @@ export const authService = {
 
     isAuthenticated: () => {
         return !!Cookies.get('token');
-    }
+    },
+
+    createPayment: async (courseId) => {
+        try {
+            const response = await axios.post(
+                `${API_URL}/payments/create/${courseId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookies.get('token')}`,
+                    },
+                }
+            );
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    },
 };
 
 export default api; 
