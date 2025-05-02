@@ -1,11 +1,20 @@
 import React from 'react';
+import { useState } from 'react';
+
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import courseData from './CourseData';
 import './CourseInfo.css';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer/Footer';
+import { useParams, useNavigate } from 'react-router-dom';
+import { authService } from '../../services/api';
 
 function CoursePage() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { courseId } = useParams();
+console.log(courseId);
+
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -20,9 +29,54 @@ function CoursePage() {
     return stars;
   };
 
+  const handleEnroll = async (e) => {
+    e.preventDefault(); // Prevent navigation when clicking enroll
+    try {
+      setIsLoading(true);
+      
+      // Check if user is logged in
+      if (!authService.isAuthenticated()) {
+        Swal.fire({
+          title: 'Login Required',
+          text: 'Please login to enroll in this course',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Login',
+          cancelButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/login');
+          }
+        });
+        return;
+      }
+
+      // Initiate payment
+      const response = await authService.createPayment(courseId);
+      
+      if (response.data.status === 'success' && response.data.data.paymentUrl) {
+        // Redirect to payment page
+        window.location.href = response.data.data.paymentUrl;
+      } else {
+        throw new Error('Failed to create payment');
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      Swal.fire({
+        title: 'Payment Error',
+        text: error.response?.data?.message || 'Failed to process payment',
+        icon: 'error'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+
   return (
     <div className="nav">
-      <NavBar />
+      {/* <NavBar /> */}
     <div className="course-container">
       <div
   className="course-header"
@@ -44,7 +98,8 @@ function CoursePage() {
           <span className="rating-count">({courseData.totalRatings}/50)</span>
         </div>
 
-        <button className="enroll-button">Enroll Now</button>
+        <button className="enroll-button"   onClick={handleEnroll}>                {isLoading ? 'Processing...' : 'Enroll Now'}
+        </button>
 </div>
         <div className="course-stats">
           <div className="stat-item">
