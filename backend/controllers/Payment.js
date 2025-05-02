@@ -75,13 +75,15 @@ const createPayment = async (req, res) => {
       sendSMS: false
     };
 
+    
     // Send request to Fawaterk API
     const response = await axios.post(FAWATERK_API_URL, paymentData, {
       headers: {
-        'Authorization': `Bearer ${FAWATERK_API_KEY}`,
+        'Authorization': `Bearer 1be20fd63420d7023d2c0b4d00befb43df4707be1b800c373a`,
         'Content-Type': 'application/json'
       }
     });
+
 
     if (response.data.status !== 'success') {
       return res.status(500).json(
