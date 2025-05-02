@@ -186,27 +186,22 @@ const Contact = () => {
             <h2 className="mb-4">Contact Information</h2>
             
             <div className={styles.infoItem}>
-              <HiLocationMarker className={styles.icon} />
-              <span>123 New Cairo, Egypt</span>
-            </div>
-
-            <div className={styles.infoItem}>
               <BsTelephone className={styles.icon} />
               <a 
-                href="tel:+20555123456" 
+                href="tel:+201012072516" 
                 className={styles.phoneLink}
               >
-                +20 (555) 123-4567
+                +(20) 1012072516
               </a>
             </div>
 
             <div className={`${styles.infoItem} mb-5`}>
               <MdEmail className={styles.icon} />
               <a 
-                href="mailto:scholarx.gmail@eg.com" 
+                href="mailto:Info@scholar-x.com" 
                 className={styles.emailLink}
               >
-                scholarx.gmail@eg.com
+                Info@scholar-x.com
               </a>
             </div>
 

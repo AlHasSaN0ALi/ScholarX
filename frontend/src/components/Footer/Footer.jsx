@@ -27,11 +27,11 @@ const Footer = () => {
           <div className="contact-info">
             <div className="contact-item">
               <FaEnvelope className="contact-icon" />
-              <a href="mailto:scholarx.gmail@eg.com">scholarx.gmail@eg.com</a>
+              <a href="mailto:scholarx.gmail@eg.com">Info@scholar-x.com</a>
             </div>
             <div className="contact-item">
               <FaPhone className="contact-icon" />
-              <p>+20 (555) 123-4567</p>
+              <p>+(20) 1012072516</p>
             </div>
           </div>
         </div>
