@@ -32,15 +32,12 @@ function Services() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
-          
-          <div className="hero-text d-md-flex">
-          <div className="hero-logo me-4">
+          <div className="hero-logo">
             <img src="/whitelogo.png" alt="ScholarX Logo" className="scholarx-logo" />
           </div>
-          <div>
+          <div className="hero-text">
             <h1>Take the Lead. Spark Inspiration. Shape the Future.</h1>
             <p>Empower your Peers, Lead your Community</p>
-          </div>
           </div>
           <button className="learn-more-btn">Learn More</button>
         </div>
@@ -58,9 +55,7 @@ function Services() {
               </div>
               <h3>Ambassador Program</h3>
               <p>Lead, organize events, and mentor peers at your school/university. Develop leadership skills and make an impact.</p>
-              <div className="program-buttons">
-                <button className="program-btn apply-btn" onClick={() => openModal('ambassador')}>Apply Now</button>
-              </div>
+              <button className="program-btn apply-btn" onClick={() => openModal('ambassador')}>Apply Now</button>
             </div>
 
             <div className="program-card">
@@ -69,9 +64,7 @@ function Services() {
               </div>
               <h3>Mentorship & Career Guidance</h3>
               <p>Get 1-on-1 mentorship for essays, interviews, and career development from experienced professionals.</p>
-              <div className="program-buttons">
-                <button className="program-btn request-btn" onClick={() => openModal('mentorship')}>Request Mentor</button>
-              </div>
+              <button className="program-btn request-btn" onClick={() => openModal('mentorship')}>Request Mentor</button>
             </div>
 
             <div className="program-card">
@@ -80,9 +73,7 @@ function Services() {
               </div>
               <h3>ScholarX Podcast</h3>
               <p>Listen to real stories from scholarship alumni, get practical advice, and join live Q&A sessions.</p>
-              <div className="program-buttons">
-                <button className="program-btn podcast-btn" onClick={() => openModal('podcast')}>Listen to Podcast</button>
-              </div>
+              <button className="program-btn podcast-btn" onClick={() => openModal('podcast')}>Listen to Podcast</button>
             </div>
           </div>
         </div>

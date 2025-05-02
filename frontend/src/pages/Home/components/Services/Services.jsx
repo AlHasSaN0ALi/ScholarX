@@ -18,12 +18,12 @@ export default function Service({
       waterMark}) {
     return (
         <>
-        <section className={`${clas}  `} >
+        <section className={`${clas} `} >
             
             
         <img src={waterMark} alt="waterMark" className="water-mark"/>  
             
-            <div className="container ">
+            <div className="container">
                  <h2>{title} <span>{titleBlue}</span></h2>   
                    <p>{paragraf}</p> 
                     
