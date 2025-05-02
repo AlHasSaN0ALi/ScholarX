@@ -28,6 +28,7 @@ export default function Service({
                    <p>{paragraf}</p> 
                     
                     <div className="boxes">
+
                         <div className="single-box">
                         <div className="icon">{icon1}</div>
                             <div className="group">
@@ -35,6 +36,7 @@ export default function Service({
                             <p>{text1}</p>
                             </div>
                         </div>
+                        
                         <div className="single-box">
                             <div className="icon">{icon2}</div>
                             <div className="group">
