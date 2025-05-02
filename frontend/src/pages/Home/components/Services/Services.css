@@ -1,13 +1,9 @@
-
-
-
-
 .bacground{
     background-image: linear-gradient(#D6EBF5 80%, #FFFFFF00 100%);
     position: relative;
     overflow: hidden;
     margin-bottom: 80px;
-
+    width: 100%;
 }
 .bacground .water-mark{
     width: 368px;
@@ -48,40 +44,42 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-padding-bottom: 96px;
-/* padding-left: 52px;
-padding-right: 52px; */
+    padding-bottom: 96px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .container h2{
     font-size: 39px;
     line-height: 100%;
-   font-weight: 500px;
+   font-weight: 500;
    text-align: center;
+   margin: 0;
 }
 
 .container h2 span{
     color: #3399CC;
 }
 .container p {
-    font-weight: 400px;
+    font-weight: 400;
     font-size: 20px;
     color: #555555;
     max-width: 630px;
-    height: 48px;
-    margin-top: 32px;
-    margin-bottom: 60px;
+    margin: 32px 0 60px;
     text-align: center;
 }
 
 
 .container .boxes{
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     width: 100%;
     z-index: 50;
-    justify-content: space-around;
     gap: 25px;
+    padding: 0;
+    box-sizing: border-box;
 }
 .bacground2 .container .boxes .single-box{
     box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1 );
@@ -93,11 +91,14 @@ padding-right: 52px; */
     justify-content: center;
     align-items: center;
     background-color: #FFFFFF;
-    max-height: 214px;
+    min-height: 214px;
     max-width: 396px;
     border-radius: 15px;
     box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.1  );
     text-align: center;
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 .container .boxes .single-box .icon {
     width: 56px;
@@ -116,27 +117,124 @@ padding-right: 52px; */
 
 }
 .container .boxes .single-box .orange {
-    width: 364px;
-    height: 30px;
-    font-weight: 400px;
+    width: 100%;
+    height: auto;
+    font-weight: 400;
     font-size: 25px;
    color: #FF6633;
-   margin-top: 20px; 
-  
+   margin: 20px 0;
 }
 
 .container .boxes .single-box .black{
     color: #0A1F29;
-    font-weight: 400px;
+    font-weight: 400;
     font-size: 25px;
-    width: 364px;
-    height: 30px;
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
 }
 .container .boxes .single-box p{
-    width: 383px;
-    height: 19px;
-    font-weight: 400px;
+    width: 100%;
+    height: auto;
+    font-weight: 400;
     font-size: 16px;
-    margin-top: -10px;
+    margin: 0;
     color: #808080;
+    padding: 0 1rem;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .container h2 {
+    font-size: 32px;
+  }
+
+  .container p {
+    font-size: 18px;
+    margin: 24px 0 40px;
+  }
+
+  .container .boxes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .container h2 {
+    font-size: 28px;
+  }
+
+  .container p {
+    font-size: 16px;
+    margin: 20px 0 30px;
+    padding: 0 1rem;
+  }
+
+  .container .boxes {
+    grid-template-columns: 1fr;
+  }
+
+  .container .boxes .single-box {
+    max-width: 100%;
+  }
+
+  .container .boxes .single-box .icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+    margin-top: 20px;
+  }
+
+  .container .boxes .single-box .orange,
+  .container .boxes .single-box .black {
+    font-size: 22px;
+    margin: 15px 0;
+  }
+
+  .container .boxes .single-box p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .container h2 {
+    font-size: 24px;
+  }
+
+  .container p {
+    font-size: 14px;
+    margin: 16px 0 24px;
+  }
+
+  .container .boxes .single-box .icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+    margin-top: 15px;
+  }
+
+  .container .boxes .single-box .orange,
+  .container .boxes .single-box .black {
+    font-size: 20px;
+    margin: 12px 0;
+  }
+
+  .container .boxes .single-box p {
+    font-size: 13px;
+    padding: 0 0.5rem;
+  }
 }

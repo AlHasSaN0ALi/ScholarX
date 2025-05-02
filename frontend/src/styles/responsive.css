@@ -1,0 +1,138 @@
+/* Global Responsive Styles */
+
+/* Breakpoints */
+:root {
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-laptop: 1024px;
+  --breakpoint-desktop: 1200px;
+}
+
+/* Fluid Typography */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Responsive Container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+}
+
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive Grid System */
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Responsive Spacing */
+:root {
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+  }
+}
+
+/* Responsive Utilities */
+.hide-mobile {
+  display: block;
+}
+
+.hide-desktop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+  
+  .hide-desktop {
+    display: block;
+  }
+}
+
+/* Touch-friendly elements */
+button, a, input, select, textarea {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Responsive Text Alignment */
+.text-center-mobile {
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .text-center-mobile {
+    text-align: center;
+  }
+}
+
+/* Responsive Margins and Padding */
+@media (max-width: 768px) {
+  .responsive-padding {
+    padding: 1rem;
+  }
+  
+  .responsive-margin {
+    margin: 1rem;
+  }
+} 
