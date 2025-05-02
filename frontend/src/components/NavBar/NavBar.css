@@ -10,7 +10,6 @@
   top: 0;
   z-index: 1000;
   height: 70px;
-  transition: all 0.3s ease;
 }
 
 .sx-container {
@@ -19,7 +18,6 @@
   align-items: center;
   width: 100%;
   max-width: 1200px;
-  position: relative;
 }
 
 .sx-navbar-logo {
@@ -49,7 +47,6 @@
   display: flex;
   gap: 2rem;
   align-items: center;
-  transition: all 0.3s ease;
 }
 
 .sx-navbar-links a, .sx-navbar-links a:visited {
@@ -59,7 +56,6 @@
   font-weight: 500;
   transition: color 0.3s;
   position: relative;
-  padding: 0.5rem;
 }
 
 .sx-navbar-links a:hover {
@@ -79,23 +75,15 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-  flex-wrap: nowrap;
-  margin-left: auto;
 }
 
 .sx-login-btn, .sx-signup-btn {
-  padding: 0.4rem 1rem;
+  padding: 0.4rem 1.5rem;
   border-radius: 4px;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 44px;
-  min-width: 80px;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .sx-login-btn {
@@ -125,11 +113,6 @@
   border: none;
   cursor: pointer;
   color: #333;
-  padding: 0.5rem;
-  min-height: 44px;
-  min-width: 44px;
-  align-items: center;
-  justify-content: center;
 }
 
 .sx-logout-btn {
@@ -142,11 +125,6 @@
   font-weight: 500;
   transition: background-color 0.3s ease;
   font-size: 0.9rem;
-  min-height: 44px;
-  min-width: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .sx-logout-btn:hover {
@@ -169,70 +147,43 @@
   }
 
   .sx-mobile-menu-btn {
-    display: flex;
+    display: block;
   }
 
   .sx-navbar-links {
-    position: fixed;
+    position: absolute;
     top: 70px;
-    right: 0;
+    left: 0;
     flex-direction: column;
     background-color: white;
-    width: 250px;
-    padding: 1rem;
+    width: 100%;
+    padding: 1rem 0;
     gap: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: none;
-    max-height: calc(100vh - 70px);
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
   }
 
   .sx-navbar-links.sx-active {
     display: flex;
-    transform: translateX(0);
   }
 
   .sx-navbar-links a {
-    padding: 1rem;
+    padding: 0.5rem 2rem;
     width: 100%;
-    text-align: left;
-    font-size: 1.1rem;
+    text-align: center;
   }
 
   .sx-dropdown {
     width: 100%;
-    text-align: left;
+    text-align: center;
   }
 
   .sx-navbar-auth {
-    flex-direction: column;
-    width: 100%;
-    padding: 1rem;
-    gap: 1rem;
+    margin-left: auto;
   }
 
   .sx-login-btn, .sx-signup-btn {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .sx-navbar-logo span {
-    font-size: 1rem;
-  }
-  
-  .sx-navbar-logo img {
-    height: 24px;
-  }
-
-  .sx-login-btn, .sx-signup-btn {
-    padding: 0.4rem 0.6rem;
+    padding: 0.3rem 1.2rem;
     font-size: 0.8rem;
-    min-width: 70px;
   }
 }
-
