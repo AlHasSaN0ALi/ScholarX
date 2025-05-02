@@ -4,7 +4,7 @@ import { authService } from '../../services/api';
 import './NavBar.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function NavBar() {
+function NavBar({ activePage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('/');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,7 +15,8 @@ function NavBar() {
   };
 
   useEffect(() => {
-    setCurrentPath(window.location.pathname);
+    // If activePage prop is provided, use it; otherwise use window.location.pathname
+    setCurrentPath(activePage || window.location.pathname);
     checkAuth();
     
     // Add event listener for auth state changes
@@ -34,7 +35,7 @@ function NavBar() {
     return () => {
       window.removeEventListener('authStateChanged', checkAuth);
     };
-  }, []);
+  }, [activePage]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);

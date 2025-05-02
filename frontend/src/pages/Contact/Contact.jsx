@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import NavBar from '../../components/NavBar/NavBar';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
@@ -62,7 +61,6 @@ const Contact = () => {
 
   return (
     <>
-      <NavBar />
       <div className="py-5">
         <div className="text-center mb-5">
           <h2 className={styles.header}>Get in Touch</h2>

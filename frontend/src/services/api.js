@@ -88,6 +88,25 @@ export const authService = {
             throw error;
         }
     },
+
+    // Mock API methods for modals
+    submitAmbassadorApplication: async (formData) => {
+        console.log('Ambassador application submitted:', formData);
+        // Mock success response
+        return { status: 'success', message: 'Application submitted successfully' };
+    },
+
+    requestMentorship: async (formData) => {
+        console.log('Mentorship request submitted:', formData);
+        // Mock success response
+        return { status: 'success', message: 'Request submitted successfully' };
+    },
+
+    subscribeToPodcast: async (email) => {
+        console.log('Podcast subscription:', email);
+        // Mock success response
+        return { status: 'success', message: 'Subscribed to podcast successfully' };
+    }
 };
 
 export default api; 

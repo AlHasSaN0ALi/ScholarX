@@ -1,13 +1,10 @@
 import React from 'react';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer/Footer';
 import './About.css';
 
 const About = () => {
 
   return (
     <>
-      <NavBar />
       <div className="about-wrapper">
         <div className="about-bg-deco"></div>
         <div className="about-white-arc"></div>
@@ -189,7 +186,6 @@ const About = () => {
             </div>
           </div>
         </div>
-        <Footer/>
     </>
   );
 };

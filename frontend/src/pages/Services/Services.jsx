@@ -1,15 +1,34 @@
-import React from 'react';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer/Footer';
+import React, { useState } from 'react';
 import './Services.css';
 import { FaUsers, FaPodcast } from 'react-icons/fa';
 import { MdWork } from 'react-icons/md';
+import AmbassadorModal from './components/AmbassadorModal/AmbassadorModal';
+import MentorshipModal from './components/MentorshipModal/MentorshipModal';
+import PodcastModal from './components/PodcastModal/PodcastModal';
 
 function Services() {
+  const [modals, setModals] = useState({
+    ambassador: false,
+    mentorship: false,
+    podcast: false
+  });
+
+  const openModal = (modalName) => {
+    setModals({
+      ...modals,
+      [modalName]: true
+    });
+  };
+
+  const closeModal = (modalName) => {
+    setModals({
+      ...modals,
+      [modalName]: false
+    });
+  };
+
   return (
     <div className="services-page">
-      <NavBar />
-      
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
@@ -36,7 +55,7 @@ function Services() {
               </div>
               <h3>Ambassador Program</h3>
               <p>Lead, organize events, and mentor peers at your school/university. Develop leadership skills and make an impact.</p>
-              <button className="program-btn apply-btn">Apply Now</button>
+              <button className="program-btn apply-btn" onClick={() => openModal('ambassador')}>Apply Now</button>
             </div>
 
             <div className="program-card">
@@ -45,7 +64,7 @@ function Services() {
               </div>
               <h3>Mentorship & Career Guidance</h3>
               <p>Get 1-on-1 mentorship for essays, interviews, and career development from experienced professionals.</p>
-              <button className="program-btn request-btn">Request Mentor</button>
+              <button className="program-btn request-btn" onClick={() => openModal('mentorship')}>Request Mentor</button>
             </div>
 
             <div className="program-card">
@@ -54,7 +73,7 @@ function Services() {
               </div>
               <h3>ScholarX Podcast</h3>
               <p>Listen to real stories from scholarship alumni, get practical advice, and join live Q&A sessions.</p>
-              <button className="program-btn podcast-btn">Listen to Podcast</button>
+              <button className="program-btn podcast-btn" onClick={() => openModal('podcast')}>Listen to Podcast</button>
             </div>
           </div>
         </div>
@@ -102,9 +121,23 @@ function Services() {
         </div>
       </section>
 
-      <Footer />
+      {/* Modals */}
+      <AmbassadorModal 
+        isOpen={modals.ambassador} 
+        onClose={() => closeModal('ambassador')} 
+      />
+      
+      <MentorshipModal 
+        isOpen={modals.mentorship} 
+        onClose={() => closeModal('mentorship')} 
+      />
+      
+      <PodcastModal 
+        isOpen={modals.podcast} 
+        onClose={() => closeModal('podcast')} 
+      />
     </div>
   );
 }
 
-export default Services; 
+export default Services;

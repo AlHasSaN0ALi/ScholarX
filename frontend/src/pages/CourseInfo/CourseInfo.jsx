@@ -4,8 +4,6 @@ import { useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import courseData from './CourseData';
 import './CourseInfo.css';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer/Footer';
 import { useParams, useNavigate } from 'react-router-dom';
 import { authService } from '../../services/api';
 import Swal from 'sweetalert2';
@@ -75,7 +73,6 @@ function CoursePage() {
 
   return (
     <>
-      <NavBar />
       <div className="course-container">
         <div
           className="course-header"
@@ -211,7 +208,6 @@ function CoursePage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

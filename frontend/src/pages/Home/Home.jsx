@@ -1,6 +1,4 @@
 import React from 'react';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer/Footer';
 import Hero from './components/Hero/Hero';
 import Features from './components/Features/Features';
 import Services from './components/Services/Services';
@@ -17,7 +15,6 @@ import './Home.css';
 function Home() {
   return (
     <>
-      <NavBar />
       <Hero />
       <Features />
       <Services
@@ -52,7 +49,6 @@ function Home() {
           icon2={<GrGroup />}
           icon3={<VscBriefcase />} />
          <Impact  waterMark={waterMark}/>
-      <Footer />
     </>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from '../../components/NavBar/NavBar';
 import CourseCard from './CourseCard';
 import './Courses.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -116,8 +115,6 @@ function Courses() {
 
   return (
     <>
-      <NavBar />
-
       <div className="search-container">
         <div className="text-content">
           <span className="courses-span">Courses</span>
