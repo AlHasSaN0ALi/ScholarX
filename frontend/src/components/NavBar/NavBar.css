@@ -1,6 +1,6 @@
 .sx-navbar {
   display: flex; 
-   justify-content: space-between;
+   justify-content: space-evenly;
   align-items: center;
   padding: 1rem 0rem;
   background-color: rgba(255, 255, 255, 0.6);
@@ -15,6 +15,7 @@
 .sx-navbar-logo {
   display: flex;
   align-items: center;
+  justify-content: space-around;
 }
 
 .sx-navbar-logo img {
@@ -31,8 +32,9 @@
 
 .sx-navbar-links {
   display: flex;
-  gap: 2rem;
+  /* gap: 2rem; */
   align-items: center;
+  justify-content: space-between;
 }
 
 .sx-navbar-links a, .sx-navbar-links a:visited {
@@ -64,9 +66,11 @@
 }
 
 .sx-navbar-auth {
+  margin-left: 60px;
   display: flex;
   gap: 1rem;
   align-items: center;
+  justify-content: center;
 }
 
 .sx-mobile-auth {
@@ -111,10 +115,20 @@
   color: #333;
 }
 
+.sx-logout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
 
-
-
-
+.sx-logout-btn:hover {
+    background-color: #c82333;
+}
 
 @media (max-width: 768px) {
   .sx-navbar {

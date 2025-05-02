@@ -8,7 +8,7 @@ const About = () => {
   return (
     
     <div className="nav">
-      <NavBar />
+      {/* <NavBar /> */}
   <div className="about-wrapper">
     <div className="about-bg-deco"></div>
     <div className="about-white-arc"></div>

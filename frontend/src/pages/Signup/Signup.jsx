@@ -1,123 +1,183 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { authService } from '../../services/api';
+import Swal from 'sweetalert2';
 import "./Signup.css";
 
+const signupSchema = Yup.object().shape({
+    firstName: Yup.string()
+        .required('First name is required')
+        .min(2, 'First name must be at least 2 characters'),
+    lastName: Yup.string()
+        .required('Last name is required')
+        .min(2, 'Last name must be at least 2 characters'),
+    email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is required'),
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Confirm password is required'),
+    phoneNumber: Yup.string()
+        .required('Phone number is required')
+        .matches(/^[0-9+\-\s()]*$/, 'Invalid phone number format'),
+});
+
 const Signup = () => {
- const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
 
-  const [errors, setErrors] = useState({});
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
+            const response = await authService.register(values);
+            if (response.status === 'success') {
+                // Show success message
+                await Swal.fire({
+                    title: 'Success!',
+                    text: 'Registration successful! Redirecting to login...',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'animated fadeInDown'
+                    }
+                });
+                
+                navigate('/login');
+            } else {
+                setError(response.data.message || 'Registration failed');
+            }
+        } catch (err) {
+            setError(err.response?.data?.data?.message || 'An error occurred during registration');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+    return (
+        <div className="signup-container">
+            <div className="signup-content">
+                <div className="image">
+                    <div className="imageContainer">
+                        <div className="socialProof"></div>
+                    </div>
+                </div>
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.fullName.trim()) {
-        newErrors.fullName = "Full name is required.";
-      } else if (!/^[a-zA-Z]+(?: [a-zA-Z]+)+$/.test(formData.fullName.trim())) {
-        newErrors.fullName = "Enter your full name (first and last).";
-      }
-    if (!formData.email.includes("@")) newErrors.email = "Invalid email address.";
-    if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters.";
-    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match.";
-    return newErrors;
-  };
+                <div className="form-section">
+                    <h2 className="form-title">Create Your Account</h2>
+                    {error && <div className="error-message">{error}</div>}
+                    <Formik
+                        initialValues={{
+                            firstName: '',
+                            lastName: '',
+                            email: '',
+                            password: '',
+                            confirmPassword: '',
+                            phoneNumber: '',
+                        }}
+                        validationSchema={signupSchema}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ isSubmitting }) => (
+                            <Form className="signup-form">
+                                <div className="form-group">
+                                    <label htmlFor="firstName">First Name</label>
+                                    <Field
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="firstName" component="small" className="error" />
+                                </div>
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted:", formData);
-      navigate("/");
-    }
-  };
+                                <div className="form-group">
+                                    <label htmlFor="lastName">Last Name</label>
+                                    <Field
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="lastName" component="small" className="error" />
+                                </div>
 
-  return (
-    <div className="signup-container">
-    <div className="signup-header">
-      <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
-    </div>
-      <div className="signup-content">
-        <div className="image">
-          <div className="imageContainer">
-            <div className="socialProof"></div>
-          </div>
+                                <div className="form-group">
+                                    <label htmlFor="email">Email address</label>
+                                    <Field
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="email" component="small" className="error" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="phoneNumber">Phone Number</label>
+                                    <Field
+                                        type="tel"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="phoneNumber" component="small" className="error" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="password">Password</label>
+                                    <Field
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="password" component="small" className="error" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="confirmPassword">Confirm Password</label>
+                                    <Field
+                                        type="password"
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="confirmPassword" component="small" className="error" />
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    className="signup-button"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Creating Account...' : 'Sign Up'}
+                                </button>
+
+                                <div className="login-link">
+                                    Have an account? <Link to="/login">Login</Link>
+                                </div>
+
+                                <div className="divider">
+                                    <span>Or Sign Up with</span>
+                                </div>
+
+                                <button type="button" className="google-signup">
+                                    <img src="/google.png" alt="Google" className="google-icon" />
+                                    Google
+                                </button>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            </div>
         </div>
-
-        <div className="form-section">
-          <h2 className="form-title">Create Your Account</h2>
-          <form className="signup-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
-              <input 
-                type="text" 
-                id="fullName" 
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-              {errors.fullName && <small className="error">{errors.fullName}</small>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">Email address</label>
-              <input 
-                type="email" 
-                id="email" 
-                value={formData.email}
-                onChange={handleChange}
-              />
-              {errors.email && <small className="error">{errors.email}</small>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input 
-                type="password" 
-                id="password" 
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {errors.password && <small className="error">{errors.password}</small>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input 
-                type="password" 
-                id="confirmPassword" 
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-              {errors.confirmPassword && <small className="error">{errors.confirmPassword}</small>}
-            </div>
-
-            <button type="submit" className="signup-button">Sign UP</button>
-
-            <div className="login-link">
-              Have an account? <Link to="/login">Login</Link>
-            </div>
-
-            <div className="divider">
-              <span>Or Sign Up with</span>
-            </div>
-
-            <button type="button" className="google-signup">
-              <img src="/google.png" alt="Google" className="google-icon" />
-              Google
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Signup;

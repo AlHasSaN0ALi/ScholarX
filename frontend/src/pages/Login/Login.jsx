@@ -1,98 +1,132 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { authService } from '../../services/api';
+import Swal from 'sweetalert2';
 import './Login.css';
 
+const loginSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is required'),
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters'),
+});
+
 const Login = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
 
-  const [errors, setErrors] = useState({});
+    const handleSubmit = async (values, { setSubmitting }) => {
+        try {
+            const response = await authService.login(values);
+            if (response.status === 'success') {
+                // Show success message
+                await Swal.fire({
+                    title: 'Success!',
+                    text: 'Login successful!',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'animated fadeInDown'
+                    }
+                });
+                
+                // Dispatch event and navigate
+                window.dispatchEvent(new Event('authStateChanged'));
+                navigate('/');
+            } else {
+                setError(response.data.message || 'Login failed');
+            }
+        } catch (err) {
+            setError(err.response?.data?.data?.message || 'An error occurred during login');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
+    return (
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.email.includes("@")) newErrors.email = "Invalid email address.";
-    return newErrors;
-  };
+        <div className="login-container ">
+            {/* <div className="login-header">
+                <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
+            </div> */}
+            <div className="login-content">
+                <div className="image">
+                    <div className="imageContainer">
+                        <div className="socialProof"></div>
+                    </div>
+                </div>
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Form submitted:", formData);
-      navigate("/");
-    }
-  };
+                <div className="form-section">
+                    <h2 className="form-title">Login to Your Account</h2>
+                    {error && <div className="error-message">{error}</div>}
+                    <Formik
+                        initialValues={{ email: '', password: '' }}
+                        validationSchema={loginSchema}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ isSubmitting }) => (
+                            <Form className="login-form">
+                                <div className="form-group1">
+                                    <label htmlFor="email">Email address</label>
+                                    <Field
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="email" component="small" className="error" />
+                                </div>
 
-  return (
-    <div className="login-container">
-      <div className="login-header">
-        <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
-      </div>
-      <div className="login-content">
-        <div className="image">
-          <div className="imageContainer">
-            <div className="socialProof"></div>
-          </div>
+                                <div className="form-group1">
+                                    <label htmlFor="password">Password</label>
+                                    <Field
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        className="form-input"
+                                    />
+                                    <ErrorMessage name="password" component="small" className="error" />
+                                </div>
+
+                                <div className="form-options">
+                                    <div className="remember-me">
+                                        <Field type="checkbox" id="remember" name="remember" />
+                                        <span>Remember me</span>
+                                    </div>
+                                    <Link to="/forgot-password" className="forgot-password">
+                                        Forgot your password?
+                                    </Link>
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    className="login-button"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Signing in...' : 'Sign In'}
+                                </button>
+
+                                <div className="divider">
+                                    <span>Or Sign up with</span>
+                                </div>
+
+                                <button type="button" className="google-signup">
+                                    <img src="/google.png" alt="Google" className="google-icon" />
+                                    Google
+                                </button>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
+            </div>
         </div>
-
-        <div className="form-section">
-          <h2 className="form-title">Login to Your Account</h2>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="form-group1">
-              <label htmlFor="email">Email address</label>
-              <input 
-                type="email" 
-                id="email" 
-                value={formData.email}
-                onChange={handleChange}
-              />
-              {errors.email && <small className="error">{errors.email}</small>}
-            </div>
-
-            <div className="form-group1">
-              <label htmlFor="password">Password</label>
-              <input 
-                type="password" 
-                id="password" 
-                value={formData.password}
-                onChange={handleChange}
-              />
-              {errors.password && <small className="error">{errors.password}</small>}
-            </div>
-
-            <div className="form-options">
-              <div className="remember-me">
-                <input type="checkbox" id="remember" />
-                <span>Remember me</span>
-              </div>
-              <Link to="/forgot-password" className="forgot-password">
-                Forgot your password?
-              </Link>
-            </div>
-
-            <button type="submit" className="login-button">Sign In</button>
-
-            <div className="divider">
-              <span>Or Sign up with</span>
-            </div>
-
-            <button type="button" className="google-signup">
-              <img src="/google.png" alt="Google" className="google-icon" />
-              Google
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Login;
