@@ -131,6 +131,10 @@
   background-color: #c82333;
 }
 
+.sx-mobile-auth {
+  display: none;
+}
+
 @media (max-width: 992px) {
   .sx-navbar {
     padding: 0.8rem 1.5rem;
@@ -178,13 +182,27 @@
     text-align: center;
   }
 
-  .sx-navbar-auth {
-    margin-left: auto;
+  .sx-mobile-auth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
   }
 
-  .sx-login-btn, .sx-signup-btn {
-    padding: 0.3rem 1.2rem;
-    font-size: 0.8rem;
+  .sx-mobile-auth-link {
+    width: 80%;
+    margin-bottom: 0.5rem;
+  }
+
+  .sx-mobile-auth button {
+    width: 100%;
+  }
+
+  .sx-desktop-auth {
+    display: none;
   }
 }
 

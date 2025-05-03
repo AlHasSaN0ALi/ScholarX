@@ -41,11 +41,16 @@ function NavBar({ activePage }) {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
   const handleLogout = () => {
     authService.logout();
     setIsAuthenticated(false);
     // Dispatch event to notify other components about logout
     window.dispatchEvent(new Event('authStateChanged'));
+    closeMobileMenu();
     navigate('/');
   };
 
@@ -59,10 +64,10 @@ function NavBar({ activePage }) {
     }
     return (
       <>
-        <Link to="/signup">
+        <Link to="/signup" onClick={closeMobileMenu} className="sx-mobile-auth-link">
           <button className="sx-signup-btn">Sign Up</button>
         </Link>
-        <Link to="/login">
+        <Link to="/login" onClick={closeMobileMenu} className="sx-mobile-auth-link">
           <button className="sx-login-btn">Login</button>
         </Link>
       </>
@@ -84,16 +89,20 @@ function NavBar({ activePage }) {
         </button>
 
         <div className={`sx-navbar-links ${mobileMenuOpen ? 'sx-active' : ''}`}>
-          <Link to="/" className={currentPath === '/' ? 'sx-active' : ''}>Home</Link>
-          <Link to="/about" className={currentPath === '/about' ? 'sx-active' : ''}>About Us</Link>
-          <Link to="/services" className={currentPath === '/services' ? 'sx-active' : ''}>Our Services</Link>
+          <Link to="/" className={currentPath === '/' ? 'sx-active' : ''} onClick={closeMobileMenu}>Home</Link>
+          <Link to="/about" className={currentPath === '/about' ? 'sx-active' : ''} onClick={closeMobileMenu}>About Us</Link>
+          <Link to="/services" className={currentPath === '/services' ? 'sx-active' : ''} onClick={closeMobileMenu}>Our Services</Link>
           <div className="sx-dropdown">
-            <Link to="/courses" className={currentPath === '/courses' ? 'sx-active' : ''}>Courses</Link>
+            <Link to="/courses" className={currentPath === '/courses' ? 'sx-active' : ''} onClick={closeMobileMenu}>Courses</Link>
           </div>
-          <Link to="/contact" className={currentPath === '/contact' ? 'sx-active' : ''}>Contact</Link>
+          <Link to="/contact" className={currentPath === '/contact' ? 'sx-active' : ''} onClick={closeMobileMenu}>Contact</Link>
+          
+          <div className="sx-mobile-auth">
+            {renderAuthButtons()}
+          </div>
         </div>
 
-        <div className="sx-navbar-auth">
+        <div className="sx-navbar-auth sx-desktop-auth">
           {renderAuthButtons()}
         </div>
       </div>
