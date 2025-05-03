@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Hero.module.css';
 
 const Hero = () => {
@@ -20,10 +21,12 @@ const Hero = () => {
           </p>
           <div className={styles.buttons}>
             <div>
-              <button className={styles.btnPrimary}>
-                Explore Services
-                <span className={styles.icon}>→</span>
-              </button>
+              <Link to="/services" style={{ textDecoration: 'none' }}>
+                <button className={styles.btnPrimary}>
+                  Explore Services
+                  <span className={styles.icon}>→</span>
+                </button>
+              </Link>
             </div>
             <div>
               <button className={styles.btnSecondary}>

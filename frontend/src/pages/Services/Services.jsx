@@ -86,7 +86,7 @@ function Services() {
       </section>
 
       {/* Success Stories Section */}
-      <section className="success-section">
+      {/* <section className="success-section">
         <div className="section-container">
           <h2 className="section-title">Success Stories</h2>
           
@@ -125,7 +125,7 @@ function Services() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Modals */}
       <AmbassadorModal 
