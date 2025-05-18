@@ -8,6 +8,8 @@ import Signup from './pages/Signup/Signup'
 import Contact from './pages/Contact/Contact'
 import CoursePage from './pages/CourseInfo/CourseInfo'
 import ForgetPassword from './pages/forget-password/forget'
+import ResetPassword from './pages/reset-password/reset'
+import NotFound from './pages/NotFound/NotFound'
 import NavBar from './components/NavBar/NavBar'
 import Footer from './components/Footer/Footer'
 import Services from './pages/Services/Services'
@@ -51,9 +53,12 @@ function App() {
           <Route path="/CoursePage/:courseId" element={<LayoutWithPath><CoursePage /></LayoutWithPath>} />
           <Route path="/Contact" element={<LayoutWithPath><Contact /></LayoutWithPath>} />
           <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/search-results" element={<LayoutWithPath><SearchResults /></LayoutWithPath>} />
           <Route path="/auth/google" element={<LayoutWithPath><GoogleCallback /></LayoutWithPath>} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          {/* Catch all route - must be last */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

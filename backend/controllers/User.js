@@ -3,7 +3,7 @@ const JSendResponse = require('../utils/StandardResponse');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { handleImageUpload } = require('../utils/cloudinaryConfig');
-const { sendVerificationEmail } = require('../utils/emailService');
+const { sendVerificationEmail,sendPasswordResetEmail } = require('../utils/emailService');
 const { validateEmail } = require('../utils/emailValidator');
 
 // Generate JWT Token
@@ -244,12 +244,14 @@ exports.updatePassword = async (req, res) => {
 // Forgot password
 exports.forgotPassword = async (req, res) => {
     try {
+        console.log("uuuu");
+        
         const { email } = req.body;
         const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(404).json(
-                JSendResponse.fail({ message: 'User not found' })
+                JSendResponse.fail({ message: 'No user found with that email address' })
             );
         }
 
@@ -263,12 +265,25 @@ exports.forgotPassword = async (req, res) => {
 
         await user.save();
 
-        // TODO: Send reset password email
-        // For now, we'll just return the token
+        // Create reset URL
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+        // Send email
+        const emailResult = await sendPasswordResetEmail(
+            email,
+            resetUrl,
+            
+        );
+
+        if (!emailResult.success) {
+            return res.status(500).json(
+                JSendResponse.fail({ message: 'Email could not be sent' })
+            );
+        }
+
         res.status(200).json(
             JSendResponse.success({
-                message: 'Password reset token generated',
-                resetToken
+                message: 'Password reset email sent. Please check your email.'
             })
         );
     } catch (error) {
