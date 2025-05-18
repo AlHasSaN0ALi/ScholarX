@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { authService } from '../../services/api';
 import Swal from 'sweetalert2';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import "./Signup.css";
 
 const signupSchema = Yup.object().shape({
@@ -18,7 +20,11 @@ const signupSchema = Yup.object().shape({
         .required('Email is required'),
     password: Yup.string()
         .required('Password is required')
-        .min(6, 'Password must be at least 6 characters'),
+        .min(8, 'Password must be at least 8 characters')
+        .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+        .matches(/[0-9]/, 'Password must contain at least one number')
+        .matches(/[!@#$%^&*]/, 'Password must contain at least one special character (!@#$%^&*)'),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match')
         .required('Confirm password is required'),
@@ -27,50 +33,82 @@ const signupSchema = Yup.object().shape({
         .matches(/^[0-9+\-\s()]*$/, 'Invalid phone number format'),
 });
 
+const PasswordRequirement = ({ met, text }) => (
+    <div className={`password-requirement ${met ? 'met' : ''}`}>
+        <span className="requirement-icon">{met ? '✓' : '○'}</span>
+        <span className="requirement-text">{text}</span>
+    </div>
+);
+
 const Signup = () => {
-    const navigate = useNavigate();
-    const [error, setError] = useState('');
+ const navigate = useNavigate();
+    const [emailError, setEmailError] = useState('');
+    const [password, setPassword] = useState('');
+
+    const checkPasswordRequirement = (requirement) => {
+        switch (requirement) {
+            case 'length':
+                return password.length >= 8;
+            case 'uppercase':
+                return /[A-Z]/.test(password);
+            case 'lowercase':
+                return /[a-z]/.test(password);
+            case 'number':
+                return /[0-9]/.test(password);
+            case 'special':
+                return /[!@#$%^&*]/.test(password);
+            default:
+                return false;
+        }
+    };
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
+            setEmailError(''); // Clear any previous email errors
             const response = await authService.register(values);
             if (response.status === 'success') {
-                // Show success message
                 await Swal.fire({
-                    title: 'Success!',
-                    text: 'Registration successful! Redirecting to login...',
+                    title: 'Registration Successful!',
+                    html: `
+                        <p>Please check your email to confirm your account.</p>
+                    `,
                     icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
+                    showConfirmButton: true,
                     customClass: {
                         popup: 'animated fadeInDown'
                     }
                 });
                 
                 navigate('/login');
-            } else {
-                setError(response.data.message || 'Registration failed');
             }
         } catch (err) {
-            setError(err.response?.data?.data?.message || 'An error occurred during registration');
+            const errorMessage = err.response?.data?.data?.message;
+            if (errorMessage?.toLowerCase().includes('email')) {
+                setEmailError(errorMessage);
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: errorMessage || 'An error occurred during registration',
+                    icon: 'error',
+                    confirmButtonText: 'Try Again'
+                });
+            }
         } finally {
             setSubmitting(false);
-        }
-    };
+    }
+  };
 
-    return (
-        <div className="signup-container">
-            <div className="signup-content">
-                <div className="image">
-                    <div className="imageContainer">
-                        <div className="socialProof"></div>
-                    </div>
-                </div>
+  return (
+    <div className="signup-container">
+      <div className="signup-content">
+        <div className="image">
+          <div className="imageContainer">
+            <div className="socialProof"></div>
+          </div>
+        </div>
 
-                <div className="form-section">
-                    <h2 className="form-title">Create Your Account</h2>
-                    {error && <div className="error-message">{error}</div>}
+        <div className="form-section">
+          <h2 className="form-title">Create Your Account</h2>
                     <Formik
                         initialValues={{
                             firstName: '',
@@ -83,7 +121,7 @@ const Signup = () => {
                         validationSchema={signupSchema}
                         onSubmit={handleSubmit}
                     >
-                        {({ isSubmitting }) => (
+                        {({ isSubmitting, setFieldValue, values }) => (
                             <Form className="signup-form">
                                 <div className="form-group">
                                     <label htmlFor="firstName">First Name</label>
@@ -96,60 +134,98 @@ const Signup = () => {
                                     <ErrorMessage name="firstName" component="small" className="error" />
                                 </div>
 
-                                <div className="form-group">
+            <div className="form-group">
                                     <label htmlFor="lastName">Last Name</label>
                                     <Field
-                                        type="text"
+                type="text" 
                                         id="lastName"
                                         name="lastName"
                                         className="form-input"
                                     />
                                     <ErrorMessage name="lastName" component="small" className="error" />
-                                </div>
+            </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="email">Email address</label>
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
                                     <Field
-                                        type="email"
-                                        id="email"
+                type="email" 
+                id="email" 
                                         name="email"
-                                        className="form-input"
+                                        className={`form-input ${emailError ? 'error-input' : ''}`}
                                     />
                                     <ErrorMessage name="email" component="small" className="error" />
+                                    {emailError && <small className="error">{emailError}</small>}
                                 </div>
 
                                 <div className="form-group">
                                     <label htmlFor="phoneNumber">Phone Number</label>
-                                    <Field
-                                        type="tel"
-                                        id="phoneNumber"
-                                        name="phoneNumber"
-                                        className="form-input"
+                                    <PhoneInput
+                                        country={'eg'}
+                                        value={values.phoneNumber}
+                                        onChange={phone => setFieldValue('phoneNumber', phone)}
+                                        inputClass="form-input"
+                                        containerClass="phone-input-container"
+                                        buttonClass="phone-input-button"
+                                        dropdownClass="phone-input-dropdown"
+                                        searchClass="phone-input-search"
+                                        enableSearch={true}
+                                        searchPlaceholder="Search country..."
+                                        inputProps={{
+                                            name: 'phoneNumber',
+                                            id: 'phoneNumber',
+                                            required: true,
+                                        }}
                                     />
                                     <ErrorMessage name="phoneNumber" component="small" className="error" />
-                                </div>
+            </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
                                     <Field
-                                        type="password"
-                                        id="password"
+                type="password" 
+                id="password" 
                                         name="password"
                                         className="form-input"
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            setFieldValue('password', e.target.value);
+                                        }}
                                     />
                                     <ErrorMessage name="password" component="small" className="error" />
-                                </div>
+                                    {/* <div className="password-requirements">
+                                        <PasswordRequirement 
+                                            met={checkPasswordRequirement('length')} 
+                                            text="At least 8 characters"
+                                        />
+                                        <PasswordRequirement 
+                                            met={checkPasswordRequirement('uppercase')} 
+                                            text="At least one uppercase letter"
+                                        />
+                                        <PasswordRequirement 
+                                            met={checkPasswordRequirement('lowercase')} 
+                                            text="At least one lowercase letter"
+                                        />
+                                        <PasswordRequirement 
+                                            met={checkPasswordRequirement('number')} 
+                                            text="At least one number"
+                                        />
+                                        <PasswordRequirement 
+                                            met={checkPasswordRequirement('special')} 
+                                            text="At least one special character (!@#$%^&*)"
+                                        />
+                                    </div> */}
+            </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="confirmPassword">Confirm Password</label>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
                                     <Field
-                                        type="password"
-                                        id="confirmPassword"
+                type="password" 
+                id="confirmPassword" 
                                         name="confirmPassword"
                                         className="form-input"
-                                    />
+              />
                                     <ErrorMessage name="confirmPassword" component="small" className="error" />
-                                </div>
+            </div>
 
                                 <button 
                                     type="submit" 
@@ -161,27 +237,27 @@ const Signup = () => {
 
                                 <div className="linkk">
                                     Have an account? <Link className="login-link" to="/login">Login</Link>
-                                </div>
+            </div>
 
-                                <div className="divider">
-                                    <span>Or Sign Up with</span>
-                                </div>
+            <div className="divider">
+              <span>Or Sign Up with</span>
+            </div>
 
                                 <button 
                                     type="button" 
                                     className="google-signup"
                                     onClick={() => authService.initiateGoogleLogin()}
                                 >
-                                    <img src="/google.png" alt="Google" className="google-icon" />
+              <img src="/google.png" alt="Google" className="google-icon" />
                                     Continue with Google
-                                </button>
+            </button>
                             </Form>
                         )}
                     </Formik>
-                </div>
-            </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Signup;

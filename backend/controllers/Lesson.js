@@ -7,6 +7,7 @@ exports.createLesson = async (req, res) => {
     try {
         console.log(req.file);
         
+        
         // Check if course exists
         const course = await Course.findById(req.params.courseId);
         if (!course) {

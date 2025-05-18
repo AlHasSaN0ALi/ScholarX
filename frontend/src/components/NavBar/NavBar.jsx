@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../../services/api';
 import './NavBar.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FiLogOut } from 'react-icons/fi';
 
 function NavBar({ activePage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -58,7 +59,8 @@ function NavBar({ activePage }) {
     if (isAuthenticated) {
       return (
         <button className="sx-logout-btn" onClick={handleLogout}>
-          Logout
+          Logout 
+          {/* <FiLogOut className="logout-icon" /> */}
         </button>
       );
     }

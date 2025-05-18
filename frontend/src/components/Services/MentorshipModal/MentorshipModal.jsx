@@ -56,7 +56,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="goals">What are your academic and career goals, and how can mentorship help you achieve them?</label>
               <textarea 
                 id="goals" 
@@ -66,7 +66,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-groupp">
               <label>Which areas do you need the most support in?</label>
               <div className="checkbox-group">
                 <div className="checkbox-item">
@@ -88,7 +88,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="experience">Have you previously received any mentorship or career guidance? If yes, what was your experience?</label>
               <textarea 
                 id="experience" 
@@ -98,7 +98,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="expectations">What do you hope to gain from being matched with a mentor in your field?</label>
               <textarea 
                 id="expectations" 

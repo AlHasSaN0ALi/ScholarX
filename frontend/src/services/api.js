@@ -1,7 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL ;
+console.log(import.meta.env.VITE_API_URL);
 
 const api = axios.create({
     baseURL: API_URL,
@@ -19,6 +20,19 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+// Add response interceptor to handle token expiration
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            Cookies.remove('token');
+            Cookies.remove('user');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export const authService = {
     login: async (credentials) => {
         const response = await api.post('/users/login', credentials);
@@ -32,11 +46,7 @@ export const authService = {
 
     register: async (userData) => {
         const response = await api.post('/users/register', userData);
-        if (response.data.status === 'success') {
-            // Set token in cookie with 7 days expiry
-            Cookies.set('token', response.data.data.token, { expires: 7 });
-            Cookies.set('user', JSON.stringify(response.data.data.user), { expires: 7 });
-        }
+     
         return response.data;
     },
 
@@ -89,23 +99,35 @@ export const authService = {
         }
     },
 
-    // Mock API methods for modals
-    submitAmbassadorApplication: async (formData) => {
-        console.log('Ambassador application submitted:', formData);
-        // Mock success response
-        return { status: 'success', message: 'Application submitted successfully' };
+
+    verifyEmail: async (token) => {
+        return await axios.get(`${API_URL}/users/verify-email?token=${token}`);
+    }
+};
+
+export const programService = {
+    // Ambassador Program
+    submitAmbassadorApplication: async (data) => {
+        const response = await api.post('/programs/ambassador/apply', data);
+        return response.data;
     },
 
-    requestMentorship: async (formData) => {
-        console.log('Mentorship request submitted:', formData);
-        // Mock success response
-        return { status: 'success', message: 'Request submitted successfully' };
+    // Mentorship Program
+    submitMentorshipRequest: async (data) => {
+        const response = await api.post('/programs/mentorship/request', data);
+        return response.data;
     },
 
-    subscribeToPodcast: async (email) => {
-        console.log('Podcast subscription:', email);
-        // Mock success response
-        return { status: 'success', message: 'Subscribed to podcast successfully' };
+    // Get application status
+    getApplicationStatus: async (id) => {
+        const response = await api.get(`/programs/status/${id}`);
+        return response.data;
+    },
+
+    // Get all applications for current user
+    getMyApplications: async () => {
+        const response = await api.get('/programs/my-applications');
+        return response.data;
     }
 };
 

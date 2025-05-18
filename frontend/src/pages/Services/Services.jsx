@@ -71,7 +71,7 @@ function Services() {
               </div>
             </div>
 
-            <div className="program-card">
+            {/* <div className="program-card">
               <div className="program-icon podcast">
                 <FaPodcast />
               </div>
@@ -80,7 +80,7 @@ function Services() {
               <div className="program-buttons">
                 <button className="program-btn podcast-btn" onClick={() => openModal('podcast')}>Listen to Podcast</button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

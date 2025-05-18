@@ -23,7 +23,7 @@ function SearchResults() {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/courses/search?searchTerm=${encodeURIComponent(query)}`
+          `${import.meta.env.API_URL}/courses/search?searchTerm=${encodeURIComponent(query)}`
         );
         setCourses(response.data.data);
         console.log(response.data.data);

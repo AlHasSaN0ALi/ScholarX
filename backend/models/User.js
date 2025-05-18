@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
     googleId: { type: String },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     resetPasswordToken: String,
-    resetPasswordExpires: Date
+    resetPasswordExpires: Date,
+    isEmailVerified: { type: Boolean, default: false },
+    emailVerificationToken: String,
+    emailVerificationExpires: Date
 }, { timestamps: true });
 
 userSchema.pre('save', async function(next) {

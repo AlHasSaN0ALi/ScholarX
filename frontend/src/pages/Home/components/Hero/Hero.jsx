@@ -29,9 +29,14 @@ const Hero = () => {
               </Link>
             </div>
             <div>
+              <Link  to="/login" style={{ textDecoration: 'none' }}>
+
               <button className={styles.btnSecondary}>
-                Join the Community
+                Join our Community
+                <span className={styles.icon} style={{marginLeft:5}}>→</span>
+
               </button>
+                </Link>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Features.module.css';
+import { Link } from 'react-router-dom';
 
 const Features = () => {
   return (
@@ -27,10 +28,12 @@ const Features = () => {
               Resource Library
             </li>
           </ul>
+          <Link to="/login" style={{ textDecoration: 'none' }} >
           <button className={styles.btnPrimary}>
             Take the First Step Today!
             <span className={styles.arrow}>→</span>
           </button>
+          </Link>
         </div>
 
         <div className={styles.image}>

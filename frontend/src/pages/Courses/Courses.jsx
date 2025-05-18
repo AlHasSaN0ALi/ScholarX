@@ -27,7 +27,7 @@ function Courses() {
     const fetchSearchResults = async () => {
       if (searchTerm.trim()) {
         try {
-          const response = await fetch(`http://localhost:3000/api/courses/search?title=${encodeURIComponent(searchTerm.trim())}&page=${searchPage}`);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/courses/search?title=${encodeURIComponent(searchTerm.trim())}&page=${searchPage}`);
           if (!response.ok) {
             throw new Error('Failed to fetch search results');
           }
@@ -50,7 +50,7 @@ function Courses() {
   useEffect(() => {
     const fetchSearchedCourses = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/courses?page=${latestPage}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/courses?page=${latestPage}`);
         if (!response.ok) {
           throw new Error('Failed to fetch latest courses');
         }
@@ -70,7 +70,7 @@ function Courses() {
   useEffect(() => {
     const fetchFeaturedCourses = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/courses?category=Featured&page=${featuredPage}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/courses?category=Featured&page=${featuredPage}`);
         if (!response.ok) {
           throw new Error('Failed to fetch featured courses');
         }
@@ -91,7 +91,7 @@ function Courses() {
   useEffect(() => {
     const fetchScholarXCourses = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/courses?category=ScholarX&page=${scholarxPage}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/courses?category=ScholarX&page=${scholarxPage}`);
         if (!response.ok) {
           throw new Error('Failed to fetch ScholarX courses');
         }

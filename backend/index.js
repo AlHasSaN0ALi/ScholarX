@@ -10,6 +10,7 @@ const categoryRoutes = require('./routes/Category');
 const userRoutes = require('./routes/User');
 const passport = require('passport');
 const paymentRoutes = require('./routes/Payment');
+const programsRoutes = require('./routes/programs');
 require('./config/passport');
 
 env.config()
@@ -23,13 +24,14 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
 
 // Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: '*',
     credentials: true
 }));
 app.use(express.json());
@@ -53,6 +55,8 @@ app.use('/api/email', emailRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/programs', programsRoutes);
+
 
 // Start the server
 app.listen(PORT, () => {

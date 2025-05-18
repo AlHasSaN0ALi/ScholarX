@@ -26,7 +26,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="motivation">What motivates you to become a ScholarX Ambassador?</label>
               <textarea 
                 id="motivation" 
@@ -36,7 +36,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="promotion">How would you promote scholarship opportunities within your school or university?</label>
               <textarea 
                 id="promotion" 
@@ -46,7 +46,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="experience">Do you have any previous experience in leadership, mentoring, or event organization?</label>
               <textarea 
                 id="experience" 
@@ -56,7 +56,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-groupp">
               <label htmlFor="questions">How would you handle questions or concerns from students about scholarship applications?</label>
               <textarea 
                 id="questions" 

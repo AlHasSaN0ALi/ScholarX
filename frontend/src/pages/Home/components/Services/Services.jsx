@@ -24,9 +24,12 @@ export default function Service({
         <img src={waterMark} alt="waterMark" className="water-mark"/>  
             
             <div className="container">
+                <div className="mb-4 mb-md-0">
+
                  <h2>{title} <span>{titleBlue}</span></h2>   
                    <p>{paragraf}</p> 
                     
+                </div>
                     <div className="boxes">
 
                         <div className="single-box">

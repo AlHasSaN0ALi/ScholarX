@@ -94,7 +94,7 @@
   border: 1px solid #ddd;
   font-size: 14px;
   margin-top: 5px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   outline: none;
   transition: border-color 0.3s;
 }
@@ -108,7 +108,7 @@
   display: block;
   font-size: 13px;
   color: #3399CC;
-  margin-bottom: 6px;
+  /* margin-bottom: 6px; */
 }
 
 .login-button {
@@ -158,11 +158,11 @@
 
 .divider {
   text-align: center;
-  margin: 40px 0;
+  /* margin: 40px 0; */
   position: relative;
 }
 
-.divider::before,
+/* .divider::before,
 .divider::after {
   content: "";
   position: absolute;
@@ -178,7 +178,7 @@
 
 .divider::after {
   right: 0;
-}
+} */
 
 .divider span {
   background-color: white;
@@ -217,13 +217,13 @@
 .error {
   color: red;
   font-size: 13px;
-  margin-top: 4px;
+  /* margin-top: 4px; */
   display: block;
 }
 
 .signup-link {
   text-align: center;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   color: #666;
 }
 
@@ -316,7 +316,7 @@
 .error {
   color: #dc3545;
   font-size: 14px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
   display: block;
 }
 
