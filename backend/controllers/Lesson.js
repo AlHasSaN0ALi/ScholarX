@@ -1,34 +1,55 @@
 const Lesson = require('../models/Lesson');
 const Course = require('../models/Course');
 const JSendResponse = require('../utils/StandardResponse');
-const { cloudinary } = require('../utils/cloudinaryConfig');
 
-exports.createLesson = async (req, res) => {
+// Middleware to check if user is subscribed to the course
+const checkSubscription = async (req, res, next) => {
     try {
-        console.log(req.file);
-        
-        
-        // Check if course exists
         const course = await Course.findById(req.params.courseId);
         if (!course) {
-            // If there's a video uploaded, delete it from cloudinary
-            if (req.file) {
-                await cloudinary.uploader.destroy(req.file.filename);
-            }
             return res.status(404).json(
                 JSendResponse.fail({ message: 'Course not found' })
             );
         }
 
-        // Create lesson object with video URL if a file was uploaded
+        // Check if user is authenticated
+        if (!req.user) {
+            return res.status(401).json(
+                JSendResponse.fail({ message: 'Authentication required' })
+            );
+        }
+
+        // Check if user is subscribed
+        const isSubscribed = course.subscriptions.includes(req.user._id);
+        if (!isSubscribed) {
+            return res.status(403).json(
+                JSendResponse.fail({ message: 'Subscription required to access this lesson' })
+            );
+        }
+
+        next();
+    } catch (error) {
+        res.status(500).json(
+            JSendResponse.error(error.message)
+        );
+    }
+};
+
+exports.createLesson = async (req, res) => {
+    try {
+        // Check if course exists
+        const course = await Course.findById(req.params.courseId);
+        if (!course) {
+            return res.status(404).json(
+                JSendResponse.fail({ message: 'Course not found' })
+            );
+        }
+
+        // Create lesson object
         const lessonData = {
             ...req.body,
             courseId: req.params.courseId
         };
-
-        if (req.file) {
-            lessonData.videoUrl = req.file.path;
-        }
 
         const lesson = await Lesson.create(lessonData);
 
@@ -48,10 +69,6 @@ exports.createLesson = async (req, res) => {
             JSendResponse.success({ lesson })
         );
     } catch (error) {
-        // If there's an error and a file was uploaded, delete it
-        if (req.file) {
-            await cloudinary.uploader.destroy(req.file.filename);
-        }
         res.status(500).json(
             JSendResponse.error(error.message)
         );
@@ -62,8 +79,32 @@ exports.getLessonsByCourse = async (req, res) => {
     try {
         const lessons = await Lesson.find({ courseId: req.params.courseId })
             .sort('order');
+        
+        // For non-subscribed users, only return basic lesson info
+        const course = await Course.findById(req.params.courseId);
+        const isSubscribed = req.user && course.subscriptions.includes(req.user._id);
+console.log(course);
+console.log(isSubscribed);
+
+        const lessonData = lessons.map(lesson => {
+            if (isSubscribed) {
+                return {
+                    ...lesson.toObject(),
+                    videoUrl: lesson.getEmbedUrl()
+                };
+            }
+            return {
+                _id: lesson._id,
+                title: lesson.title,
+                description: lesson.description,
+                duration: lesson.duration,
+                order: lesson.order,
+                isLocked: true
+            };
+        });
+
         res.status(200).json(
-            JSendResponse.success({ lessons })
+            JSendResponse.success({ lessons: lessonData })
         );
     } catch (error) {
         res.status(500).json(
@@ -72,7 +113,7 @@ exports.getLessonsByCourse = async (req, res) => {
     }
 };
 
-exports.getLessonById = async (req, res) => {
+exports.getLessonById = [checkSubscription, async (req, res) => {
     try {
         const lesson = await Lesson.findById(req.params.id);
         if (!lesson) {
@@ -80,15 +121,22 @@ exports.getLessonById = async (req, res) => {
                 JSendResponse.fail({ message: 'Lesson not found' })
             );
         }
+
+        // Convert YouTube URL to embed URL
+        const lessonData = {
+            ...lesson.toObject(),
+            videoUrl: lesson.getEmbedUrl()
+        };
+
         res.status(200).json(
-            JSendResponse.success({ lesson })
+            JSendResponse.success({ lesson: lessonData })
         );
     } catch (error) {
         res.status(500).json(
             JSendResponse.error(error.message)
         );
     }
-};
+}];
 
 exports.updateLesson = async (req, res) => {
     try {
@@ -112,46 +160,6 @@ exports.updateLesson = async (req, res) => {
     }
 };
 
-// Add a method to update video
-exports.updateLessonVideo = async (req, res) => {
-    try {
-        const lesson = await Lesson.findById(req.params.id);
-        if (!lesson) {
-            if (req.file) {
-                await cloudinary.uploader.destroy(req.file.filename);
-            }
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'Lesson not found' })
-            );
-        }
-
-        // If lesson already has a video, delete it from cloudinary
-        if (lesson.videoUrl) {
-            const publicId = lesson.videoUrl.split('/').pop().split('.')[0];
-            await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
-        }
-
-        // Update lesson with new video URL
-        const updatedLesson = await Lesson.findByIdAndUpdate(
-            req.params.id,
-            { videoUrl: req.file.path },
-            { new: true }
-        );
-
-        res.status(200).json(
-            JSendResponse.success({ lesson: updatedLesson })
-        );
-    } catch (error) {
-        if (req.file) {
-            await cloudinary.uploader.destroy(req.file.filename);
-        }
-        res.status(500).json(
-            JSendResponse.error(error.message)
-        );
-    }
-};
-
-// Update delete method to handle video deletion
 exports.deleteLesson = async (req, res) => {
     try {
         const lesson = await Lesson.findById(req.params.id);
@@ -159,12 +167,6 @@ exports.deleteLesson = async (req, res) => {
             return res.status(404).json(
                 JSendResponse.fail({ message: 'Lesson not found' })
             );
-        }
-
-        // Delete video from cloudinary if it exists
-        if (lesson.videoUrl) {
-            const publicId = lesson.videoUrl.split('/').pop().split('.')[0];
-            await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
         }
 
         // Update course

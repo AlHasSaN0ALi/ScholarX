@@ -30,7 +30,13 @@ const signupSchema = Yup.object().shape({
         .required('Confirm password is required'),
     phoneNumber: Yup.string()
         .required('Phone number is required')
-        .matches(/^[0-9+\-\s()]*$/, 'Invalid phone number format'),
+        .test('is-egypt-number', 'invalid Phone number ', value => {
+            if (!value) return false;
+            // Remove any non-digit characters
+            const digitsOnly = value.replace(/\D/g, '');
+            // Check if it's exactly 11 digits
+            return digitsOnly.length === 11;
+        }),
 });
 
 const PasswordRequirement = ({ met, text }) => (
@@ -78,7 +84,7 @@ const Signup = () => {
                         popup: 'animated fadeInDown'
                     }
                 });
-                
+
                 navigate('/login');
             }
         } catch (err) {
@@ -162,7 +168,12 @@ const Signup = () => {
                                     <PhoneInput
                                         country={'eg'}
                                         value={values.phoneNumber}
-                                        onChange={phone => setFieldValue('phoneNumber', phone)}
+                                        onChange={phone => {
+                                            // Only allow exactly 11 digits for Egypt
+                                            if (phone.length <= 11) {
+                                                setFieldValue('phoneNumber', phone);
+                                            }
+                                        }}
                                         inputClass="form-input"
                                         containerClass="phone-input-container"
                                         buttonClass="phone-input-button"
@@ -174,7 +185,17 @@ const Signup = () => {
                                             name: 'phoneNumber',
                                             id: 'phoneNumber',
                                             required: true,
+                                            maxLength: 16
                                         }}
+                                        isValid={(value, country) => {
+                                            if (country.countryCode === 'eg') {
+                                                return value.length === 11;
+                                            }
+                                            return true;
+                                        }}
+                                        countryCodeEditable={false}
+                                        preferredCountries={['eg']}
+                                        onlyCountries={['eg']}
                                     />
                                     <ErrorMessage name="phoneNumber" component="small" className="error" />
             </div>
@@ -227,8 +248,8 @@ const Signup = () => {
                                     <ErrorMessage name="confirmPassword" component="small" className="error" />
             </div>
 
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="signup-button"
                                     disabled={isSubmitting}
                                 >
@@ -243,8 +264,8 @@ const Signup = () => {
               <span>Or Sign Up with</span>
             </div>
 
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     className="google-signup"
                                     onClick={() => authService.initiateGoogleLogin()}
                                 >

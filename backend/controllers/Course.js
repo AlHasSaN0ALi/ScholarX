@@ -103,28 +103,29 @@ exports.getCourseById = async (req, res) => {
 exports.updateCourse = async (req, res) => {
     try {
         handleImageUpload(req, res, async (err) => {
-            if (err) {
-                return res.status(400).json(
-                    JSendResponse.fail({ message: 'Image upload failed' })
-                );
-            }
+            // if (err) {
+            //     return res.status(400).json(
+            //         JSendResponse.fail({ message: 'Image upload failed' })
+            //     );
+            // }
 
             const updateData = { ...req.body };
             
             // If new image is uploaded, add it to update data
-            if (req.file) {
-                updateData.image = {
-                    url: req.file.path,
-                    public_id: req.file.filename
-                };
+            // if (req.file) {
+            //     updateData.image = {
+            //         url: req.file.path,
+            //         public_id: req.file.filename
+            //     };
 
-                // Delete old image from Cloudinary if exists
-                const oldCourse = await Course.findById(req.params.id);
-                if (oldCourse.image && oldCourse.image.public_id) {
-                    await cloudinary.uploader.destroy(oldCourse.image.public_id);
-                }
-            }
+            //     // Delete old image from Cloudinary if exists
+            //     const oldCourse = await Course.findById(req.params.id);
+            //     if (oldCourse.image && oldCourse.image.public_id) {
+            //         await cloudinary.uploader.destroy(oldCourse.image.public_id);
+            //     }
+            // }
 
+            
             const course = await Course.findByIdAndUpdate(
                 req.params.id,
                 updateData,

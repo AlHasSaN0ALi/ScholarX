@@ -3,12 +3,15 @@ const User = require('../models/User');
 const JSendResponse = require('../utils/StandardResponse');
 
 exports.protect = async (req, res, next) => {
+    // console.log("hhh");
+    
     try {
         let token;
-
+        
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
             token = req.headers.authorization.split(' ')[1];
         }
+        // console.log(token);
 
         if (!token) {
             return res.status(401).json(
@@ -22,6 +25,8 @@ exports.protect = async (req, res, next) => {
 
             // Get user from token
             req.user = await User.findById(decoded.id).select('-password');
+            // console.log(req.user);
+            
             next();
         } catch (err) {
             return res.status(401).json(

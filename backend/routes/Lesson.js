@@ -1,14 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const lessonController = require('../controllers/Lesson');
-const {handleVideoUpload} = require('../utils/cloudinaryConfig');
+const { protect, authorize } = require('../middleware/auth');
 
-router.post('/:courseId', handleVideoUpload, lessonController.createLesson);
-router.patch('video/:id', handleVideoUpload, lessonController.updateLessonVideo);
-router.get('/course/:courseId', lessonController.getLessonsByCourse);
-router.get('/:id', lessonController.getLessonById);
-router.patch('/:id', lessonController.updateLesson);
-router.delete('/:id', lessonController.deleteLesson);
+// Create a new lesson (admin only)
+router.post('/courses/:courseId/lessons', 
+    protect, 
+    authorize('admin'), 
+    lessonController.createLesson
+);
+
+// Get all lessons for a course
+router.get('/courses/:courseId/lessons',protect, lessonController.getLessonsByCourse);
+
+// Get a specific lesson (requires subscription)
+router.get('/lessons/:id', protect, lessonController.getLessonById);
+
+// Update a lesson (admin only)
+router.put('/lessons/:id', 
+    protect, 
+    authorize('admin'), 
+    lessonController.updateLesson
+);
+
+// Delete a lesson (admin only)
+router.delete('/lessons/:id', 
+    protect, 
+    authorize('admin'), 
+    lessonController.deleteLesson
+);
 
 module.exports = router;
  

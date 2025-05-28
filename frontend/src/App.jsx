@@ -20,6 +20,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import SearchResults from './pages/Search/SearchResults'
 import GoogleCallback from './pages/GoogleCallback/GoogleCallback'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
+import { UserProvider } from './context/UserContext'
+import LessonPage from './pages/LessonPage/LessonPage'
 
 // Layout component to ensure navbar consistency
 const Layout = ({ children, path }) => {
@@ -40,29 +42,29 @@ const LayoutWithPath = ({ children }) => {
 
 function App() {
   return (
-    <>
-    <Router>
-      <div className=''>
-        <Routes>
-          <Route path="/" element={<LayoutWithPath><Home /></LayoutWithPath>} />
-          <Route path="/about" element={<LayoutWithPath><About /></LayoutWithPath>} />
-          <Route path="/services" element={<LayoutWithPath><Services /></LayoutWithPath>} />
-          <Route path="/courses" element={<LayoutWithPath><Courses /></LayoutWithPath>} />
-          <Route path="/login" element={<LayoutWithPath><Login /></LayoutWithPath>} />
-          <Route path="/signup" element={<LayoutWithPath><Signup /></LayoutWithPath>} />
-          <Route path="/CoursePage/:courseId" element={<LayoutWithPath><CoursePage /></LayoutWithPath>} />
-          <Route path="/Contact" element={<LayoutWithPath><Contact /></LayoutWithPath>} />
-          <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/search-results" element={<LayoutWithPath><SearchResults /></LayoutWithPath>} />
-          <Route path="/auth/google" element={<LayoutWithPath><GoogleCallback /></LayoutWithPath>} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          {/* Catch all route - must be last */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-    </Router>
-    </>
+    <UserProvider>
+      <Router>
+        <div className=''>
+          <Routes>
+            <Route path="/" element={<LayoutWithPath><Home /></LayoutWithPath>} />
+            <Route path="/about" element={<LayoutWithPath><About /></LayoutWithPath>} />
+            <Route path="/services" element={<LayoutWithPath><Services /></LayoutWithPath>} />
+            <Route path="/courses" element={<LayoutWithPath><Courses /></LayoutWithPath>} />
+            <Route path="/login" element={<Login /> }/>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/CoursePage/:courseId" element={<LayoutWithPath><CoursePage /></LayoutWithPath>} />
+            <Route path="/course/:courseId/lessons" element={<LessonPage />} />
+            <Route path="/Contact" element={<LayoutWithPath><Contact /></LayoutWithPath>} />
+            <Route path="/forget-password" element={<ForgetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/search-results" element={<LayoutWithPath><SearchResults /></LayoutWithPath>} />
+            <Route path="/auth/google" element={<LayoutWithPath><GoogleCallback /></LayoutWithPath>} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </Router>
+    </UserProvider>
   )
 }
 

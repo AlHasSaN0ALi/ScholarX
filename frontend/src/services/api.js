@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = import.meta.env.VITE_API_URL||`http://localhost:3000/api` ;
-console.log(import.meta.env.VITE_API_URL);
+// Use environment variable with fallback
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -39,14 +39,12 @@ export const authService = {
         if (response.data.status === 'success') {
             // Set token in cookie with 7 days expiry
             Cookies.set('token', response.data.data.token, { expires: 7 });
-            Cookies.set('user', JSON.stringify(response.data.data.user), { expires: 7 });
         }
         return response.data;
     },
 
     register: async (userData) => {
         const response = await api.post('/users/register', userData);
-     
         return response.data;
     },
 
@@ -74,8 +72,6 @@ export const authService = {
         try {
             if (token) {
                 Cookies.set('token', token, { expires: 7 });
-                // Fetch user data
-            
             }
         } catch (error) {
             console.error('Error handling Google callback:', error);
@@ -85,12 +81,15 @@ export const authService = {
 
     logout: () => {
         Cookies.remove('token');
-        Cookies.remove('user');
     },
 
-    getCurrentUser: () => {
-        const user = Cookies.get('user');
-        return user ? JSON.parse(user) : null;
+    getCurrentUser: async () => {
+        try {
+            const response = await api.get('/users/profile');
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
     },
 
     isAuthenticated: () => {
@@ -113,7 +112,6 @@ export const authService = {
             throw error;
         }
     },
-
 
     verifyEmail: async (token) => {
         return await axios.get(`${API_URL}/users/verify-email?token=${token}`);

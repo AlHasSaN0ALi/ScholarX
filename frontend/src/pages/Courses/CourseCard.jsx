@@ -1,14 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import courseImg from '../../assets/Images/image.png';
 import './Courses.css';
 import { FaRegHeart, FaStar, FaRegStar, FaChevronRight, FaClock, FaPlayCircle, FaMoneyBill } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../../services/api';
 import Swal from 'sweetalert2';
+import { useUser } from '../../context/UserContext';
+import CourseCardSkeleton from './CourseCardSkeleton';
 
 const CourseCard = ({ course, section = 'latest' }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const { user } = useUser();
+
+  useEffect(() => {
+    // Simulate data loading
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isDataLoading) {
+    return <CourseCardSkeleton />;
+  }
 
   // Fallbacks for missing data
   const title = course.title || 'Course Title';
@@ -40,11 +56,15 @@ const CourseCard = ({ course, section = 'latest' }) => {
     return null;
   };
 
+  // Check if user is subscribed
+  const isSubscribed = user && course.subscriptions && course.subscriptions.includes(user._id);
+// console.log(isSubscribed);
+// console.log(user);
+
   const handleEnroll = async (e) => {
     e.preventDefault(); // Prevent navigation when clicking enroll
     try {
       setIsLoading(true);
-      
       // Check if user is logged in
       if (!authService.isAuthenticated()) {
         Swal.fire({
@@ -61,10 +81,8 @@ const CourseCard = ({ course, section = 'latest' }) => {
         });
         return;
       }
-
       // Initiate payment
       const response = await authService.createPayment(course._id);
-      
       if (response.data.status === 'success' && response.data.data.paymentUrl) {
         // Redirect to payment page
         window.location.href = response.data.data.paymentUrl;
@@ -81,6 +99,11 @@ const CourseCard = ({ course, section = 'latest' }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOpenCourse = (e) => {
+    e.preventDefault();
+    navigate(`/course/${course._id}/lessons`);
   };
 
   return (
@@ -102,13 +125,22 @@ const CourseCard = ({ course, section = 'latest' }) => {
           <h5 className="card-title mb-1" style={{minHeight: '48px'}}>{title}</h5>
           <div className="d-flex align-items-center justify-content-between mb-2">
             <div>
-              <button 
-                className="btn btn-primary w-100 mb-2" 
-                onClick={handleEnroll}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Processing...' : 'Enroll Now'}
-              </button>
+              {isSubscribed ? (
+                <button 
+                  className="btn btn-success w-100 mb-2" 
+                  onClick={handleOpenCourse}
+                >
+                  Open Course
+                </button>
+              ) : (
+                <button 
+                  className="btn btn-primary w-100 mb-2" 
+                  onClick={handleEnroll}
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Processing...' : 'Enroll Now'}
+                </button>
+              )}
             </div>
             <div>
               <span className="fw-bold text-primary me-2">{price} EGP</span>
