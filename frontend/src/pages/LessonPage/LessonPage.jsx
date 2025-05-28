@@ -84,12 +84,26 @@ const LessonPage = () => {
     const completedCount = completedLessons.length;
     const progress = totalLessons ? (completedCount / totalLessons) * 100 : 0;
 
+    // Calculate current lesson number
+    const getCurrentLessonNumber = () => {
+        if (!currentLesson) return 0;
+        let count = 0;
+        for (const section of sections) {
+            for (const lesson of section.lessons) {
+                count++;
+                if (lesson._id === currentLesson._id) {
+                    return count;
+                }
+            }
+        }
+        return 0;
+    };
+
     return (
         <div className="lesson-main-layout">
             <div className="lesson-left">
                 <div className="lesson-video-container">
                     {currentLesson ? (
-                    
                         <iframe
                             src={currentLesson.videoUrl}
                             title={currentLesson.title}
@@ -100,13 +114,15 @@ const LessonPage = () => {
                     ) : (
                         <div className="no-video">Select a lesson to start</div>
                     )}
-                    <div className="lesson-title">{course?.title || 'Course'}</div>
-                    <div className="lesson-progress-row">
-                        <span>{completedCount}/{totalLessons} Topics</span>
-                        <div className="lesson-progress-bar-bg">
-                            <div className="lesson-progress-bar" style={{ width: `${progress}%` }}></div>
-                        </div>
+                    <div className="lesson-title text-center">
+                        {course?.title || 'Course'}
+                        {currentLesson && (
+                            <div className="lesson-subtitle">
+                                {currentLesson.title} ({getCurrentLessonNumber()}/{totalLessons})
+                            </div>
+                        )}
                     </div>
+                   
                 </div>
             </div>
             <div className="lesson-right">

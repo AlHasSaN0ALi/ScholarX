@@ -82,14 +82,14 @@
     align-items: center;
 }
 
-.login-form {
+/* .login-form {
     width: 100%;
     max-width: 400px;
     margin-top: 2rem;
     padding: 2rem;
     background: #f8f9fa;
     border-radius: 8px;
-}
+} */
 
 .login-form h3 {
     margin-bottom: 1.5rem;
@@ -194,10 +194,17 @@
 }
 
 .lesson-title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 600;
-    margin: 1rem 0 0.5rem 0;
-    color: #ffeded;
+    margin: 1rem 0;
+    color: #e4e4e4;
+}
+
+.lesson-subtitle {
+    font-size: 1.1rem;
+    color: #fafafa;
+    margin-top: 0.5rem;
+    font-weight: 400;
 }
 
 .lesson-progress-row {

@@ -102,7 +102,7 @@ const Login = () => {
                                         <Field type="checkbox" id="remember" name="remember" />
                                         <span>Remember me</span>
                                     </div>
-                                    <Link to="/forgot-password" className="forgot-password">
+                                    <Link to="/forget-password" className="forgot-password">
                                         Forgot your password?
                                     </Link>
                                 </div>
