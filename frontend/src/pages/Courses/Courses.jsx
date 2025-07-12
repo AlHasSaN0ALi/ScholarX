@@ -5,24 +5,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SearchBar from './SearchBar/SearchBar';
 import { CiSearch } from "react-icons/ci";
 import { CiSquareChevDown } from "react-icons/ci";
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+    fetchLatestCourses, 
+    fetchFeaturedCourses, 
+    fetchScholarXCourses 
+} from '../../store/slices/courseSlice';
 
 function Courses() {
-  const [latest, setLatest] = useState([]);
-  const [featured, setFeatured] = useState([]);
-  const [scholarx, setScholarx] = useState([]);
+  const dispatch = useDispatch();
+  const { latest, featured, scholarx, loading ,latestPagination,featuredPagination,scholarxPagination} = useSelector(state => state.course);
   const [searchedCourses, setSearchedCourses] = useState([]);
   const [latestPage, setLatestPage] = useState(1);
   const [featuredPage, setFeaturedPage] = useState(1);
   const [scholarxPage, setScholarxPage] = useState(1);
   const [searchPage, setSearchPage] = useState(1);
-  const [latestPagination, setLatestPagination] = useState({});
+  // const [latestPagination, setLatestPagination] = useState({});
   const [searchPagination, setSearchPagination] = useState({});
-  const [featuredPagination, setFeaturedPagination] = useState({});
-  const [scholarxPagination, setScholarxPagination] = useState({});
+  // const [featuredPagination, setFeaturedPagination] = useState({});
+  // const [scholarxPagination, setScholarxPagination] = useState({});
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-
+  // console.log(latest);
   // Fetch search results when searchTerm changes
+  console.log(latest);
+  console.log(featured);
+  console.log(scholarx);
+  
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (searchTerm.trim()) {
@@ -48,71 +57,20 @@ function Courses() {
   }, [searchTerm, searchPage]);
 
   useEffect(() => {
-    const fetchSearchedCourses = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/courses?page=${latestPage}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch latest courses');
-        }
-        const data = await response.json();
-        setLatest(data.data.courses || []);
-        
-        setLatestPagination(data.data.pagination || {});
-      } catch (err) {
-        console.error('Error fetching latest courses:', err);
-        setError(err.message);
-      }
-    };
-
-    fetchSearchedCourses();
-  }, [latestPage]);
+    dispatch(fetchLatestCourses(latestPage));
+  }, [dispatch, latestPage]);
 
   useEffect(() => {
-    const fetchFeaturedCourses = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/courses?category=Featured&page=${featuredPage}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch featured courses');
-        }
-        const data = await response.json();
-        setFeatured(data.data.courses || []);
-        // console.log(data.data.courses);
-
-        setFeaturedPagination(data.data.pagination || {});
-      } catch (err) {
-        console.error('Error fetching featured courses:', err);
-        setError(err.message);
-      }
-    };
-
-    fetchFeaturedCourses();
-  }, [featuredPage]);
+    dispatch(fetchFeaturedCourses(featuredPage));
+  }, [dispatch, featuredPage]);
 
   useEffect(() => {
-    const fetchScholarXCourses = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/courses?category=ScholarX&page=${scholarxPage}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch ScholarX courses');
-        }
-        const data = await response.json();
-        setScholarx(data.data.courses || []);
-        // console.log(data.data.courses);
-        
-        setScholarxPagination(data.data.pagination || {});
-      } catch (err) {
-        console.error('Error fetching ScholarX courses:', err);
-        setError(err.message);
-      }
-    };
-
-    fetchScholarXCourses();
-  }, [scholarxPage]);
+    dispatch(fetchScholarXCourses(scholarxPage));
+  }, [dispatch, scholarxPage]);
 
   if (error) {
     return <div className="alert alert-danger m-5">Error: {error}</div>;
   }
-
   return (
     <>
       <div className="search-container">
@@ -187,6 +145,7 @@ function Courses() {
                 </div>
               ))}
             </div>
+
             <div className="mb-5 text-center">
               <button className="btn btn-primary me-2" disabled={!latestPagination.hasPreviousPage} onClick={() => setLatestPage(p => p - 1)}>&lt;&lt;</button>
               <button className="btn btn-primary" disabled={!latestPagination.hasNextPage} onClick={() => setLatestPage(p => p + 1)}>&gt;&gt;</button>

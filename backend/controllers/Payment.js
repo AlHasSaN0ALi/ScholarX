@@ -3,13 +3,15 @@ const axios = require('axios');
 const Course = require('../models/Course');
 const User = require('../models/User');
 const JSendResponse = require('../utils/StandardResponse');
+const Subscription = require('../models/Subscription');
 
-// Fawaterk API configuration
-const FAWATERK_API_URL = 'https://staging.fawaterk.com/api/v2/createInvoiceLink';
-const FAWATERK_API_KEY = process.env.FAWATERK_API_KEY;
-const FAWATERK_PROVIDER_KEY = process.env.FAWATERK_PROVIDER_KEY; 
+// Paymob API configuration (use your real credentials in production)
+const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY || 'YOUR_PAYMOB_API_KEY';
+const PAYMOB_INTEGRATION_ID = process.env.PAYMOB_INTEGRATION_ID || 'YOUR_INTEGRATION_ID'; // Card payments
+const PAYMOB_IFRAME_ID = process.env.PAYMOB_IFRAME_ID || 'YOUR_IFRAME_ID';
+const PAYMOB_API_URL = 'https://accept.paymob.com/api';
 
-// Create a payment request
+// Create a payment request (Paymob)
 const createPayment = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -51,122 +53,131 @@ const createPayment = async (req, res) => {
       );
     }
 
-    // Prepare payment data for Fawaterk - exactly matching documentation
-    const paymentData = {
-      cartItems: [
+    // 1. Authenticate and get Paymob token
+    const authResp = await axios.post(`${PAYMOB_API_URL}/auth/tokens`, {
+      api_key: PAYMOB_API_KEY
+    });
+    const paymobToken = authResp.data.token;
+
+    // 2. Register order
+    const orderResp = await axios.post(`${PAYMOB_API_URL}/ecommerce/orders`, {
+      auth_token: paymobToken,
+      delivery_needed: false,
+      amount_cents: (course.currentPrice * 100).toString(),
+      currency: 'EGP',
+      items: [
         {
           name: course.title,
-          price: course.currentPrice.toString(),
-          quantity: "1"
+          amount_cents: (course.currentPrice * 100).toString(),
+          description: course.description || 'Course',
+          quantity: 1,
+          userId:course._id || "id",
         }
       ],
-      cartTotal: course.currentPrice,
-      shipping: 0,
-      customer: {
-        first_name: user.firstName,
-        last_name: user.lastName,
-        email: user.email,
-        phone: user.phoneNumber || "0123456789",
-        address: "Online Course"
-      },
-      currency: "EGP",
-      payLoad: {},
-      sendEmail: true,
-      sendSMS: false
-    };
-
-    
-    // Send request to Fawaterk API
-    const response = await axios.post(FAWATERK_API_URL, paymentData, {
-      headers: {
-        'Authorization': `Bearer 1be20fd63420d7023d2c0b4d00befb43df4707be1b800c373a`,
-        'Content-Type': 'application/json'
+      metadata: {
+        userId: user._id.toString(),
+        courseId: course._id.toString()
       }
     });
+    const orderId = orderResp.data.id;
 
+    // 3. Request payment key
+    const paymentKeyResp = await axios.post(`${PAYMOB_API_URL}/acceptance/payment_keys`, {
+      auth_token: paymobToken,
+      amount_cents: (course.currentPrice * 100).toString(),
+      expiration: 3600,
+      order_id: orderId,
+      billing_data: {
+        apartment: 'NA',
+        email: user.email,
+        floor: 'NA',
+        first_name: user.firstName,
+        street: 'NA',
+        building: 'NA',
+        phone_number: user.phoneNumber || '0123456789',
+        shipping_method: 'NA',
+        postal_code: 'NA',
+        city: 'NA',
+        country: 'EG',
+        last_name: user.lastName,
+        state: 'NA'
+      },
+      currency: 'EGP',
+      integration_id: PAYMOB_INTEGRATION_ID,
+      lock_order_when_paid: true,
+      metadata: {
+        userId: user._id.toString(),
+        courseId: course._id.toString()
+      }
+    });
+    const paymentKey = paymentKeyResp.data.token;
 
-    if (response.data.status !== 'success') {
-      return res.status(500).json(
-        JSendResponse.error('Failed to create payment request')
-      );
-    }
-
-    // Return the payment URL to redirect the user
+    // 4. Return the payment URL (Paymob iframe)
+    const paymentUrl = `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${paymentKey}`;
     res.status(200).json(
       JSendResponse.success({
-        paymentUrl: response.data.data.url,
+        paymentUrl
       })
     );
   } catch (error) {
-    console.error('Payment creation error:', error.response?.data || error.message);
+    console.error('Paymob Payment creation error:', error.response?.data || error.message);
     res.status(500).json(
       JSendResponse.error(error.response?.data?.message || error.message)
     );
   }
 };
 
-// Handle Fawaterk Webhook
+// Handle Paymob Webhook
 const handleWebhook = async (req, res) => {
   try {
-    const { transaction_id, status, invoice } = req.body;
-
-    if (!transaction_id || !status || !invoice) {
-      return res.status(400).json(
-        JSendResponse.fail({ message: 'Invalid webhook data' })
-      );
+    const { obj } = req.body;
+    console.log('Paymob Webhook received:', obj.success, obj.is_paid, obj.order);
+    console.log('Order object:', JSON.stringify(obj.order, null, 2));
+    if (!obj || !obj.success) {
+      return res.status(200).json({ status: 'ignored' });
     }
 
-    // Verify the webhook data (you may need to add signature verification based on Fawaterk docs)
-    if (status === 'paid') {
-      // Payment successful
-      const courseId = invoice.items[0]?.metadata?.courseId; // Use courseId from metadata
-      const userEmail = invoice.customer.email;
+    // 1. Extract user email and course title (fallback method)
+    const userEmail = obj.order?.shipping_data?.email || obj.order?.billing_data?.email;
+    const courseTitle = obj.order?.items?.[0]?.name;
 
-      // Find user by email
-      const user = await User.findOne({ email: userEmail });
-      if (!user) {
-        console.error('User not found for email:', userEmail);
-        return res.status(404).json(
-          JSendResponse.fail({ message: 'User not found' })
-        );
-      }
+    // 2. Find user and course by email and title
+    const user = await User.findOne({ email: userEmail });
+    const course = await Course.findOne({ title: courseTitle });
 
-      // Find course by ID
-      const course = await Course.findById(courseId);
-      if (!course) {
-        console.error('Course not found for ID:', courseId);
-        return res.status(404).json(
-          JSendResponse.fail({ message: 'Course not found' })
-        );
-      }
-
-      // Add user to course subscriptions
-      if (!course.subscriptions.includes(user._id)) {
-        course.subscriptions.push(user._id);
-        await course.save();
-      }
-
-      // Add course to user's courses
-      if (!user.courses.includes(course._id)) {
-        user.courses.push(course._id);
-        await user.save();
-      }
-
-      console.log(`Payment successful for user ${userEmail} and course ${course.title}`);
-    } else if (status === 'failed' || status === 'canceled') {
-      // Payment failed or canceled
-      console.log('Payment failed or canceled:', transaction_id);
+    if (!user || !course) {
+      return res.status(404).json({ status: 'fail', message: 'User or course not found' });
     }
 
-    // Respond to Fawaterk to acknowledge receipt of webhook
-    res.status(200).json(
-      JSendResponse.success({ message: 'Webhook received' })
+    // 3. Add user to course.subscriptions if not already present
+    await Course.findByIdAndUpdate(
+      course._id,
+      { $addToSet: { subscriptions: user._id } }
     );
+
+    // 4. Add course to user.courses if not already present
+    await User.findByIdAndUpdate(
+      user._id,
+      { $addToSet: { courses: course._id } }
+    );
+
+    // 5. Create a Subscription document if not already present for this user/course/paymentId
+    const existing = await Subscription.findOne({ user: user._id, course: course._id, paymentId: obj.id });
+    if (!existing) {
+      await Subscription.create({
+        user: user._id,
+        course: course._id,
+        amount: obj.amount_cents / 100, // EGP
+        status: 'active',
+        paymentId: obj.id,
+        startDate: new Date(),
+      });
+    }
+
+    return res.status(200).json({ status: 'success', message: 'User enrolled in course' });
   } catch (error) {
-    console.error('Webhook error:', error.message);
-    res.status(500).json(
-      JSendResponse.error(error.message)
-    );
+    console.error('Webhook error:', error);
+    return res.status(500).json({ status: 'error', message: error.message });
   }
 };
 

@@ -1,74 +1,117 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext';
 import Cookies from 'js-cookie';
+import YouTubePlayer from 'youtube-player';
 import './LessonPage.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { 
+    fetchCourseLessons, 
+    markLessonComplete,
+    setCurrentLesson,
+    checkCourseSubscription
+} from '../../store/slices/lessonSlice';
 
 const LessonPage = () => {
     const { courseId } = useParams();
     const navigate = useNavigate();
     const { user, loading: userLoading } = useUser();
-    const [course, setCourse] = useState(null);
-    const [sections, setSections] = useState([]);
     const [currentLesson, setCurrentLesson] = useState(null);
     const [completedLessons, setCompletedLessons] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isSubscribed, setIsSubscribed] = useState(false);
+    const playerRef = useRef(null);
+    const playerContainerRef = useRef(null);
+    const dispatch = useDispatch();
+    
+    // Redux selectors
+    const { 
+        sections, 
+        currentLesson: reduxCurrentLesson, 
+        completedLessons: reduxCompletedLessons,
+        course,
+        isSubscribed,
+        loading: reduxLoading,
+        error: reduxError
+    } = useSelector(state => state.lessons);
+    
+console.log(isSubscribed);
+    // Extract video ID from YouTube URL
+    const getYouTubeId = (url) => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url?.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    };
 
-    // Fetch course and lessons
+    // Initialize YouTube player
     useEffect(() => {
-        const fetchCourseAndLessons = async () => {
-            try {
-                setLoading(true);
-                // Fetch course details (including sections and lessons)
-                const courseRes = await fetch(`${import.meta.env.VITE_API_URL}/courses/${courseId}`);
-                if (!courseRes.ok) throw new Error('Failed to fetch course');
-                const courseData = await courseRes.json();
-                setCourse(courseData.data.course);
+        if (currentLesson && playerContainerRef.current) {
+            // Remove any previous iframe
+            playerContainerRef.current.innerHTML = '';
+            const videoId = getYouTubeId(currentLesson.videoUrl);
+            if (videoId) {
+                playerRef.current = YouTubePlayer(playerContainerRef.current, {
+                    videoId,
+                    playerVars: {
+                        modestbranding: 1,
+                        rel: 0,
+                        showinfo: 0,
+                        controls: 0,
+                        disablekb: 1,
+                    },
+                });
 
-                // Fetch lessons grouped by section
-                const lessonsRes = await fetch(`${import.meta.env.VITE_API_URL}/lessons/courses/${courseId}/lessons`, {
-                    headers: user ? { Authorization: `Bearer ${Cookies.get('token')}` } : {}
+                // Add event listeners
+                playerRef.current.on('stateChange', (event) => {
+                    // -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (video cued)
+                    if (event.data === 0) { // Video ended
+                        if (currentLesson) {
+                            setCompletedLessons(prev => [...prev, currentLesson._id]);
+                            // TODO: Send completion to backend
+                        }
+                    }
                 });
-                if (!lessonsRes.ok) throw new Error('Failed to fetch lessons');
-                const lessonsData = await lessonsRes.json();
-                console.log(lessonsData);
-                
-                // Group lessons by section (assuming lesson.section is available)
-                const grouped = {};
-                lessonsData.data.lessons.forEach(lesson => {
-                    const sectionTitle = lesson.section || 'General';
-                    if (!grouped[sectionTitle]) grouped[sectionTitle] = [];
-                    grouped[sectionTitle].push(lesson);
-                });
-                const sectionArr = Object.entries(grouped).map(([title, lessons], idx) => ({
-                    title,
-                    lessons,
-                    index: idx + 1
-                }));
-                setSections(sectionArr);
-                // Set first lesson as current by default
-                if (sectionArr.length && sectionArr[0].lessons.length) {
-                    setCurrentLesson(sectionArr[0].lessons[0]);
-                }
-                // Check subscription
-                if (user && courseData.data.course.subscriptions?.includes(user._id)) {
-                    setIsSubscribed(true);
-                }
-                // TODO: Fetch completed lessons for progress (if available)
-                setCompletedLessons([]); // Placeholder
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+            }
+        }
+        // Cleanup
+        return () => {
+            if (playerRef.current) {
+                playerRef.current.destroy();
             }
         };
-        if (!userLoading) fetchCourseAndLessons();
-    }, [courseId, user, userLoading]);
+    }, [currentLesson]);
 
-    if (loading || userLoading) return <div className="loading">Loading...</div>;
-    if (error) return <div className="error">{error}</div>;
+    // Fetch course data and check subscription using Redux
+    useEffect(() => {
+        if (!userLoading && courseId) {
+            setLoading(true);
+            // Fetch course lessons and check subscription in one Redux action
+            dispatch(fetchCourseLessons(courseId))
+                .then((result) => {
+                    if (result.payload && result.payload.sections && result.payload.sections.length > 0) {
+                        // Set first lesson as current by default
+                        setCurrentLesson(result.payload.sections[0].lessons[0]);
+                    }
+                })
+                .catch((error) => {
+                    setError(error.message);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+    }, [dispatch, courseId, userLoading]);
+
+    // Check subscription status
+    useEffect(() => {
+        if (user && courseId) {
+            dispatch(checkCourseSubscription({ courseId, userId: user._id }));
+        }
+    }, [dispatch, courseId, user]);
+
+    if (loading || userLoading || reduxLoading) return <div className="loading">Loading...</div>;
+    if (error || reduxError) return <div className="error">{error || reduxError}</div>;
+    
     if (!isSubscribed) {
         return (
             <div className="subscription-required">
@@ -99,21 +142,42 @@ const LessonPage = () => {
         return 0;
     };
 
+    const handlePlay = () => {
+        if (playerRef.current) playerRef.current.playVideo();
+    };
+
+    const handlePause = () => {
+        if (playerRef.current) playerRef.current.pauseVideo();
+    };
+
+    const handlePrev10 = async () => {
+        if (playerRef.current) {
+            const time = await playerRef.current.getCurrentTime();
+            playerRef.current.seekTo(Math.max(0, time - 10), true);
+        }
+    };
+
+    const handleNext10 = async () => {
+        if (playerRef.current) {
+            const time = await playerRef.current.getCurrentTime();
+            playerRef.current.seekTo(time + 10, true);
+        }
+    };
+
     return (
         <div className="lesson-main-layout">
             <div className="lesson-left">
-                <div className="lesson-video-container">
-                    {currentLesson ? (
-                        <iframe
-                            src={currentLesson.videoUrl}
-                            title={currentLesson.title}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    ) : (
-                        <div className="no-video">Select a lesson to start</div>
-                    )}
+                <div className="lesson-video-container" style={{ position: 'relative' }}>
+                    <div className="video-frame-wrapper" style={{ position: 'relative' }}>
+                        <div ref={playerContainerRef} className="youtube-player"></div>
+                        <div className="video-overlay"></div>
+                    </div>
+                    <div className="custom-controls">
+                        <button onClick={handlePlay}>Play</button>
+                        <button onClick={handlePause}>Pause</button>
+                        <button onClick={handlePrev10}>-10s</button>
+                        <button onClick={handleNext10}>+10s</button>
+                    </div>
                     <div className="lesson-title text-center">
                         {course?.title || 'Course'}
                         {currentLesson && (
@@ -122,7 +186,6 @@ const LessonPage = () => {
                             </div>
                         )}
                     </div>
-                   
                 </div>
             </div>
             <div className="lesson-right">

@@ -48,5 +48,25 @@ courseSchema.virtual('instructorInfo').get(function() {
     return this.instructor;
 });
 
+// Method to recalculate totals from lessons
+courseSchema.methods.recalculateTotals = async function() {
+    const Lesson = require('./Lesson');
+    const lessons = await Lesson.find({ courseId: this._id });
+    
+    this.totalLessons = lessons.length;
+    this.totalDuration = lessons.reduce((sum, lesson) => sum + (lesson.duration || 0), 0);
+    
+    return this.save();
+};
+
+// Static method to recalculate totals for a course by ID
+courseSchema.statics.recalculateTotalsById = async function(courseId) {
+    const course = await this.findById(courseId);
+    if (course) {
+        return await course.recalculateTotals();
+    }
+    return null;
+};
+
 module.exports = mongoose.model('Course', courseSchema);
  

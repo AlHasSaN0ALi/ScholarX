@@ -2,10 +2,13 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../../services/api';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { googleLogin } from '../../store/slices/authSlice';
 
 const GoogleCallback = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const handleGoogleCallback = async () => {
@@ -23,9 +26,7 @@ const GoogleCallback = () => {
                 }
 
                 console.log('Received token:', token);
-                await authService.handleGoogleCallback(token);
-                
-             
+                await dispatch(googleLogin(token));
                 
                 await Swal.fire({
                     title: 'Success!',
@@ -49,7 +50,7 @@ const GoogleCallback = () => {
         };
 
         handleGoogleCallback();
-    }, [location, navigate]);
+    }, [dispatch, location, navigate]);
 
     return (
         <div className="loading-container">

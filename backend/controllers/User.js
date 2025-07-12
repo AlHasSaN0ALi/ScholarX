@@ -7,8 +7,8 @@ const { sendVerificationEmail,sendPasswordResetEmail } = require('../utils/email
 const { validateEmail } = require('../utils/emailValidator');
 
 // Generate JWT Token
-const generateToken = (userId) => {
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+const generateToken = (userId, role) => {
+    return jwt.sign({ id: userId , role: role}, process.env.JWT_SECRET, {
         expiresIn: '30d'
     });
 };
@@ -120,7 +120,8 @@ exports.login = async (req, res) => {
                 JSendResponse.fail({ message: 'Invalid email or password' })
             );
         }
-
+        console.log(user.role);
+        
         // Check if email is verified
         if (!user.isEmailVerified) {
             return res.status(401).json(
@@ -136,7 +137,14 @@ exports.login = async (req, res) => {
             );
         }
 
-        const token = generateToken(user._id);
+        const token = generateToken(user._id, user.role);
+
+        res.cookie('sx_auth', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+        });
 
         res.status(200).json(
             JSendResponse.success({
@@ -145,7 +153,7 @@ exports.login = async (req, res) => {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
                 },
                 token
             })
@@ -166,6 +174,8 @@ exports.getProfile = async (req, res) => {
                 JSendResponse.fail({ message: 'User not found' })
             );
         }
+        console.log(user);
+        
         res.status(200).json(
             JSendResponse.success({ user })
         );
@@ -179,38 +189,32 @@ exports.getProfile = async (req, res) => {
 // Update user profile
 exports.updateProfile = async (req, res) => {
     try {
-        handleImageUpload(req, res, async (err) => {
-            if (err) {
-                return res.status(400).json(
-                    JSendResponse.fail({ message: 'Image upload failed' })
-                );
+        console.log("hiiiiiiiiiii");
+        
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ status: 'fail', message: 'User not found' });
             }
 
-            const updateData = { ...req.body };
-            if (req.file) {
-                updateData.image = req.file.path;
-            }
+        // Update fields
+        user.firstName = req.body.firstName || user.firstName;
+        user.lastName = req.body.lastName || user.lastName;
+        user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+        user.courses = req.body.courses || user.courses;
+        // Only update image if a new file is uploaded
+        console.log(req.file);
+        
+        if (req.file) {
+            user.image = {
+                url: `/uploads/${req.file.filename}`,
+                public_id: req.file.filename
+            };
+        }
 
-            const user = await User.findByIdAndUpdate(
-                req.user.id,
-                updateData,
-                { new: true }
-            ).select('-password');
-
-            if (!user) {
-                return res.status(404).json(
-                    JSendResponse.fail({ message: 'User not found' })
-                );
-            }
-
-            res.status(200).json(
-                JSendResponse.success({ user })
-            );
-        });
+        await user.save();
+        res.status(200).json({ status: 'success', data: { user } });
     } catch (error) {
-        res.status(500).json(
-            JSendResponse.error(error.message)
-        );
+        res.status(500).json({ status: 'error', message: error.message });
     }
 };
 

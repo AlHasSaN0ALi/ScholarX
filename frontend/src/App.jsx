@@ -15,13 +15,22 @@ import Footer from './components/Footer/Footer'
 import Services from './pages/Services/Services'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import './styles/sweetalert.css';
-import './App.css'
-import "bootstrap/dist/css/bootstrap.min.css";
 import SearchResults from './pages/Search/SearchResults'
 import GoogleCallback from './pages/GoogleCallback/GoogleCallback'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import { UserProvider } from './context/UserContext'
 import LessonPage from './pages/LessonPage/LessonPage'
+import { useSelector } from 'react-redux'
+import Profile from './pages/Profile/Profile'
+// Admin Components
+import AdminDashboard from './pages/Admin/Dashboard/Dashboard'
+import AdminUsers from './pages/Admin/Users/Users'
+import AdminCourses from './pages/Admin/Courses/Courses'
+import AdminSubscriptions from './pages/Admin/Subscriptions/Subscriptions'
+import AdminReports from './pages/Admin/Reports/Reports'
+import './App.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import MyCourses from './pages/myCourses/MyCourses';
 
 // Layout component to ensure navbar consistency
 const Layout = ({ children, path }) => {
@@ -39,6 +48,21 @@ const LayoutWithPath = ({ children }) => {
   const location = useLocation();
   return <Layout path={location.pathname} children={children} />;
 }
+
+// Private Route component for admin routes
+const AdminRoute = ({ children }) => {
+  const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
 
 function App() {
   return (
@@ -60,6 +84,60 @@ function App() {
             <Route path="/search-results" element={<LayoutWithPath><SearchResults /></LayoutWithPath>} />
             <Route path="/auth/google" element={<LayoutWithPath><GoogleCallback /></LayoutWithPath>} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/profile" element={<LayoutWithPath><Profile /></LayoutWithPath>} />
+            <Route path="/mycourses" element={<LayoutWithPath><MyCourses /></LayoutWithPath>} />
+            {/* Admin Routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminRoute>
+                  <LayoutWithPath>
+                    <AdminDashboard />
+                  </LayoutWithPath>
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <AdminRoute>
+                  <LayoutWithPath>
+                    <AdminUsers />
+                  </LayoutWithPath>
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/courses"
+              element={
+                <AdminRoute>
+                  <LayoutWithPath>
+                    <AdminCourses />
+                  </LayoutWithPath>
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/subscriptions"
+              element={
+                <AdminRoute>
+                  <LayoutWithPath>
+                    <AdminSubscriptions />
+                  </LayoutWithPath>
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <AdminRoute>
+                  <LayoutWithPath>
+                    <AdminReports />
+                  </LayoutWithPath>
+                </AdminRoute>
+              }
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

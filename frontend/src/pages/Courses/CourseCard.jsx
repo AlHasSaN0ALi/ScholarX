@@ -36,6 +36,12 @@ const CourseCard = ({ course, section = 'latest' }) => {
   const instructor = course.instructor?.name || 'Instructor';
   const reviews = course.reviews || 12;
   const rating = course.rating || 4;
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+  let image = course.image?.url ? course.image.url : courseImg;
+  // If the image URL is relative, prepend the backend base (remove /api if present)
+  if (image && image.startsWith('/uploads')) {
+    image = API_URL.replace('/api', '') + image;
+  }
 
   // Calculate if course is new (created in last 7 days)
   let isNew = false;
@@ -56,10 +62,8 @@ const CourseCard = ({ course, section = 'latest' }) => {
     return null;
   };
 
-  // Check if user is subscribed
-  const isSubscribed = user && course.subscriptions && course.subscriptions.includes(user._id);
-// console.log(isSubscribed);
-// console.log(user);
+  // Use isSubscribed property from backend
+  const isSubscribed = course.isSubscribed;
 
   const handleEnroll = async (e) => {
     e.preventDefault(); // Prevent navigation when clicking enroll
@@ -110,7 +114,7 @@ const CourseCard = ({ course, section = 'latest' }) => {
     <Link to={`/CoursePage/${course._id}`} className="text-decoration-none">
       <div className="card h-100 shadow-sm">
         <div className="position-relative">
-          <img src={courseImg} className="card-img-top" alt="Course" style={{height: '180px', objectFit: 'cover'}} />
+          <img src={image} className="card-img-top" alt="Course" style={{height: '180px', objectFit: 'cover'}} />
           {showBadge()}
           <button className="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle p-2" style={{zIndex:2}}>
             <FaRegHeart />

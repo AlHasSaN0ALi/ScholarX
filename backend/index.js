@@ -11,6 +11,8 @@ const userRoutes = require('./routes/User');
 const passport = require('passport');
 const paymentRoutes = require('./routes/Payment');
 const programsRoutes = require('./routes/programs');
+const adminRoutes = require('./routes/admin');
+const path = require('path');
 require('./config/passport');
 
 env.config()
@@ -37,6 +39,7 @@ app.use(cors({
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
 mongoose.connect(`${process.env.MONGODB_URI}`)
@@ -56,7 +59,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/programs', programsRoutes);
-
+app.use('/api/admin', adminRoutes);
 
 // Start the server
 app.listen(PORT, () => {

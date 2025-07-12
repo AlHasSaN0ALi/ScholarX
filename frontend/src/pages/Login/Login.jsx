@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { authService } from '../../services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, googleLogin, clearError } from '../../store/slices/authSlice';
+import { setSuccess, setError, clearMessages } from '../../store/slices/uiSlice';
 import Swal from 'sweetalert2';
 import './Login.css';
+import { useUser } from '../../context/UserContext';
 
 const loginSchema = Yup.object().shape({
     email: Yup.string()
@@ -17,44 +20,53 @@ const loginSchema = Yup.object().shape({
 
 const Login = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState('');
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.auth);
+    const { success } = useSelector((state) => state.ui);
+    const { login: userContextLogin } = useUser();
+
+    useEffect(() => {
+        // Clear any existing messages
+        dispatch(clearMessages());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Login successful!',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'animated fadeInDown'
+                }
+            });
+            navigate('/');
+        }
+    }, [success, navigate]);
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            const response = await authService.login(values);
-            if (response.status === 'success') {
-                // Show success message
-                await Swal.fire({
-                    title: 'Success!',
-                    text: 'Login successful!',
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                    customClass: {
-                        popup: 'animated fadeInDown'
-                    }
-                });
-                
-                // Dispatch event and navigate
-                window.dispatchEvent(new Event('authStateChanged'));
-                navigate('/');
-            } else {
-                setError(response.data.message || 'Login failed');
+            const response = await dispatch(login(values)).unwrap();
+            if (response && response.data && response.data.user) {
+                userContextLogin(response.data.user); // Update UserContext
             }
+            dispatch(setSuccess('Login successful!'));
         } catch (err) {
-            setError(err.response?.data?.data?.message || 'An error occurred during login');
+            dispatch(setError(err.message || 'Login failed'));
         } finally {
             setSubmitting(false);
         }
     };
 
     const handleGoogleLogin = () => {
-        authService.initiateGoogleLogin();
+        window.location.href = `${import.meta.env.VITE_API_URL}/users/google`;
     };
 
     return (
-        <div className="login-container ">
+        <div className="login-container">
             {/* <div className="login-header">
                 <img src="/ScholarX-Logo.png" alt="Logo" className="logo-img" />
             </div> */}
@@ -110,9 +122,9 @@ const Login = () => {
                                 <button 
                                     type="submit" 
                                     className="login-button"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || loading}
                                 >
-                                    {isSubmitting ? 'Signing in...' : 'Sign In'}
+                                    {isSubmitting || loading ? 'Signing in...' : 'Sign In'}
                                 </button>
                                 
                                 <div className="signup-link">
@@ -127,6 +139,7 @@ const Login = () => {
                                     type="button" 
                                     className="google-signup"
                                     onClick={handleGoogleLogin}
+                                    disabled={loading}
                                 >
                                     <img src="/google.png" alt="Google" className="google-icon" />
                                     Continue with Google

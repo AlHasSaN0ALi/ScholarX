@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../../services/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../store/slices/authSlice';
 import './NavBar.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FiLogOut } from 'react-icons/fi';
+import defaultAvatar from '../../assets/Images/image.png';
+import { FaUserCircle } from 'react-icons/fa';
+import { useUser } from '../../context/UserContext';
+// import { API_URL } from '../../utils/api';
 
 function NavBar({ activePage }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState('/');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const { isAuthenticated, isAdmin } = useSelector((state) => state.auth);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user } = useUser();
 
-  const checkAuth = () => {
-    setIsAuthenticated(authService.isAuthenticated());
-  };
+  console.log(isAdmin);
+  console.log(isAuthenticated);
+  console.log(user);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
   useEffect(() => {
     // If activePage prop is provided, use it; otherwise use window.location.pathname
     setCurrentPath(activePage || window.location.pathname);
-    checkAuth();
-    
-    // Add event listener for auth state changes
-    window.addEventListener('authStateChanged', checkAuth);
     
     if (window.location.hash === '#contact') {
       setTimeout(() => {
@@ -31,12 +37,13 @@ function NavBar({ activePage }) {
         }
       }, 500); 
     }
-
-    // Cleanup event listener
-    return () => {
-      window.removeEventListener('authStateChanged', checkAuth);
-    };
   }, [activePage]);
+
+  // Close mobile menu and dropdown on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setDropdownOpen(false);
+  }, [currentPath]);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -44,25 +51,81 @@ function NavBar({ activePage }) {
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
+    setDropdownOpen(false);
   };
 
   const handleLogout = () => {
-    authService.logout();
-    setIsAuthenticated(false);
-    // Dispatch event to notify other components about logout
-    window.dispatchEvent(new Event('authStateChanged'));
+    dispatch(logout());
     closeMobileMenu();
     navigate('/');
   };
 
-  const renderAuthButtons = () => {
+  const handleAvatarClick = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  const handleProfile = () => {
+    setDropdownOpen(false);
+    navigate('/profile');
+  };
+// console.log(mobileMenuOpen);
+  const renderAuthButtons = (isMobile = false) => {
     if (isAuthenticated) {
-      return (
-        <button className="sx-logout-btn" onClick={handleLogout}>
-          Logout 
-          {/* <FiLogOut className="logout-icon" /> */}
-        </button>
-      );
+      if (isMobile) {
+        // Mobile: return profile, admin, and logout as simple links/buttons
+        return (
+          <>
+            <Link to="/profile" className="sx-mobile-nav-item" onClick={closeMobileMenu}>
+              My Profile
+            </Link>
+            {isAdmin && (
+              <Link to="/admin/dashboard" className="sx-mobile-nav-item" onClick={closeMobileMenu}>
+                Dashboard
+              </Link>
+            )}
+            <button className="sx-mobile-nav-item sx-logout-mobile-btn" onClick={handleLogout}>
+              <FiLogOut style={{ marginRight: 8 }} /> Logout
+            </button>
+          </>
+        );
+      } else {
+        // Desktop: show avatar with dropdown
+        return (
+          <div className="sx-user-avatar-wrapper">
+            <div className="sx-user-avatar" onClick={handleAvatarClick}>
+              {user && (user.image?.url || typeof user.image === 'string') ? (
+                (() => {
+                  let avatarImg = typeof user.image === 'string' ? user.image : user.image?.url;
+                  if (avatarImg && avatarImg.startsWith('/uploads')) {
+                    avatarImg = API_URL.replace('/api', '') + avatarImg;
+                  }
+                  return <img src={avatarImg} alt="User Avatar" className="sx-avatar-img" />;
+                })()
+              ) : (
+                <img src={defaultAvatar} alt="Default Avatar" className="sx-avatar-img" />
+              )}
+            </div>
+            {dropdownOpen && (
+              <div className="sx-user-dropdown">
+                <button onClick={handleProfile} className="sx-dropdown-item">My Profile</button>
+                {user && user.courses && user.courses.length > 0 && (
+                  <Link to="/mycourses" onClick={closeMobileMenu} className="sx-dropdown-item">
+                    My Courses
+                  </Link>
+                )}
+                {isAdmin && (
+                  <Link to="/admin/dashboard" onClick={closeMobileMenu} className="sx-dropdown-item">
+                     Dashboard
+                  </Link>
+                )}
+                <button className="sx-dropdown-item" onClick={handleLogout}>
+                  <FiLogOut style={{ marginRight: 8 }} /> Logout
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      }
     }
     return (
       <>
@@ -77,9 +140,15 @@ function NavBar({ activePage }) {
   };
 
   return (
+    <>
+
     <nav className="sx-navbar">
+
+
       <div className="sx-container">
-        <div className="sx-navbar-logo">
+
+
+        <div className="sx-navbar-logo col-md-3">
           <Link to="/">
             <img src="/home-page/logo.png" alt="ScholarX Logo" />
             <span></span>
@@ -90,7 +159,9 @@ function NavBar({ activePage }) {
           {mobileMenuOpen ? '✕' : '☰'}
         </button>
 
-        <div className={`sx-navbar-links ${mobileMenuOpen ? 'sx-active' : ''}`}>
+
+
+        <div className={`sx-navbar-links col-md-6 d-md-flex justify-content-center ${mobileMenuOpen ? 'sx-active' : ''}`}>
           <Link to="/" className={currentPath === '/' ? 'sx-active' : ''} onClick={closeMobileMenu}>Home</Link>
           <Link to="/about" className={currentPath === '/about' ? 'sx-active' : ''} onClick={closeMobileMenu}>About Us</Link>
           <Link to="/services" className={currentPath === '/services' ? 'sx-active' : ''} onClick={closeMobileMenu}>Our Services</Link>
@@ -100,15 +171,20 @@ function NavBar({ activePage }) {
           <Link to="/contact" className={currentPath === '/contact' ? 'sx-active' : ''} onClick={closeMobileMenu}>Contact</Link>
           
           <div className="sx-mobile-auth">
-            {renderAuthButtons()}
+            {renderAuthButtons(true)}
           </div>
         </div>
 
-        <div className="sx-navbar-auth sx-desktop-auth">
-          {renderAuthButtons()}
+
+
+        <div className="sx-navbar-auth sx-desktop-auth col-md-3 d-flex justify-content-end">
+          {renderAuthButtons(false)}
         </div>
+
+
       </div>
     </nav>
+    </>
   );
 }
 

@@ -14,6 +14,7 @@ const {
     deleteAccount,
     verifyEmail
 } = require('../controllers/User');
+const upload = require('../middleware/upload');
 
 // Generate JWT Token
 const generateToken = (userId) => {
@@ -56,8 +57,8 @@ router.post('/reset-password', resetPassword);
 
 // Protected routes
 router.use(protect); // All routes after this middleware require authentication
+router.patch('/profile', upload.single('image'), updateProfile);
 router.get('/profile', getProfile);
-router.put('/profile', updateProfile);
 router.put('/update-password', updatePassword);
 router.delete('/delete-account', deleteAccount);
 

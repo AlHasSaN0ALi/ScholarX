@@ -5,31 +5,19 @@ const { handleImageUpload, cloudinary } = require('../utils/cloudinaryConfig');
 
 // Create a new course with image upload
 exports.createCourse = async (req, res) => {
-   
     try {
-        
-        handleImageUpload(req, res, async (err) => {
-            if (err) {
-                return res.status(400).json(
-                    JSendResponse.fail({ message: 'Image upload failed' })
-                );
-            }
-         
-            const courseData = {
-                ...req.body,
-                image: req.file ? {
-                    url: req.file.path,
-                    public_id: req.file.filename
-                } : null
-            };
-console.log(courseData);
-
-            const course = new Course(courseData);
-            await course.save();
-            res.status(201).json(
-                JSendResponse.success({ course })
-            );
-        });
+        const courseData = {
+            ...req.body,
+            image: req.file ? {
+                url: `/uploads/${req.file.filename}`,
+                public_id: req.file.filename
+            } : null
+        };
+        const course = new Course(courseData);
+        await course.save();
+        res.status(201).json(
+            JSendResponse.success({ course })
+        );
     } catch (error) {
         res.status(500).json(
             JSendResponse.error(error.message)
@@ -59,9 +47,19 @@ exports.getCourses = async (req, res) => {
         const totalCourses = await Course.countDocuments(query);
         const totalPages = Math.ceil(totalCourses / limit);
 
+        // Add isSubscribed for each course if user is logged in
+        let userId = req.user?._id?.toString();
+        const coursesWithSubscription = courses.map(course => {
+            let isSubscribed = false;
+            if (userId && course.subscriptions && Array.isArray(course.subscriptions)) {
+                isSubscribed = course.subscriptions.map(id => id.toString()).includes(userId);
+            }
+            return { ...course.toObject(), isSubscribed };
+        });
+
         res.status(200).json(
             JSendResponse.success({
-                courses,
+                courses: coursesWithSubscription,
                 pagination: {
                     currentPage: page,
                     totalPages,
@@ -102,46 +100,26 @@ exports.getCourseById = async (req, res) => {
 // Update a course with image upload
 exports.updateCourse = async (req, res) => {
     try {
-        handleImageUpload(req, res, async (err) => {
-            // if (err) {
-            //     return res.status(400).json(
-            //         JSendResponse.fail({ message: 'Image upload failed' })
-            //     );
-            // }
-
-            const updateData = { ...req.body };
-            
-            // If new image is uploaded, add it to update data
-            // if (req.file) {
-            //     updateData.image = {
-            //         url: req.file.path,
-            //         public_id: req.file.filename
-            //     };
-
-            //     // Delete old image from Cloudinary if exists
-            //     const oldCourse = await Course.findById(req.params.id);
-            //     if (oldCourse.image && oldCourse.image.public_id) {
-            //         await cloudinary.uploader.destroy(oldCourse.image.public_id);
-            //     }
-            // }
-
-            
-            const course = await Course.findByIdAndUpdate(
-                req.params.id,
-                updateData,
-                { new: true }
-            )
-            // .populate('instructor', 'name email profilePicture')
-
-            if (!course) {
-                return res.status(404).json(
-                    JSendResponse.fail({ message: 'Course not found' })
-                );
-            }
-            res.status(200).json(
-                JSendResponse.success({ course })
+        const updateData = { ...req.body };
+        if (req.file) {
+            updateData.image = {
+                url: `/uploads/${req.file.filename}`,
+                public_id: req.file.filename
+            };
+        }
+        const course = await Course.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new: true }
+        );
+        if (!course) {
+            return res.status(404).json(
+                JSendResponse.fail({ message: 'Course not found' })
             );
-        });
+        }
+        res.status(200).json(
+            JSendResponse.success({ course })
+        );
     } catch (error) {
         res.status(500).json(
             JSendResponse.error(error.message)
@@ -190,6 +168,43 @@ exports.getCourseUsers = async (req, res) => {
     } catch (error) {
         res.status(500).json(
             JSendResponse.error(error.message )
+        );
+    }
+};
+
+// Check if user is subscribed to a course
+exports.checkSubscriptionStatus = async (req, res) => {
+    console.log("hiiiiiiiiiii");
+    try {
+        
+        const { userId } = req.query;
+        const course = await Course.findById(req.params.id);
+        
+        if (!course) {
+            return res.status(404).json(
+                JSendResponse.fail({ message: 'Course not found' })
+            );
+        }
+
+        if (!userId) {
+            return res.status(400).json(
+                JSendResponse.fail({ message: 'User ID is required' })
+            );
+        }
+
+        // Check if user ID exists in course subscriptions array
+        const isSubscribed = course.subscriptions.includes(userId);
+
+        res.status(200).json(
+            JSendResponse.success({ 
+                isSubscribed,
+                courseId: course._id,
+                userId: userId
+            })
+        );
+    } catch (error) {
+        res.status(500).json(
+            JSendResponse.error(error.message)
         );
     }
 };

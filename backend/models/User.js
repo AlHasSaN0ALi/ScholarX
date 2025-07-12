@@ -7,7 +7,10 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phoneNumber: { type: String },
-    image: { type: String },
+    image: {
+        url: { type: String },
+        public_id: { type: String }
+    },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
     googleId: { type: String },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],

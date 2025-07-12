@@ -1,0 +1,84 @@
+.sx-profile-container {
+  max-width: 480px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+}
+.sx-profile-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.sx-profile-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.sx-profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e0e0e0;
+  margin-bottom: 12px;
+}
+.sx-profile-upload-btn {
+  background: #1976d2;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  transition: background 0.2s;
+  margin-bottom: 8px;
+}
+.sx-profile-upload-btn:hover {
+  background: #125ea2;
+}
+.sx-profile-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sx-profile-fields label {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.sx-profile-fields input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+.sx-profile-save-btn {
+  width: 100%;
+  margin-top: 20px;
+  background: #1976d2;
+  color: #fff;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sx-profile-save-btn:disabled {
+  background: #b0b0b0;
+  cursor: not-allowed;
+}
+.sx-profile-success {
+  color: #388e3c;
+  margin-top: 12px;
+  text-align: center;
+}
+.sx-profile-error {
+  color: #d32f2f;
+  margin-top: 8px;
+  text-align: left;
+  font-size: 14px;
+} 
