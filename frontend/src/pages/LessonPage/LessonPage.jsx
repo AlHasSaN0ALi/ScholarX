@@ -164,6 +164,24 @@ console.log(isSubscribed);
         }
     };
 
+    // Fullscreen handler
+    const handleFullscreen = () => {
+        if (playerContainerRef.current) {
+            const iframe = playerContainerRef.current.querySelector('iframe');
+            if (iframe) {
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen();
+                } else if (iframe.webkitRequestFullscreen) {
+                    iframe.webkitRequestFullscreen(); // Safari
+                } else if (iframe.mozRequestFullScreen) {
+                    iframe.mozRequestFullScreen(); // Firefox
+                } else if (iframe.msRequestFullscreen) {
+                    iframe.msRequestFullscreen(); // IE/Edge
+                }
+            }
+        }
+    };
+
     return (
         <div className="lesson-main-layout">
             <div className="lesson-left">
@@ -177,6 +195,7 @@ console.log(isSubscribed);
                         <button onClick={handlePause}>Pause</button>
                         <button onClick={handlePrev10}>-10s</button>
                         <button onClick={handleNext10}>+10s</button>
+                        <button onClick={handleFullscreen}>Fullscreen</button>
                     </div>
                     <div className="lesson-title text-center">
                         {course?.title || 'Course'}

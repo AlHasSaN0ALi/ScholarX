@@ -36,8 +36,27 @@ export const UserProvider = ({ children }) => {
         authService.logout();
     };
 
+    const refreshUser = async () => {
+        setLoading(true);
+        try {
+            if (authService.isAuthenticated()) {
+                const response = await authService.getCurrentUser();
+                if (response.status === 'success') {
+                    setUser(response.data.user);
+                }
+                return response; // Return the backend response
+            } else {
+                setUser(null);
+            }
+        } catch (error) {
+            console.error('Failed to refresh user:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <UserContext.Provider value={{ user, setUser, login, logout, loading }}>
+        <UserContext.Provider value={{ user, setUser, login, logout, loading, refreshUser }}>
             {children}
         </UserContext.Provider>
     );

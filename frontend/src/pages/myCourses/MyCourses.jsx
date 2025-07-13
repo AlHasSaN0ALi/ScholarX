@@ -3,11 +3,26 @@ import { useUser } from '../../context/UserContext';
 import CourseCard from '../Courses/CourseCard';
 import api from '../../services/api';
 import './MyCourses.css';
+import { useDispatch } from 'react-redux';
+import { setUser as setReduxUser } from '../../store/slices/authSlice';
 
 const MyCourses = () => {
-  const { user } = useUser();
+  const { user, refreshUser } = useUser();
+  const dispatch = useDispatch();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Refresh user state on mount (after payment redirect)
+    const doRefresh = async () => {
+      if (localStorage.getItem('refreshUserAfterPayment')) {
+        await refreshUser();
+        if (user) dispatch(setReduxUser(user));
+        localStorage.removeItem('refreshUserAfterPayment');
+      }
+    };
+    doRefresh();
+  }, []);
 
   useEffect(() => {
     const fetchCourses = async () => {

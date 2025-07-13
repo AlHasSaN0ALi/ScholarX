@@ -88,6 +88,8 @@ const CourseCard = ({ course, section = 'latest' }) => {
       // Initiate payment
       const response = await authService.createPayment(course._id);
       if (response.data.status === 'success' && response.data.data.paymentUrl) {
+        // Set flag for post-payment refresh
+        localStorage.setItem('refreshUserAfterPayment', '1');
         // Redirect to payment page
         window.location.href = response.data.data.paymentUrl;
       } else {

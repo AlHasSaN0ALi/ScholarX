@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, googleLogin, clearError } from '../../store/slices/authSlice';
+import { login, googleLogin, clearError, setUser as setReduxUser } from '../../store/slices/authSlice';
 import { setSuccess, setError, clearMessages } from '../../store/slices/uiSlice';
 import Swal from 'sweetalert2';
 import './Login.css';
@@ -23,7 +23,7 @@ const Login = () => {
     const dispatch = useDispatch();
     const { loading, error } = useSelector((state) => state.auth);
     const { success } = useSelector((state) => state.ui);
-    const { login: userContextLogin } = useUser();
+    const { login: userContextLogin, refreshUser, user } = useUser();
 
     useEffect(() => {
         // Clear any existing messages
@@ -52,6 +52,11 @@ const Login = () => {
             const response = await dispatch(login(values)).unwrap();
             if (response && response.data && response.data.user) {
                 userContextLogin(response.data.user); // Update UserContext
+                // Refresh user from backend to get latest info
+                const refreshed = await refreshUser();
+                if (refreshed && refreshed.status === 'success' && refreshed.data && refreshed.data.user) {
+                    dispatch(setReduxUser(refreshed.data.user));
+                }
             }
             dispatch(setSuccess('Login successful!'));
         } catch (err) {

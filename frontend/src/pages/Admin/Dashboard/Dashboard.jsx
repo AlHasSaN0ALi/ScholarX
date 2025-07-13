@@ -3,12 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDashboardStats } from '../../../store/slices/adminSlice';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import { useUser } from '../../../context/UserContext';
+import { setUser as setReduxUser } from '../../../store/slices/authSlice';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isAdmin } = useSelector((state) => state.auth);
     const { dashboardStats, loading, error } = useSelector((state) => state.admin);
+    const { user, refreshUser } = useUser();
+
+    useEffect(() => {
+        // Refresh user state on mount (after admin change)
+        const doRefresh = async () => {
+            await refreshUser();
+            if (user) dispatch(setReduxUser(user));
+        };
+        doRefresh();
+    }, []);
 
     useEffect(() => {
         if (!isAdmin) {

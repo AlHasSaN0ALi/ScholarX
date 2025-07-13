@@ -308,7 +308,7 @@ const Courses = () => {
             <div className="header">
                 <h1>Course Management</h1>
                 <button
-                    className="create-btn"
+                    className="create-btn btn btn-primary mb-1"
                     onClick={() => setShowCreateModal(true)}
                 >
                     Create New Course
