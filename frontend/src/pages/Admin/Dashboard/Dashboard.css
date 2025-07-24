@@ -91,4 +91,31 @@
     background: #f8d7da;
     border-radius: 5px;
     margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .quick-actions {
+    padding: 1rem;
+  }
+  .action-buttons {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .action-buttons button {
+    font-size: 1rem;
+    min-height: 44px;
+    width: 100%;
+  }
+  .modal-content {
+    padding: 1rem;
+    max-width: 95vw;
+  }
 } 

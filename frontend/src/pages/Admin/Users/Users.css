@@ -123,4 +123,64 @@ select {
     background: #f8d7da;
     border-radius: 5px;
     margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .admin-users {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  .users-table table,
+  .users-table thead,
+  .users-table tbody,
+  .users-table th,
+  .users-table td,
+  .users-table tr {
+    display: block;
+    width: 100%;
+  }
+  .users-table tr {
+    margin-bottom: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 1rem 0.5rem;
+  }
+  .users-table td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    min-height: 40px;
+  }
+  .users-table td:before {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #666;
+    content: attr(data-label);
+  }
+  .users-table th {
+    display: none;
+  }
+  .pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .modal-content {
+    padding: 1rem;
+    max-width: 95vw;
+  }
+  .search-bar input {
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  .edit-btn, .delete-btn {
+    width: 100%;
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    min-height: 44px;
+  }
 } 

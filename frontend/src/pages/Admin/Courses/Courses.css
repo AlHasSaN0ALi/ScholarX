@@ -342,3 +342,63 @@
 .lessons-list tr:hover {
     background-color: #f8f9fa;
 } 
+
+@media (max-width: 768px) {
+  .admin-courses {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  .courses-table table,
+  .courses-table thead,
+  .courses-table tbody,
+  .courses-table th,
+  .courses-table td,
+  .courses-table tr {
+    display: block;
+    width: 100%;
+  }
+  .courses-table tr {
+    margin-bottom: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 1rem 0.5rem;
+  }
+  .courses-table td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    min-height: 40px;
+  }
+  .courses-table td:before {
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #666;
+    content: attr(data-label);
+  }
+  .courses-table th {
+    display: none;
+  }
+  .pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .modal-content {
+    padding: 1rem;
+    max-width: 95vw;
+  }
+  .search-bar input {
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  .edit-btn, .delete-btn, .lesson-btn, .manage-lessons-btn {
+    width: 100%;
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+} 

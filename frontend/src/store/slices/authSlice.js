@@ -139,9 +139,7 @@ const authSlice = createSlice({
             })
             .addCase(getCurrentUser.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload);
-                
-                state.user = action.payload.role;
+                state.user = action.payload.user;
                 state.isAdmin = action.payload.user.role === 'admin';
             })
             .addCase(getCurrentUser.rejected, (state, action) => {

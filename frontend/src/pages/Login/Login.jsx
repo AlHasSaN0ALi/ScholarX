@@ -17,9 +17,9 @@ const loginSchema = Yup.object().shape({
         .required('Password is required')
         .min(6, 'Password must be at least 6 characters'),
 });
-
-const Login = () => {
-    const navigate = useNavigate();
+                 
+const Login = () => {    
+    const navigate = useNavigate();   
     const dispatch = useDispatch();
     const { loading, error } = useSelector((state) => state.auth);
     const { success } = useSelector((state) => state.ui);
@@ -50,13 +50,12 @@ const Login = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             const response = await dispatch(login(values)).unwrap();
-            if (response && response.data && response.data.user) {
-                userContextLogin(response.data.user); // Update UserContext
-                // Refresh user from backend to get latest info
-                const refreshed = await refreshUser();
-                if (refreshed && refreshed.status === 'success' && refreshed.data && refreshed.data.user) {
-                    dispatch(setReduxUser(refreshed.data.user));
-                }
+            // Always refresh user from backend to get latest info
+            const refreshed = await refreshUser();
+            if (refreshed && refreshed.status === 'success' && refreshed.data && refreshed.data.user) {
+                // Update both Redux and UserContext with the latest user
+                dispatch(setReduxUser(refreshed.data.user));
+                userContextLogin(refreshed.data.user);
             }
             dispatch(setSuccess('Login successful!'));
         } catch (err) {

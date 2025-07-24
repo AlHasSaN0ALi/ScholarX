@@ -74,15 +74,15 @@ const Users = () => {
                             <th>Email</th>
                             <th>Role</th>
                             {/* <th>Status</th> */}
-                            {/* <th>Actions</th> */}
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {users?.users?.map(user => (
                             <tr key={user._id}>
-                                <td>{user.firstName} {user.lastName}</td>
-                                <td>{user.email}</td>
-                                <td>{user.role}</td>
+                                <td data-label="Name">{user.firstName} {user.lastName}</td>
+                                <td data-label="Email">{user.email}</td>
+                                <td data-label="Role">{user.role}</td>
                                 {/* <td>
                                     <select
                                         value={user.status}
@@ -93,20 +93,21 @@ const Users = () => {
                                         <option value="inactive">Inactive</option>
                                     </select>
                                 </td> */}
-                                {/* <td>
+                                <td>
+                                     
                                     <button
                                         className="edit-btn"
                                         onClick={() => handleEditUser(user)}
                                     >
                                         Edit
                                     </button>
-                                    <button
+                                    {/* <button
                                         className="delete-btn"
                                         onClick={() => handleDeleteUser(user._id)}
                                     >
                                         Delete
-                                    </button>
-                                </td> */}
+                                    </button> */}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -138,7 +139,7 @@ const Users = () => {
                             // Handle form submission
                             setShowEditModal(false);
                         }}>
-                            <div className="form-group">
+                            {/* <div className="form-group">
                                 <label>First Name</label>
                                 <input
                                     type="text"
@@ -148,8 +149,8 @@ const Users = () => {
                                         firstName: e.target.value
                                     })}
                                 />
-                            </div>
-                            <div className="form-group">
+                            </div> */}
+                            {/* <div className="form-group">
                                 <label>Last Name</label>
                                 <input
                                     type="text"
@@ -159,8 +160,8 @@ const Users = () => {
                                         lastName: e.target.value
                                     })}
                                 />
-                            </div>
-                            <div className="form-group">
+                            </div> */}
+                            {/* <div className="form-group">
                                 <label>Email</label>
                                 <input
                                     type="email"
@@ -170,7 +171,7 @@ const Users = () => {
                                         email: e.target.value
                                     })}
                                 />
-                            </div>
+                            </div> */}
                             <div className="form-group">
                                 <label>Role</label>
                                 <select

@@ -129,8 +129,8 @@ const Reports = () => {
                                 <tbody>
                                     {reports.courses.popularCourses.map(course => (
                                         <tr key={course._id}>
-                                            <td>{course.title}</td>
-                                            <td>{course.enrollments}</td>
+                                            <td data-label="Course Title">{course.title}</td>
+                                            <td data-label="Enrollments">{course.enrollments}</td>
                                         </tr>
                                     ))}
                                 </tbody>

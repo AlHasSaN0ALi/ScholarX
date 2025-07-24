@@ -350,13 +350,13 @@ const Courses = () => {
                         ) : (
                             courses?.list?.map(course => (
                                 <tr key={course._id}>
-                                    <td>{course.title}</td>
-                                    <td>{course.category}</td>
-                                    <td>${course.currentPrice}</td>
-                                    <td>{course.oldPrice ? `$${course.oldPrice}` : '-'}</td>
-                                    <td>{course.totalLessons || 0}</td>
-                                    <td>{course.totalDuration || 0} min</td>
-                                    <td>
+                                    <td data-label="Title">{course.title}</td>
+                                    <td data-label="Category">{course.category}</td>
+                                    <td data-label="Current Price">${course.currentPrice}</td>
+                                    <td data-label="Old Price">{course.oldPrice ? `$${course.oldPrice}` : '-'}</td>
+                                    <td data-label="Total Lessons">{course.totalLessons || 0}</td>
+                                    <td data-label="Total Duration">{course.totalDuration || 0} min</td>
+                                    <td data-label="Actions">
                                         <button
                                             className="manage-lessons-btn"
                                             onClick={() => handleManageLessons(course)}

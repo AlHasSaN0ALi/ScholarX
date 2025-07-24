@@ -52,11 +52,11 @@ const Subscriptions = () => {
                     <tbody>
                         {subscriptions.map(subscription => (
                             <tr key={subscription._id}>
-                                <td>{subscription.user.firstName} {subscription.user.lastName}</td>
-                                <td>{subscription.course.title}</td>
-                                <td>{new Date(subscription.startDate).toLocaleDateString()}</td>
+                                <td data-label="User">{subscription.user.firstName} {subscription.user.lastName}</td>
+                                <td data-label="Course">{subscription.course.title}</td>
+                                <td data-label="Start Date">{new Date(subscription.startDate).toLocaleDateString()}</td>
                                 {/* <td>{new Date(subscription.endDate).toLocaleDateString()}</td> */}
-                                <td>${subscription.amount}</td>
+                                <td data-label="Amount">${subscription.amount}</td>
                                 {/* <td>
                                     <select
                                         value={subscription.status}
