@@ -10,6 +10,7 @@ export const fetchDashboardStats = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await api.get('/admin/dashboard/stats');
+            console.log(response.data);
             return response.data.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch dashboard stats');
@@ -23,46 +24,11 @@ export const fetchAllUsers = createAsyncThunk(
     async ({ page = 1, search = '' }, { rejectWithValue }) => {
         try {
             const response = await api.get(`/admin/users?page=${page}&search=${search}`);
+            console.log(response.data.data);
             
             return response.data.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch users');
-        }
-    }
-);
-
-export const updateUser = createAsyncThunk(
-    'admin/updateUser',
-    async ({ userId, userData }, { rejectWithValue }) => {
-        try {
-            const response = await api.patch(`/admin/users/${userId}`, userData);
-            return response.data.data.user;
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to update user');
-        }
-    }
-);
-
-export const blockUser = createAsyncThunk(
-    'admin/blockUser',
-    async ({ userId, reason }, { rejectWithValue }) => {
-        try {
-            const response = await api.patch(`/admin/users/${userId}/block`, { reason });
-            return response.data.data.user;
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to block user');
-        }
-    }
-);
-
-export const unblockUser = createAsyncThunk(
-    'admin/unblockUser',
-    async (userId, { rejectWithValue }) => {
-        try {
-            const response = await api.patch(`/admin/users/${userId}/unblock`);
-            return response.data.data.user;
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to unblock user');
         }
     }
 );
@@ -175,31 +141,6 @@ export const deleteCourse = createAsyncThunk(
             return courseId;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to delete course');
-        }
-    }
-);
-
-// Manual enrollment overrides
-export const enrollUserToCourse = createAsyncThunk(
-    'admin/enrollUserToCourse',
-    async ({ courseId, userId, email }, { rejectWithValue }) => {
-        try {
-            const response = await api.post(`/admin/courses/${courseId}/enroll`, { userId, email });
-            return response.data.data;
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to enroll user');
-        }
-    }
-);
-
-export const revokeUserFromCourse = createAsyncThunk(
-    'admin/revokeUserFromCourse',
-    async ({ courseId, userId, email }, { rejectWithValue }) => {
-        try {
-            const response = await api.delete(`/admin/courses/${courseId}/enroll`, { params: { userId, email } });
-            return response.data.data;
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to revoke access');
         }
     }
 );
@@ -344,32 +285,14 @@ const adminSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            .addCase(updateUser.fulfilled, (state, action) => {
-                const index = state.users.users.findIndex(user => user._id === action.payload._id);
-                if (index !== -1) {
-                    state.users.users[index] = action.payload;
-                }
-            })
-            .addCase(blockUser.fulfilled, (state, action) => {
-                const index = state.users.users.findIndex(user => user._id === action.payload._id);
-                if (index !== -1) {
-                    state.users.users[index] = action.payload;
-                }
-            })
-            .addCase(unblockUser.fulfilled, (state, action) => {
-                const index = state.users.users.findIndex(user => user._id === action.payload._id);
-                if (index !== -1) {
-                    state.users.users[index] = action.payload;
-                }
-            })
             .addCase(updateUserStatus.fulfilled, (state, action) => {
-                const index = state.users.users.findIndex(user => user._id === action.payload._id);
+                const index = state.users.list.findIndex(user => user._id === action.payload._id);
                 if (index !== -1) {
-                    state.users.users[index] = action.payload;
+                    state.users.list[index] = action.payload;
                 }
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
-                state.users.users = state.users.users.filter(user => user._id !== action.payload);
+                state.users.list = state.users.list.filter(user => user._id !== action.payload);
             })
             // Courses
             .addCase(fetchAllCourses.pending, (state) => {
@@ -406,21 +329,6 @@ const adminSlice = createSlice({
             })
             .addCase(deleteCourse.fulfilled, (state, action) => {
                 state.courses.list = state.courses.list.filter(course => course._id !== action.payload);
-            })
-            // Manual enrollment overrides
-            .addCase(enrollUserToCourse.fulfilled, (state, action) => {
-                const updated = action.payload.course;
-                const index = state.courses.list.findIndex(c => c._id === updated._id);
-                if (index !== -1) {
-                    state.courses.list[index] = { ...state.courses.list[index], ...updated };
-                }
-            })
-            .addCase(revokeUserFromCourse.fulfilled, (state, action) => {
-                const updated = action.payload.course;
-                const index = state.courses.list.findIndex(c => c._id === updated._id);
-                if (index !== -1) {
-                    state.courses.list[index] = { ...state.courses.list[index], ...updated };
-                }
             })
             // Lessons
             .addCase(createLesson.fulfilled, (state, action) => {

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import courseImg from '../../assets/Images/image.png';
-import { getCourseImageUrl } from '../../utils/imageUtils';
 import './Courses.css';
 import { FaRegHeart, FaStar, FaRegStar, FaChevronRight, FaClock, FaPlayCircle, FaMoneyBill } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import api, { authService } from '../../services/api';
+import { authService } from '../../services/api';
 import Swal from 'sweetalert2';
 import { useUser } from '../../context/UserContext';
 import CourseCardSkeleton from './CourseCardSkeleton';
@@ -37,7 +36,12 @@ const CourseCard = ({ course, section = 'latest' }) => {
   const instructor = course.instructor?.name || 'Instructor';
   const reviews = course.reviews || 12;
   const rating = course.rating || 4;
-  const image = getCourseImageUrl(course, courseImg);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+  let image = course.image?.url ? course.image.url : courseImg;
+  // If the image URL is relative, prepend the backend base (remove /api if present)
+  if (image && image.startsWith('/uploads')) {
+    image = API_URL.replace('/api', '') + image;
+  }
 
   // Calculate if course is new (created in last 7 days)
   let isNew = false;
@@ -62,62 +66,42 @@ const CourseCard = ({ course, section = 'latest' }) => {
   const isSubscribed = course.isSubscribed;
 
   const handleEnroll = async (e) => {
-    e.preventDefault();
-    // Temporarily disable Paymob and show admin contact option
-    if (!authService.isAuthenticated()) {
-      Swal.fire({
-        title: 'Login Required',
-        text: 'Please login to request access to this course',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Login',
-        cancelButtonText: 'Cancel'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          navigate('/login');
-        }
-      });
-      return;
-    }
-
-    const result = await Swal.fire({
-      icon: 'info',
-      title: 'Payments temporarily unavailable',
-      html: 'Our payment gateway is undergoing maintenance. If you want access now, you can contact the admin and we will assist you manually.',
-      showCancelButton: true,
-      confirmButtonText: 'Send Message to Admin',
-      cancelButtonText: 'Close'
-    });
-
-    if (result.isConfirmed) {
-      await handleContactAdmin();
-    }
-  };
-
-  const handleContactAdmin = async () => {
+    e.preventDefault(); // Prevent navigation when clicking enroll
     try {
       setIsLoading(true);
-      const firstName = user?.firstName || 'Unknown';
-      const lastName = user?.lastName || '';
-      const email = user?.email || 'unknown@unknown.com';
-      const message = `The user requests manual access while payments are offline.`;
-
-      const res = await api.post('/email', { 
-        firstName, 
-        lastName, 
-        email, 
-        message,
-        type: 'access_request',
-        course: { title: course.title, id: course._id }
-      });
-      if (res.data?.success) {
-        Swal.fire({ icon: 'success', title: 'Request sent', text: 'Your request has been sent to the admin. We will contact you shortly. Please check your email for the response.' });
-      } else {
-        throw new Error('Failed to send email');
+      // Check if user is logged in
+      if (!authService.isAuthenticated()) {
+        Swal.fire({
+          title: 'Login Required',
+          text: 'Please login to enroll in this course',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Login',
+          cancelButtonText: 'Cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/login');
+          }
+        });
+        return;
       }
-    } catch (err) {
-      console.error('Contact admin error:', err);
-      Swal.fire({ icon: 'error', title: 'Could not send request', text: err.message || 'Please try again later.' });
+      // Initiate payment
+      const response = await authService.createPayment(course._id);
+      if (response.data.status === 'success' && response.data.data.paymentUrl) {
+        // Set flag for post-payment refresh
+        localStorage.setItem('refreshUserAfterPayment', '1');
+        // Redirect to payment page
+        window.location.href = response.data.data.paymentUrl;
+      } else {
+        throw new Error('Failed to create payment');
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      Swal.fire({
+        title: 'Payment Error',
+        text: error.response?.data?.message || 'Failed to process payment',
+        icon: 'error'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -134,9 +118,9 @@ const CourseCard = ({ course, section = 'latest' }) => {
         <div className="position-relative">
           <img src={image} className="card-img-top" alt="Course" style={{height: '180px', objectFit: 'cover'}} />
           {showBadge()}
-          {/* <button className="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle p-2" style={{zIndex:2}}>
+          <button className="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle p-2" style={{zIndex:2}}>
             <FaRegHeart />
-          </button> */}
+          </button>
         </div>
         <div className="card-body">
           <div className="d-flex align-items-center justify-content-between mb-2">
@@ -160,7 +144,7 @@ const CourseCard = ({ course, section = 'latest' }) => {
                   onClick={handleEnroll}
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Sending...' : 'Enroll Now'}
+                  {isLoading ? 'Processing...' : 'Enroll Now'}
                 </button>
               )}
             </div>

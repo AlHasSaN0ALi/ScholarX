@@ -25,6 +25,7 @@ const GoogleCallback = () => {
                     throw new Error('No token received from Google authentication');
                 }
 
+                console.log('Received token:', token);
                 await dispatch(googleLogin(token));
                 
                 await Swal.fire({

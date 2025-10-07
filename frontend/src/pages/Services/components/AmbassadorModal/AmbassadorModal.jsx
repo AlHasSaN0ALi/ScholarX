@@ -84,7 +84,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
                 value={formData.motivation}
                 onChange={handleChange}
                 required
-                // minLength={100}
+                minLength={100}
                 placeholder="Tell us why you want to become an ambassador and what drives you..."
               />
             </div>
@@ -97,7 +97,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
                 value={formData.promotionPlan}
                 onChange={handleChange}
                 required
-                // minLength={100}
+                minLength={100}
                 placeholder="Describe your strategy for promoting scholarships..."
               />
             </div>
@@ -110,7 +110,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
                 value={formData.experience}
                 onChange={handleChange}
                 required
-                // minLength={100}
+                minLength={100}
                 placeholder="Share your relevant experience..."
               />
             </div>
@@ -123,7 +123,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
                 value={formData.questions}
                 onChange={handleChange}
                 required
-                // minLength={100}
+                minLength={100}
                 placeholder="Explain your approach to helping students..."
               />
             </div>

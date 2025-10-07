@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllUsers, updateUser, updateUserStatus, deleteUser, blockUser, unblockUser } from '../../../store/slices/adminSlice';
+import { fetchAllUsers, updateUserStatus, deleteUser } from '../../../store/slices/adminSlice';
 import './Users.css';
 
 const Users = () => {
@@ -11,9 +11,6 @@ const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedUser, setSelectedUser] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [showBlockModal, setShowBlockModal] = useState(false);
-    const [blockReason, setBlockReason] = useState('');
-    const [updateMessage, setUpdateMessage] = useState('');
 
     // Debounce search term
     useEffect(() => {
@@ -52,83 +49,12 @@ const Users = () => {
         setShowEditModal(true);
     };
 
-    const handleUpdateUser = async (e) => {
-        e.preventDefault();
-        if (!selectedUser) return;
-
-        try {
-            await dispatch(updateUser({
-                userId: selectedUser._id,
-                userData: {
-                    role: selectedUser.role
-                }
-            })).unwrap();
-            
-            setUpdateMessage('User role updated successfully!');
-            setTimeout(() => setUpdateMessage(''), 3000);
-            setShowEditModal(false);
-            setSelectedUser(null);
-        } catch (error) {
-            console.error('Failed to update user:', error);
-            setUpdateMessage('Failed to update user role');
-            setTimeout(() => setUpdateMessage(''), 3000);
-        }
-    };
-
-    const handleBlockUser = (user) => {
-        setSelectedUser(user);
-        setShowBlockModal(true);
-        setBlockReason('');
-    };
-
-    const handleUnblockUser = async (userId) => {
-        if (window.confirm('Are you sure you want to unblock this user?')) {
-            try {
-                await dispatch(unblockUser(userId)).unwrap();
-                setUpdateMessage('User unblocked successfully!');
-                setTimeout(() => setUpdateMessage(''), 3000);
-            } catch (error) {
-                console.error('Failed to unblock user:', error);
-                setUpdateMessage('Failed to unblock user');
-                setTimeout(() => setUpdateMessage(''), 3000);
-            }
-        }
-    };
-
-    const handleConfirmBlock = async (e) => {
-        e.preventDefault();
-        if (!selectedUser) return;
-
-        try {
-            await dispatch(blockUser({
-                userId: selectedUser._id,
-                reason: blockReason
-            })).unwrap();
-            
-            setUpdateMessage('User blocked successfully!');
-            setTimeout(() => setUpdateMessage(''), 3000);
-            setShowBlockModal(false);
-            setSelectedUser(null);
-            setBlockReason('');
-        } catch (error) {
-            console.error('Failed to block user:', error);
-            setUpdateMessage('Failed to block user');
-            setTimeout(() => setUpdateMessage(''), 3000);
-        }
-    };
-
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
 
     return (
         <div className="admin-users">
             <h1>User Management</h1>
-            
-            {updateMessage && (
-                <div className={`update-message ${updateMessage.includes('successfully') ? 'success' : 'error'}`}>
-                    {updateMessage}
-                </div>
-            )}
 
             <div className="search-bar">
                 <input
@@ -147,7 +73,7 @@ const Users = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Status</th>
+                            {/* <th>Status</th> */}
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -157,38 +83,30 @@ const Users = () => {
                                 <td data-label="Name">{user.firstName} {user.lastName}</td>
                                 <td data-label="Email">{user.email}</td>
                                 <td data-label="Role">{user.role}</td>
-                                <td data-label="Status">
-                                    <span className={`status-badge ${user.isBlocked ? 'blocked' : 'active'}`}>
-                                        {user.isBlocked ? 'Blocked' : 'Active'}
-                                    </span>
-                                    {user.isBlocked && user.blockReason && (
-                                        <div className="block-reason" title={user.blockReason}>
-                                            Reason: {user.blockReason}
-                                        </div>
-                                    )}
-                                </td>
+                                {/* <td>
+                                    <select
+                                        value={user.status}
+                                        onChange={(e) => handleStatusChange(user._id, e.target.value)}
+                                    >
+                                        <option value="active">Active</option>
+                                        <option value="suspended">Suspended</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </td> */}
                                 <td>
+                                     
                                     <button
                                         className="edit-btn"
                                         onClick={() => handleEditUser(user)}
                                     >
                                         Edit
                                     </button>
-                                    {user.isBlocked ? (
-                                        <button
-                                            className="unblock-btn"
-                                            onClick={() => handleUnblockUser(user._id)}
-                                        >
-                                            Unblock
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className="block-btn"
-                                            onClick={() => handleBlockUser(user)}
-                                        >
-                                            Block
-                                        </button>
-                                    )}
+                                    {/* <button
+                                        className="delete-btn"
+                                        onClick={() => handleDeleteUser(user._id)}
+                                    >
+                                        Delete
+                                    </button> */}
                                 </td>
                             </tr>
                         ))}
@@ -216,7 +134,11 @@ const Users = () => {
                 <div className="modal">
                     <div className="modal-content">
                         <h2>Edit User</h2>
-                        <form onSubmit={handleUpdateUser}>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            // Handle form submission
+                            setShowEditModal(false);
+                        }}>
                             {/* <div className="form-group">
                                 <label>First Name</label>
                                 <input
@@ -269,40 +191,6 @@ const Users = () => {
                                     type="button"
                                     className="cancel-btn"
                                     onClick={() => setShowEditModal(false)}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {showBlockModal && selectedUser && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Block User</h2>
-                        <p>Are you sure you want to block <strong>{selectedUser.firstName} {selectedUser.lastName}</strong>?</p>
-                        <form onSubmit={handleConfirmBlock}>
-                            <div className="form-group">
-                                <label>Reason for blocking (optional)</label>
-                                <textarea
-                                    value={blockReason}
-                                    onChange={(e) => setBlockReason(e.target.value)}
-                                    placeholder="Enter reason for blocking this user..."
-                                    rows="3"
-                                />
-                            </div>
-                            <div className="modal-actions">
-                                <button type="submit" className="block-confirm-btn">Block User</button>
-                                <button
-                                    type="button"
-                                    className="cancel-btn"
-                                    onClick={() => {
-                                        setShowBlockModal(false);
-                                        setSelectedUser(null);
-                                        setBlockReason('');
-                                    }}
                                 >
                                     Cancel
                                 </button>

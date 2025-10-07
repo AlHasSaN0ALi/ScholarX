@@ -31,23 +31,6 @@ const imageStorage = new CloudinaryStorage({
     }
 });
 
-// Configure Storage for Profile Images
-const profileImageStorage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'profile_images',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-        transformation: [{ 
-            width: 400, 
-            height: 400, 
-            crop: "fill",
-            gravity: "face",
-            quality: "auto",
-            fetch_format: "auto"
-        }]
-    }
-});
-
 // Configure Multer with Cloudinary Storage
 const uploadVideo = multer({ 
     storage: videoStorage,
@@ -63,16 +46,8 @@ const uploadImage = multer({
     }
 }).single('image'); 
 
-const uploadProfileImage = multer({ 
-    storage: profileImageStorage,
-    limits: {
-        fileSize: 5000000 // 5MB in bytes
-    }
-}).single('image'); 
-
 module.exports = {
     cloudinary,
     handleVideoUpload: uploadVideo,
-    handleImageUpload: uploadImage,
-    handleProfileImageUpload: uploadProfileImage
+    handleImageUpload: uploadImage
 };

@@ -11,6 +11,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
+    console.log('Mentorship request submitted');
     onClose();
   };
 

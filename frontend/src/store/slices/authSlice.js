@@ -24,7 +24,7 @@ export const login = createAsyncThunk(
             Cookies.set(USER_ROLE_KEY, response.data.user.role, cookieOptions);
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.data?.message);
+            return rejectWithValue(error.response?.data?.message || 'Login failed');
         }
     }
 );
@@ -49,6 +49,7 @@ export const getCurrentUser = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await authService.getCurrentUser();
+            console.log(response.data);
             Cookies.set(USER_ROLE_KEY, response.data.user.role, cookieOptions);
             return response.data;
         } catch (error) {

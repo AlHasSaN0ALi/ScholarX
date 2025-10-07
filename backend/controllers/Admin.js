@@ -101,106 +101,6 @@ exports.getUser = async (req, res) => {
     }
 };
 
-exports.updateUser = async (req, res) => {
-    try {
-        const updateData = { ...req.body };
-        
-        // Remove sensitive fields that shouldn't be updated through admin
-        delete updateData.password;
-        delete updateData.email; // Email should be updated through separate process
-        
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            updateData,
-            { new: true, runValidators: true }
-        ).select('-password');
-
-        if (!user) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'User not found' })
-            );
-        }
-
-        res.status(200).json(
-            JSendResponse.success({ user })
-        );
-    } catch (error) {
-        res.status(500).json(
-            JSendResponse.error(error.message)
-        );
-    }
-};
-
-exports.blockUser = async (req, res) => {
-    try {
-        const { reason } = req.body;
-        const userId = req.params.id;
-        const adminId = req.user._id;
-
-        const user = await User.findByIdAndUpdate(
-            userId,
-            {
-                isBlocked: true,
-                blockedAt: new Date(),
-                blockedBy: adminId,
-                blockReason: reason || 'No reason provided'
-            },
-            { new: true }
-        ).select('-password');
-
-        if (!user) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'User not found' })
-            );
-        }
-
-        res.status(200).json(
-            JSendResponse.success({ 
-                user,
-                message: 'User blocked successfully'
-            })
-        );
-    } catch (error) {
-        res.status(500).json(
-            JSendResponse.error(error.message)
-        );
-    }
-};
-
-exports.unblockUser = async (req, res) => {
-    try {
-        const userId = req.params.id;
-
-        const user = await User.findByIdAndUpdate(
-            userId,
-            {
-                isBlocked: false,
-                blockedAt: undefined,
-                blockedBy: undefined,
-                blockReason: undefined
-            },
-            { new: true }
-        ).select('-password');
-
-        if (!user) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'User not found' })
-            );
-        }
-
-        res.status(200).json(
-            JSendResponse.success({ 
-                user,
-                message: 'User unblocked successfully'
-            })
-        );
-    } catch (error) {
-        res.status(500).json(
-            JSendResponse.error(error.message)
-        );
-    }
-};
-
 exports.updateUserStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -305,8 +205,8 @@ exports.createCourse = async (req, res) => {
         const courseData = { ...req.body };
         if (req.file) {
             courseData.image = {
-                url: req.file.path,
-                public_id: req.file.filename || req.file.public_id || req.file.originalname
+                url: `/uploads/${req.file.filename}`,
+                public_id: req.file.filename
             };
         }
         const course = await Course.create(courseData);
@@ -325,8 +225,8 @@ exports.updateCourse = async (req, res) => {
         const updateData = { ...req.body };
         if (req.file) {
             updateData.image = {
-                url: req.file.path,
-                public_id: req.file.filename || req.file.public_id || req.file.originalname
+                url: `/uploads/${req.file.filename}`,
+                public_id: req.file.filename
             };
         }
         const course = await Course.findByIdAndUpdate(
@@ -427,122 +327,6 @@ exports.createLesson = async (req, res) => {
         );
     } catch (error) {
         res.status(500).json(
-            JSendResponse.error(error.message)
-        );
-    }
-};
-
-// Manual Enrollment Management (Admin overrides)
-exports.enrollUserToCourse = async (req, res) => {
-    try {
-        const { userId, email } = req.body;
-        const courseId = req.params.id;
-
-        const course = await Course.findById(courseId);
-        if (!course) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'Course not found' })
-            );
-        }
-
-        let user = null;
-        if (userId) {
-            user = await User.findById(userId);
-        } else if (email) {
-            user = await User.findOne({ email });
-        }
-
-        if (!user) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'User not found' })
-            );
-        }
-
-        // Add to course subscriptions and user courses
-        await Course.findByIdAndUpdate(
-            courseId,
-            { $addToSet: { subscriptions: user._id } },
-            { new: true }
-        );
-        await User.findByIdAndUpdate(
-            user._id,
-            { $addToSet: { courses: course._id } },
-            { new: true }
-        );
-
-        // Create a zero-amount manual subscription record for audit if not exists
-        const existingSub = await Subscription.findOne({ user: user._id, course: course._id, paymentId: 'manual-admin' });
-        if (!existingSub) {
-            await Subscription.create({
-                user: user._id,
-                course: course._id,
-                amount: 0,
-                status: 'active',
-                paymentId: 'manual-admin',
-                startDate: new Date()
-            });
-        }
-
-        const updatedCourse = await Course.findById(courseId);
-        return res.status(200).json(
-            JSendResponse.success({ course: updatedCourse, userId: user._id })
-        );
-    } catch (error) {
-        return res.status(500).json(
-            JSendResponse.error(error.message)
-        );
-    }
-};
-
-exports.revokeUserFromCourse = async (req, res) => {
-    try {
-        const { userId, email } = req.query;
-        const courseId = req.params.id;
-
-        const course = await Course.findById(courseId);
-        if (!course) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'Course not found' })
-            );
-        }
-
-        let user = null;
-        if (userId) {
-            user = await User.findById(userId);
-        } else if (email) {
-            user = await User.findOne({ email });
-        }
-
-        if (!user) {
-            return res.status(404).json(
-                JSendResponse.fail({ message: 'User not found' })
-            );
-        }
-
-        // Remove from course subscriptions and user courses
-        await Course.findByIdAndUpdate(
-            courseId,
-            { $pull: { subscriptions: user._id } },
-            { new: true }
-        );
-        await User.findByIdAndUpdate(
-            user._id,
-            { $pull: { courses: course._id } },
-            { new: true }
-        );
-
-        // Optionally mark manual subscription as cancelled
-        await Subscription.updateMany(
-            { user: user._id, course: course._id },
-            { status: 'cancelled', endDate: new Date() }
-        );
-
-        const updatedCourse = await Course.findById(courseId);
-        return res.status(200).json(
-            JSendResponse.success({ course: updatedCourse, userId: user._id })
-        );
-    } catch (error) {
-        return res.status(500).json(
             JSendResponse.error(error.message)
         );
     }

@@ -135,22 +135,14 @@ export const authService = {
                 }
             );
    
-            
+            console.log(response.data);
             return response.data;
         } else {
             // fallback for non-FormData
             const response = await api.patch('/users/profile', formData);
-            
+            console.log(response.data);
             return response.data;
         }
-    },
-
-    updatePassword: async (currentPassword, newPassword) => {
-        const response = await api.put('/users/update-password', {
-            currentPassword,
-            newPassword
-        });
-        return response.data;
     },
     isAuthenticated: () => {
         return !!Cookies.get(AUTH_TOKEN_KEY);

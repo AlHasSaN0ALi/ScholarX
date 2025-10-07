@@ -2,7 +2,7 @@ const User = require('../models/User');
 const JSendResponse = require('../utils/StandardResponse');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { cloudinary } = require('../utils/cloudinaryConfig');
+const { handleImageUpload } = require('../utils/cloudinaryConfig');
 const { sendVerificationEmail,sendPasswordResetEmail } = require('../utils/emailService');
 const { validateEmail } = require('../utils/emailValidator');
 
@@ -206,23 +206,10 @@ exports.updateProfile = async (req, res) => {
         console.log(req.file);
         
         if (req.file) {
-            // Delete old image from Cloudinary if it exists
-            if (user.image && user.image.public_id) {
-                try {
-                    await cloudinary.uploader.destroy(user.image.public_id);
-                    console.log('Old image deleted successfully');
-                } catch (error) {
-                    console.log('Error deleting old image:', error);
-                    // Don't fail the request if old image deletion fails
-                }
-            }
-            
-            // Save new image data from Cloudinary
             user.image = {
-                url: req.file.path,
+                url: `/uploads/${req.file.filename}`,
                 public_id: req.file.filename
             };
-            console.log('New image uploaded:', req.file.path);
         }
 
         await user.save();
@@ -236,7 +223,7 @@ exports.updateProfile = async (req, res) => {
 exports.updatePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user.id);
 
         // Check current password
         const isMatch = await user.comparePassword(currentPassword);
@@ -350,7 +337,7 @@ exports.resetPassword = async (req, res) => {
 // Delete user account
 exports.deleteAccount = async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.user._id);
+        const user = await User.findByIdAndDelete(req.user.id);
         if (!user) {
             return res.status(404).json(
                 JSendResponse.fail({ message: 'User not found' })

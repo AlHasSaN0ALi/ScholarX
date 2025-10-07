@@ -7,6 +7,7 @@ const AmbassadorModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
+    console.log('Ambassador application submitted');
     onClose();
   };
 

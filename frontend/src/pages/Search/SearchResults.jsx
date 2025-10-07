@@ -26,6 +26,7 @@ function SearchResults() {
           `${import.meta.env.API_URL}/courses/search?searchTerm=${encodeURIComponent(query)}`
         );
         setCourses(response.data.data);
+        console.log(response.data.data);
         
         if (response.data.data.length === 0) {
           setError('course not found');

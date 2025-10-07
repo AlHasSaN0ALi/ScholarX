@@ -3,7 +3,7 @@ const router = express.Router();
 const { sendContactEmail } = require('../controllers/nodemailer');
 
 router.post('/', async (req, res) => {
-  const { firstName, lastName, email, message, type, course } = req.body;
+  const { firstName, lastName, email, message } = req.body;
 
   if (!firstName || !lastName || !email || !message) {
     return res.status(400).json({ 
@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const result = await sendContactEmail(firstName, lastName, email, message, type, course);
+  const result = await sendContactEmail(firstName, lastName, email, message);
   
   if (result.success) {
     res.status(200).json(result);

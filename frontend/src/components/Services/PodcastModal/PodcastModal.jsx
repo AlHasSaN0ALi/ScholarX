@@ -24,6 +24,7 @@ const PodcastModal = ({ isOpen, onClose }) => {
 
   const handleListen = (episodeId) => {
     // Handle play episode logic here
+    console.log(`Playing episode ${episodeId}`);
   };
 
   return (

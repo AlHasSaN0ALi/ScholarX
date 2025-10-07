@@ -19,18 +19,6 @@ const checkSubscription = async (req, res, next) => {
             );
         }
 
-        // Check if user is blocked
-        if (req.user.isBlocked) {
-            return res.status(403).json(
-                JSendResponse.fail({ 
-                    message: 'Your account has been blocked. Please contact support for assistance.',
-                    isBlocked: true,
-                    blockReason: req.user.blockReason,
-                    blockedAt: req.user.blockedAt
-                })
-            );
-        }
-
         // Check if user is subscribed
         const isSubscribed = course.subscriptions.includes(req.user._id);
         if (!isSubscribed) {

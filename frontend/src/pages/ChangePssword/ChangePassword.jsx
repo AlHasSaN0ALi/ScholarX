@@ -34,6 +34,7 @@ return;
       }
 
       const data = await response.json();
+      console.log( data);
       setNewPassword('');
       setConfirmPassword('');
       setError('Pssword was Changed successfully');

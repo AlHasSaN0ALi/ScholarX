@@ -5,8 +5,8 @@ import Services from './components/Services/Services';
 import waterMark from "../../assets/Images/WaterMark.png"
 import waterMark2 from "../../assets/Images/image.png"
 import Impact from './components/Impact/Impact';
-import { GrGroup } from "react-icons/gr";  
-import { TfiWorld } from "react-icons/tfi";  
+import { GrGroup } from "react-icons/gr";
+import { TfiWorld } from "react-icons/tfi";
 
 import { PiBookOpenTextThin } from "react-icons/pi";
 import { VscBriefcase } from "react-icons/vsc";
