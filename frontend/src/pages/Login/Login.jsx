@@ -59,8 +59,12 @@ const Login = () => {
             }
             dispatch(setSuccess('Login successful!'));
         } catch (err) {
-            dispatch(setError(err.message || 'Login failed'));
-        } finally {
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: err,
+    confirmButtonColor: '#0d6efd'
+});        } finally {
             setSubmitting(false);
         }
     };
@@ -83,7 +87,7 @@ const Login = () => {
 
                 <div className="form-section">
                     <h2 className="form-title">Login to Your Account</h2>
-                    {error && <div className="error-message">{error}</div>}
+                    {/* {error && <div className="error-message">{error}</div>} */}
                     <Formik
                         initialValues={{ email: '', password: '' }}
                         validationSchema={loginSchema}

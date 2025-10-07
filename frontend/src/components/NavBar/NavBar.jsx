@@ -8,6 +8,7 @@ import { FiLogOut } from 'react-icons/fi';
 import defaultAvatar from '../../assets/Images/image.png';
 import { FaUserCircle } from 'react-icons/fa';
 import { useUser } from '../../context/UserContext';
+import { getUserAvatarUrl } from '../../utils/imageUtils';
 // import { API_URL } from '../../utils/api';
 
 function NavBar({ activePage }) {
@@ -20,9 +21,7 @@ function NavBar({ activePage }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useUser();
 
-  console.log(isAdmin);
-  console.log(isAuthenticated);
-  console.log(user);
+  
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
   useEffect(() => {
@@ -68,7 +67,7 @@ function NavBar({ activePage }) {
     setDropdownOpen(false);
     navigate('/profile');
   };
-// console.log(mobileMenuOpen);
+
   const renderAuthButtons = (isMobile = false) => {
     if (isAuthenticated) {
       if (isMobile) {
@@ -77,6 +76,9 @@ function NavBar({ activePage }) {
           <>
             <Link to="/profile" className="sx-mobile-nav-item" onClick={closeMobileMenu}>
               My Profile
+            </Link>
+            <Link to="/certificates" className="sx-mobile-nav-item" onClick={closeMobileMenu}>
+              My Certificates
             </Link>
             {isAdmin && (
               <Link to="/admin/dashboard" className="sx-mobile-nav-item" onClick={closeMobileMenu}>
@@ -93,17 +95,11 @@ function NavBar({ activePage }) {
         return (
           <div className="sx-user-avatar-wrapper">
             <div className="sx-user-avatar" onClick={handleAvatarClick}>
-              {user && (user.image?.url || typeof user.image === 'string') ? (
-                (() => {
-                  let avatarImg = typeof user.image === 'string' ? user.image : user.image?.url;
-                  if (avatarImg && avatarImg.startsWith('/uploads')) {
-                    avatarImg = API_URL.replace('/api', '') + avatarImg;
-                  }
-                  return <img src={avatarImg} alt="User Avatar" className="sx-avatar-img" />;
-                })()
-              ) : (
-                <img src={defaultAvatar} alt="Default Avatar" className="sx-avatar-img" />
-              )}
+              <img 
+                src={getUserAvatarUrl(user, defaultAvatar)} 
+                alt="User Avatar" 
+                className="sx-avatar-img" 
+              />
             </div>
             {dropdownOpen && (
               <div className="sx-user-dropdown">
@@ -113,6 +109,9 @@ function NavBar({ activePage }) {
                     My Courses
                   </Link>
                 )}
+                <Link to="/certificates" onClick={closeMobileMenu} className="sx-dropdown-item">
+                  My Certificates
+                </Link>
                 {isAdmin && (
                   <Link to="/admin/dashboard" onClick={closeMobileMenu} className="sx-dropdown-item">
                      Dashboard

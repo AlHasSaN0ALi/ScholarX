@@ -10,16 +10,23 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendContactEmail = async (firstName, lastName, email, message) => {
+const { getContactFormEmail, getOpenCourseRequestEmail } = require('../utils/emailTemplates');
+
+const sendContactEmail = async (firstName, lastName, email, message, type, course) => {
+  const isAccessRequest = type === 'access_request';
+  const subject = isAccessRequest
+    ? `Course Access Request from ${firstName} ${lastName}`
+    : `New Contact Form Message from ${firstName} ${lastName}`;
+
+  const html = isAccessRequest
+    ? getOpenCourseRequestEmail({ firstName, lastName, email, courseTitle: course?.title, courseId: course?.id })
+    : getContactFormEmail({ firstName, lastName, email, message });
+
   const mailOptions = {
-    from: email,
-    to: 'abdelrahmanelnobby@gmail.com',
-    subject: `New Contact Form Message from ${firstName} ${lastName}`,
-    text: `
-      Name: ${firstName} ${lastName}
-      Email: ${email}
-      Message: ${message}
-    `
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
+    subject,
+    html
   };
 
   try {

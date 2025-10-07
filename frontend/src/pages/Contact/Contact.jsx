@@ -215,22 +215,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className={styles.newsletterSection}>
-              <h5 className="mt-3 fw-bold">Subscribe to Newsletter</h5>
-              <p className="text-muted fw-bold">Stay updated with our latest news and updates.</p>
-
-              <div className={styles.newsletterForm}>
-                <input
-                  type="email"
-                  id="newsletter"
-                  className={styles.formInput}
-                  placeholder="Enter your email"
-                />
-                <button className={styles.newsletterBtn}>
-                  <MdEmail size={20} />
-                </button>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>
