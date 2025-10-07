@@ -15,7 +15,6 @@ const ForgetPassword = () => {
 
         try {
             const response = await authService.forgotPassword(email);
-            console.log(response);
             
             if (response.status === 'success') {
                 Swal.fire({

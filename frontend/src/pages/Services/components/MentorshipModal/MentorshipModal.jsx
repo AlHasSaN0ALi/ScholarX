@@ -85,7 +85,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 placeholder="E.g., Scholarship applications, career guidance, interview preparation..."
                 required
-                minLength={100}
+                // minLength={100}
               />
             </div>
 
@@ -98,7 +98,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 placeholder="E.g., Engineering, Medicine, Business, Computer Science..."
                 required
-                minLength={50}
+                // minLength={50}
               />
             </div>
 
@@ -111,7 +111,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 placeholder="E.g., Industry insights, application review, career advice..."
                 required
-                minLength={100}
+                // minLength={100}
               />
             </div>
 
@@ -124,7 +124,7 @@ const MentorshipModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 placeholder="E.g., Weekday evenings, weekend afternoons..."
                 required
-                minLength={50}
+                // minLength={50}
               />
             </div>
 

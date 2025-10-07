@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllCourses, createCourse, updateCourse, updateCourseStatus, deleteCourse, createLesson, updateLesson, deleteLesson } from '../../../store/slices/adminSlice';
+import { fetchAllCourses, createCourse, updateCourse, updateCourseStatus, deleteCourse, createLesson, updateLesson, deleteLesson, enrollUserToCourse, revokeUserFromCourse } from '../../../store/slices/adminSlice';
 import { fetchCourseLessons } from '../../../store/slices/lessonSlice';
 import Swal from 'sweetalert2';
 import './Courses.css';
@@ -20,6 +20,14 @@ const Courses = () => {
     const [showLessonsListModal, setShowLessonsListModal] = useState(false);
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [selectedLesson, setSelectedLesson] = useState(null);
+    const [openActionMenuId, setOpenActionMenuId] = useState(null);
+    const [creatingCourse, setCreatingCourse] = useState(false);
+    const [updatingCourse, setUpdatingCourse] = useState(false);
+    const [creatingLesson, setCreatingLesson] = useState(false);
+    const [updatingLesson, setUpdatingLesson] = useState(false);
+    const [deletingCourseId, setDeletingCourseId] = useState(null);
+    const [grantingAccessId, setGrantingAccessId] = useState(null);
+    const [revokingAccessId, setRevokingAccessId] = useState(null);
     const [newCourse, setNewCourse] = useState({
         title: '',
         description: '',
@@ -66,6 +74,8 @@ const Courses = () => {
     const handleCreateCourse = async (e) => {
         e.preventDefault();
         try {
+            if (creatingCourse) return;
+            setCreatingCourse(true);
             const courseData = {
                 ...newCourse,
                 currentPrice: parseFloat(newCourse.currentPrice),
@@ -101,11 +111,16 @@ const Courses = () => {
                 text: error.message || 'Failed to create course',
             });
         }
+        finally {
+            setCreatingCourse(false);
+        }
     };
 
     const handleUpdateCourse = async (e) => {
         e.preventDefault();
         try {
+            if (updatingCourse) return;
+            setUpdatingCourse(true);
             const courseData = {
                 ...selectedCourse,
                 currentPrice: parseFloat(selectedCourse.currentPrice),
@@ -132,11 +147,16 @@ const Courses = () => {
                 text: error.message || 'Failed to update course',
             });
         }
+        finally {
+            setUpdatingCourse(false);
+        }
     };
 
     const handleCreateLesson = async (e) => {
         e.preventDefault();
         try {
+            if (creatingLesson) return;
+            setCreatingLesson(true);
             const lessonData = {
                 ...newLesson,
                 duration: parseFloat(newLesson.duration),
@@ -170,11 +190,16 @@ const Courses = () => {
                 text: error.message || 'Failed to create lesson',
             });
         }
+        finally {
+            setCreatingLesson(false);
+        }
     };
 
     const handleUpdateLesson = async (e) => {
         e.preventDefault();
         try {
+            if (updatingLesson) return;
+            setUpdatingLesson(true);
             const lessonData = {
                 ...editLesson,
                 duration: parseFloat(editLesson.duration),
@@ -209,6 +234,9 @@ const Courses = () => {
                 title: 'Error!',
                 text: error.message || 'Failed to update lesson',
             });
+        }
+        finally {
+            setUpdatingLesson(false);
         }
     };
 
@@ -294,10 +322,61 @@ const Courses = () => {
     const handleDeleteCourse = async (courseId) => {
         if (window.confirm('Are you sure you want to delete this course?')) {
             try {
+                if (deletingCourseId) return;
+                setDeletingCourseId(courseId);
                 await dispatch(deleteCourse(courseId)).unwrap();
             } catch (error) {
                 console.error('Failed to delete course:', error);
             }
+            finally {
+                setDeletingCourseId(null);
+            }
+        }
+    };
+
+    const handleGrantAccess = async (course) => {
+        if (grantingAccessId) return;
+        const { value: email } = await Swal.fire({
+            title: 'Grant Access',
+            input: 'email',
+            inputLabel: 'User email',
+            inputPlaceholder: 'user@example.com',
+            confirmButtonText: 'Grant',
+            showCancelButton: true
+        });
+        if (!email) return;
+        try {
+            setGrantingAccessId(course._id);
+            await dispatch(enrollUserToCourse({ courseId: course._id, email })).unwrap();
+            Swal.fire({ icon: 'success', title: 'Access granted', timer: 1500, showConfirmButton: false });
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Failed', text: err || 'Could not grant access' });
+        }
+        finally {
+            setGrantingAccessId(null);
+        }
+    };
+
+    const handleRevokeAccess = async (course) => {
+        if (revokingAccessId) return;
+        const { value: email } = await Swal.fire({
+            title: 'Revoke Access',
+            input: 'email',
+            inputLabel: 'User email',
+            inputPlaceholder: 'user@example.com',
+            confirmButtonText: 'Revoke',
+            showCancelButton: true
+        });
+        if (!email) return;
+        try {
+            setRevokingAccessId(course._id);
+            await dispatch(revokeUserFromCourse({ courseId: course._id, email })).unwrap();
+            Swal.fire({ icon: 'success', title: 'Access revoked', timer: 1500, showConfirmButton: false });
+        } catch (err) {
+            Swal.fire({ icon: 'error', title: 'Failed', text: err || 'Could not revoke access' });
+        }
+        finally {
+            setRevokingAccessId(null);
         }
     };
 
@@ -357,36 +436,79 @@ const Courses = () => {
                                     <td data-label="Total Lessons">{course.totalLessons || 0}</td>
                                     <td data-label="Total Duration">{course.totalDuration || 0} min</td>
                                     <td data-label="Actions">
-                                        <button
-                                            className="manage-lessons-btn"
-                                            onClick={() => handleManageLessons(course)}
-                                        >
-                                            Manage Lessons
-                                        </button>
-                                        <button
-                                            className="lesson-btn"
-                                            onClick={() => {
-                                                setSelectedCourse(course);
-                                                setShowLessonModal(true);
-                                            }}
-                                        >
-                                            Add Lesson
-                                        </button>
-                                        <button
-                                            className="edit-btn"
-                                            onClick={() => {
-                                                setSelectedCourse(course);
-                                                setShowEditModal(true);
-                                            }}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            className="delete-btn"
-                                            onClick={() => handleDeleteCourse(course._id)}
-                                        >
-                                            Delete
-                                        </button>
+                                        <div className="actions-menu">
+                                            <button
+                                                className="actions-toggle"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setOpenActionMenuId(openActionMenuId === course._id ? null : course._id);
+                                                }}
+                                                aria-haspopup="menu"
+                                                aria-expanded={openActionMenuId === course._id}
+                                            >
+                                                Actions ▾
+                                            </button>
+                                            {openActionMenuId === course._id && (
+                                                <div className="actions-dropdown" role="menu">
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            setOpenActionMenuId(null);
+                                                            handleManageLessons(course);
+                                                        }}
+                                                    >
+                                                        Manage Lessons
+                                                    </button>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            setOpenActionMenuId(null);
+                                                            setSelectedCourse(course);
+                                                            setShowLessonModal(true);
+                                                        }}
+                                                    >
+                                                        Add Lesson
+                                                    </button>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            setOpenActionMenuId(null);
+                                                            setSelectedCourse(course);
+                                                            setShowEditModal(true);
+                                                        }}
+                                                    >
+                                                        Edit Course
+                                                    </button>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            setOpenActionMenuId(null);
+                                                            handleGrantAccess(course);
+                                                        }}
+                                                    >
+                                                        Grant Access
+                                                    </button>
+                                                    <button
+                                                        className="dropdown-item"
+                                                        onClick={() => {
+                                                            setOpenActionMenuId(null);
+                                                            handleRevokeAccess(course);
+                                                        }}
+                                                    >
+                                                        Revoke Access
+                                                    </button>
+                                                    <button
+                                                        className="dropdown-item danger"
+                                                        onClick={() => {
+                                                            setOpenActionMenuId(null);
+                                                            handleDeleteCourse(course._id);
+                                                        }}
+                                                    >
+                                                        Delete Course
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
                                     </td>
                                 </tr>
                             ))
@@ -496,7 +618,7 @@ const Courses = () => {
                                 />
                             </div>
                             <div className="modal-actions">
-                                <button type="submit" className="save-btn">Create Course</button>
+                                <button type="submit" className="save-btn" disabled={creatingCourse}>{creatingCourse ? 'Creating...' : 'Create Course'}</button>
                                 <button
                                     type="button"
                                     className="cancel-btn"
@@ -598,7 +720,7 @@ const Courses = () => {
                                 />
                             </div>
                             <div className="modal-actions">
-                                <button type="submit" className="save-btn">Save Changes</button>
+                                <button type="submit" className="save-btn" disabled={updatingCourse}>{updatingCourse ? 'Saving...' : 'Save Changes'}</button>
                                 <button
                                     type="button"
                                     className="cancel-btn"
@@ -694,7 +816,7 @@ const Courses = () => {
                                 </label>
                             </div>
                             <div className="modal-actions">
-                                <button type="submit" className="save-btn">Add Lesson</button>
+                                <button type="submit" className="save-btn" disabled={creatingLesson}>{creatingLesson ? 'Adding...' : 'Add Lesson'}</button>
                                 <button
                                     type="button"
                                     className="cancel-btn"
@@ -871,7 +993,7 @@ const Courses = () => {
                                 </label>
                             </div>
                             <div className="modal-actions">
-                                <button type="submit" className="save-btn">Update Lesson</button>
+                                <button type="submit" className="save-btn" disabled={updatingLesson}>{updatingLesson ? 'Updating...' : 'Update Lesson'}</button>
                                 <button
                                     type="button"
                                     className="cancel-btn"

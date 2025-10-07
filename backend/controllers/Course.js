@@ -2,6 +2,7 @@ const Course = require('../models/Course');
 const JSendResponse = require('../utils/StandardResponse');
 const Category = require('../models/Category');
 const { handleImageUpload, cloudinary } = require('../utils/cloudinaryConfig');
+const { log } = require('console');
 
 // Create a new course with image upload
 exports.createCourse = async (req, res) => {
@@ -192,9 +193,28 @@ exports.checkSubscriptionStatus = async (req, res) => {
             );
         }
 
+        // Check if user is blocked
+        const User = require('../models/User');
+        const user = await User.findById(userId);
+        console.log(user);
+        // if (user && user.isBlocked) {
+        //     console.log("blockedddddd");
+            
+        //     return res.status(403).json(
+        //         JSendResponse.fail({ 
+        //             message: 'Your account has been blocked. Please contact support for assistance.',
+        //             isBlocked: true,
+        //             blockReason: user.blockReason,
+        //             blockedAt: user.blockedAt
+        //         })
+        //     );
+        // }
+
         // Check if user ID exists in course subscriptions array
         const isSubscribed = course.subscriptions.includes(userId);
 
+        console.log("isSubscribed", isSubscribed);
+        
         res.status(200).json(
             JSendResponse.success({ 
                 isSubscribed,

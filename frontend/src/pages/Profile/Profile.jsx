@@ -5,15 +5,17 @@ import defaultAvatar from '../../assets/Images/image.png';
 import './Profile.css';
 import { useUser } from '../../context/UserContext';
 import { authService } from '../../services/api';
+import PasswordUpdate from '../../components/PasswordUpdate/PasswordUpdate';
+import ForgotPasswordModal from '../../components/ForgotPasswordModal/ForgotPasswordModal';
+import { getUserAvatarUrl } from '../../utils/imageUtils';
 
 const Profile = () => {
   const { user, setUser, loading } = useUser();
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-  let initialImage = (typeof user?.image === 'string' ? user.image : user?.image?.url) || defaultAvatar;
-  if (initialImage && initialImage.startsWith('/uploads')) {
-    initialImage = API_URL.replace('/api', '') + initialImage;
-  }
+  const initialImage = getUserAvatarUrl(user, defaultAvatar);
   const [preview, setPreview] = useState(initialImage);
+  const [showPasswordUpdate, setShowPasswordUpdate] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <div>User not found.</div>;
@@ -23,7 +25,7 @@ const Profile = () => {
     lastName: user?.lastName || '',
     email: user?.email || '',
     phoneNumber: user?.phoneNumber || '',
-    image: null,
+    image: user?.image?.url || '',
   };
 
   const validationSchema = Yup.object({
@@ -54,12 +56,7 @@ const Profile = () => {
       if (response.status === 'success') {
         setUser(response.data.user);
         // Update preview to new image from backend
-        let newImage = (typeof response.data.user.image === 'string'
-          ? response.data.user.image
-          : response.data.user.image?.url) || defaultAvatar;
-        if (newImage && newImage.startsWith('/uploads')) {
-          newImage = API_URL.replace('/api', '') + newImage;
-        }
+        const newImage = getUserAvatarUrl(response.data.user, defaultAvatar);
         setPreview(newImage);
         setStatus({ success: 'Profile updated successfully!' });
       } else {
@@ -111,14 +108,45 @@ const Profile = () => {
               <Field name="phoneNumber" type="text" />
               <ErrorMessage name="phoneNumber" component="div" className="sx-profile-error" />
             </div>
-            <button type="submit" disabled={isSubmitting || loading} className="sx-profile-save-btn">
-              {isSubmitting || loading ? 'Saving...' : 'Save Changes'}
-            </button>
+            <div className="sx-profile-actions">
+              <button type="submit" disabled={isSubmitting || loading} className="sx-profile-save-btn">
+                {isSubmitting || loading ? 'Saving...' : 'Save Changes'}
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setShowPasswordUpdate(!showPasswordUpdate)}
+                className="sx-profile-password-btn"
+                disabled={isSubmitting || loading}
+              >
+                {showPasswordUpdate ? 'Cancel Password Change' : 'Change Password'}
+              </button>
+              <button 
+                type="button" 
+                onClick={() => setShowForgotPassword(true)}
+                className="sx-profile-forgot-password-btn"
+                disabled={isSubmitting || loading}
+              >
+                Forgot Password?
+              </button>
+            </div>
             {status && status.success && <div className="sx-profile-success">{status.success}</div>}
             {status && status.error && <div className="sx-profile-error">{status.error}</div>}
           </Form>
         )}
       </Formik>
+      
+      {showPasswordUpdate && (
+        <PasswordUpdate 
+          onSuccess={() => setShowPasswordUpdate(false)}
+          onCancel={() => setShowPasswordUpdate(false)}
+        />
+      )}
+      
+      <ForgotPasswordModal 
+        isOpen={showForgotPassword}
+        onClose={() => setShowForgotPassword(false)}
+        userEmail={user?.email}
+      />
     </div>
   );
 };

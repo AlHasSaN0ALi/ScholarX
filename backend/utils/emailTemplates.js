@@ -113,3 +113,43 @@ module.exports = {
     getMentorshipConfirmationEmail,
     getMentorshipAdminNotification
 }; 
+
+// Contact form email (admin notification)
+const getContactFormEmail = ({ firstName, lastName, email, message }) => `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #3399CC; text-align: center;">New Contact Form Message</h1>
+        <div style="background-color: #f5f5f5; padding: 16px; border-radius: 6px; margin: 20px 0;">
+            <h2 style="color: #333; margin-top: 0;">Sender Information</h2>
+            <p style="margin: 8px 0;"><strong>Name:</strong> ${firstName} ${lastName}</p>
+            <p style="margin: 8px 0;"><strong>Email:</strong> ${email}</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid #e5e5e5; border-radius: 6px;">
+            <h3 style="color: #333; margin-top: 0;">Message</h3>
+            <pre style="white-space: pre-wrap; font-family: inherit;">${message}</pre>
+        </div>
+        <p style="color: #999; font-size: 12px; text-align: center; margin-top: 24px;">This notification was sent by ScholarX.</p>
+    </div>
+`;
+
+// Open course access request (admin notification)
+const getOpenCourseRequestEmail = ({ firstName, lastName, email, courseTitle, courseId }) => `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #3399CC; text-align: center;">Course Access Request</h1>
+        <p style="color: #555;">A user requested manual access while payments are offline.</p>
+        <div style="background-color: #f5f5f5; padding: 16px; border-radius: 6px; margin: 20px 0;">
+            <h2 style="color: #333; margin-top: 0;">User Information</h2>
+            <p style="margin: 8px 0;"><strong>Name:</strong> ${firstName} ${lastName}</p>
+            <p style="margin: 8px 0;"><strong>Email:</strong> ${email}</p>
+        </div>
+        <div style="padding: 16px; border: 1px solid #e5e5e5; border-radius: 6px;">
+            <h3 style="color: #333; margin-top: 0;">Course</h3>
+            <p style="margin: 8px 0;"><strong>Title:</strong> ${courseTitle}</p>
+            ${courseId ? `<p style="margin: 8px 0;"><strong>Course ID:</strong> ${courseId}</p>` : ''}
+        </div>
+        <p style="margin-top: 16px; color: #666;">Suggested next steps: verify the user and grant access from the Admin Dashboard.</p>
+        <p style="color: #999; font-size: 12px; text-align: center; margin-top: 24px;">This notification was sent by ScholarX.</p>
+    </div>
+`;
+
+module.exports.getContactFormEmail = getContactFormEmail;
+module.exports.getOpenCourseRequestEmail = getOpenCourseRequestEmail;

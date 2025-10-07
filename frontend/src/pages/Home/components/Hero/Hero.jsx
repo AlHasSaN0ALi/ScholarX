@@ -29,7 +29,7 @@ const Hero = () => {
               </Link>
             </div>
             <div>
-              <Link  to="/login" style={{ textDecoration: 'none' }}>
+              <Link  to="/services" style={{ textDecoration: 'none' }}>
 
               <button className={styles.btnSecondary}>
                 Join our Community

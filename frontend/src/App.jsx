@@ -31,6 +31,7 @@ import AdminReports from './pages/Admin/Reports/Reports'
 import './App.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import MyCourses from './pages/myCourses/MyCourses';
+import Certificates from './pages/Certificates/Certificates';
 
 // Layout component to ensure navbar consistency
 const Layout = ({ children, path }) => {
@@ -86,6 +87,7 @@ function App() {
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/profile" element={<LayoutWithPath><Profile /></LayoutWithPath>} />
             <Route path="/mycourses" element={<LayoutWithPath><MyCourses /></LayoutWithPath>} />
+            <Route path="/certificates" element={<LayoutWithPath><Certificates /></LayoutWithPath>} />
             {/* Admin Routes */}
             <Route
               path="/admin/dashboard"

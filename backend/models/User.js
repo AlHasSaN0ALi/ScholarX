@@ -18,7 +18,19 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpires: Date,
     isEmailVerified: { type: Boolean, default: false },
     emailVerificationToken: String,
-    emailVerificationExpires: Date
+    emailVerificationExpires: Date,
+    isBlocked: { type: Boolean, default: false },
+    blockedAt: { type: Date },
+    blockedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    blockReason: { type: String },
+    completedCourses: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'CourseCompletion' 
+    }],
+    completedLessons: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'LessonCompletion' 
+    }]
 }, { timestamps: true });
 
 userSchema.pre('save', async function(next) {

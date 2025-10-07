@@ -7,6 +7,7 @@ import adminReducer from './slices/adminSlice.js';
 import lessonReducer from './slices/lessonSlice.js';
 import searchReducer from './slices/searchSlice.js';
 import uiReducer from './slices/uiSlice.js';
+import certificateReducer from './slices/certificateSlice.js';
 
 const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
         lessons: lessonReducer,
         search: searchReducer,
         ui: uiReducer,
+        certificates: certificateReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

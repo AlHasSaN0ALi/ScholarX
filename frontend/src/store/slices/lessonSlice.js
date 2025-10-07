@@ -29,7 +29,6 @@ export const checkCourseSubscription = createAsyncThunk(
             const response = await api.get(`/courses/${courseId}/subscription-status`, {
                 params: { userId }
             });
-            console.log(response);
             
             return response.data.data;
         } catch (error) {
@@ -68,6 +67,7 @@ const initialState = {
     completedLessons: [],
     course: null,
     isSubscribed: false,
+    isBlocked: false,
     loading: false,
     error: null,
 };
@@ -138,6 +138,10 @@ const lessonSlice = createSlice({
                 state.loading = false;
                 state.isSubscribed = false;
                 state.error = action.payload;
+                // Check if user is blocked
+                if (action.payload && action.payload.includes && action.payload.includes('blocked')) {
+                    state.isBlocked = true;
+                }
             })
             // Mark Lesson Complete
             .addCase(markLessonComplete.fulfilled, (state, action) => {

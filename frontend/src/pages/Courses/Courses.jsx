@@ -26,11 +26,7 @@ function Courses() {
   // const [scholarxPagination, setScholarxPagination] = useState({});
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  // console.log(latest);
   // Fetch search results when searchTerm changes
-  console.log(latest);
-  console.log(featured);
-  console.log(scholarx);
   
   useEffect(() => {
     const fetchSearchResults = async () => {

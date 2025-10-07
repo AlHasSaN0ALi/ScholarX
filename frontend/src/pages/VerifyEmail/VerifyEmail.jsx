@@ -11,7 +11,6 @@ const VerifyEmail = () => {
 
     useEffect(() => {
         const verifyEmail = async () => {
-            console.log("response");
 
             try {
                 const token = searchParams.get('token');
@@ -20,7 +19,6 @@ const VerifyEmail = () => {
                 }
 
                 const response = await authService.verifyEmail(token);
-                console.log(response);
                 
                 if (response.data.status === 'success') {
                     await Swal.fire({
@@ -40,7 +38,6 @@ const VerifyEmail = () => {
                     throw new Error(response.data.data.message || 'Verification failed');
                 }
             } catch (error) {
-                console.log(error);
                 
                 await Swal.fire({
                     title: 'Error!',

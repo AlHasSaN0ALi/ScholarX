@@ -6,13 +6,15 @@ import courseData from './CourseData';
 import './CourseInfo.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { authService } from '../../services/api';
+import { useUser } from '../../context/UserContext';
+import BlockedUserMessage from '../../components/BlockedUserMessage/BlockedUserMessage';
 import Swal from 'sweetalert2';
 
 function CoursePage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { courseId } = useParams();
-  console.log(courseId);
+  const { user } = useUser();
 
   const renderStars = (rating) => {
     const stars = [];
@@ -32,6 +34,19 @@ function CoursePage() {
     e.preventDefault(); // Prevent navigation when clicking enroll
     try {
       setIsLoading(true);
+      
+      // Check if user is blocked
+      if (user && user.isBlocked) {
+        Swal.fire({
+          title: 'Account Blocked',
+          text: 'Your account has been blocked. Please contact support for assistance.',
+          icon: 'error',
+          confirmButtonText: 'Contact Support'
+        }).then(() => {
+          window.location.href = 'mailto:support@scholarx.com';
+        });
+        return;
+      }
       
       // Check if user is logged in
       if (!authService.isAuthenticated()) {
@@ -72,6 +87,16 @@ function CoursePage() {
       setIsLoading(false);
     }
   };
+
+  // Check if user is blocked and show blocked message
+  if (user && user.isBlocked) {
+    return (
+      <BlockedUserMessage 
+        blockReason={user.blockReason}
+        blockedAt={user.blockedAt}
+      />
+    );
+  }
 
   return (
     <>

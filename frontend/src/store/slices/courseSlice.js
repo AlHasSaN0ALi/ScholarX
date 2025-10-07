@@ -7,7 +7,6 @@ export const fetchLatestCourses = createAsyncThunk(
     async (page = 1, { rejectWithValue }) => {
         try {
             const response = await api.get(`/courses?page=${page}`);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch latest courses');
